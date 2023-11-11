@@ -8,11 +8,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="187dp"
-        android:text="Welcome to Lunark!"
-        android:textSize="16pt"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/linear1"
+        android:text="@string/welcome_to_lunark"
+        style="@style/ScreenHeading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

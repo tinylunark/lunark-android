@@ -11,4 +11,5 @@
     <string name="last_name">Last name</string>
     <string name="address">Address</string>
     <string name="phone_number">Phone number</string>
+    <string name="welcome_to_lunark">Welcome to Lunark!</string>
 </resources>

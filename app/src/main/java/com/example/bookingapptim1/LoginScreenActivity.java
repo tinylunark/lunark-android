@@ -8,13 +8,18 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
+import com.example.bookingapptim1.databinding.LoginScreenBinding;
+
 public class LoginScreenActivity extends Activity {
+    private LoginScreenBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
+        binding = LoginScreenBinding.inflate(getLayoutInflater());
 
-        Button loginButton = findViewById(R.id.login_button);
+        setContentView(binding.getRoot());
+
+        Button loginButton = binding.loginButton;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,5 +28,17 @@ public class LoginScreenActivity extends Activity {
                 finish();
             }
         });
+
+        Button signupButton = binding.signupButton;
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginScreenActivity.this, SignUpScreenActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 }

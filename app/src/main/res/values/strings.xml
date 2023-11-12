@@ -12,4 +12,6 @@
     <string name="address">Address</string>
     <string name="phone_number">Phone number</string>
     <string name="welcome_to_lunark">Welcome to Lunark!</string>
+    <string name="i_am_a_guest">I am a guest</string>
+    <string name="i_am_a_host">I am a host</string>
 </resources>

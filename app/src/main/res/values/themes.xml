@@ -3,6 +3,7 @@
     <style name="Base.Theme.BookingAppTim1" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:textColorHint">#8F8E8E</item>
         <item name="android:fontFamily">@font/rubik_regular</item>
     </style>
 

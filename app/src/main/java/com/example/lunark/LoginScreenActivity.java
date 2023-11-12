@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lunark.databinding.LoginScreenBinding;
 
-public class LoginScreenActivity extends Activity {
+public class LoginScreenActivity extends AppCompatActivity {
     private LoginScreenBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

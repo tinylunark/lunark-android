@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lunark.databinding.SignupScreenBinding;
 
-public class SignUpScreenActivity extends Activity {
+public class SignUpScreenActivity extends AppCompatActivity {
 
     private SignupScreenBinding signupScreenBinding;
 

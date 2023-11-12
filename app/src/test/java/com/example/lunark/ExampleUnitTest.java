@@ -1,4 +1,4 @@
-package com.example.bookingapptim1;
+package com.example.lunark;
 
 import org.junit.Test;
 

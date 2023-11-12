@@ -1,4 +1,4 @@
-package com.example.bookingapptim1;
+package com.example.lunark;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.bookingapptim1.databinding.ActivityHomeBinding;
+import com.example.lunark.databinding.ActivityHomeBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;

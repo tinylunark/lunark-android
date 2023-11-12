@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         findViewById(R.id.filterButton).setOnClickListener(v -> {
-            FilterDalogFragment filterDialog = new FilterDalogFragment();
+            FilterDialogFragment filterDialog = new FilterDialogFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             filterDialog.show(fragmentManager, "filter_dialog");
                 }

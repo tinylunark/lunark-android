@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BookingAppTim1"
+rootProject.name = "Lunark"
 include(":app")
  

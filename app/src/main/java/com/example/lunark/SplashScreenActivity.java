@@ -1,8 +1,10 @@
-package com.example.bookingapptim1;
+package com.example.lunark;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;

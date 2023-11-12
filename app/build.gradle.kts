@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bookingapptim1"
+    namespace = "com.example.lunark"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.bookingapptim1"
+        applicationId = "com.example.lunark"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

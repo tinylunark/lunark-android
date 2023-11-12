@@ -1,4 +1,4 @@
-package com.example.bookingapptim1;
+package com.example.lunark;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.example.bookingapptim1.databinding.SignupScreenBinding;
+import com.example.lunark.databinding.SignupScreenBinding;
 
 public class SignUpScreenActivity extends Activity {
 

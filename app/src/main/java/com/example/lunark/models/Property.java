@@ -1,16 +1,16 @@
 package com.example.lunark.models;
 
-public class Accommodation {
+public class Property {
     private String name;
     private String description;
     private String location;
     private double price;
     private int thumbnailId;
 
-    public Accommodation() {
+    public Property() {
     }
 
-    public Accommodation(String name, String description, String location, double price, int thumbnailId) {
+    public Property(String name, String description, String location, double price, int thumbnailId) {
         this.name = name;
         this.description = description;
         this.location = location;

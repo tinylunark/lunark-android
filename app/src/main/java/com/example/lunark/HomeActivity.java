@@ -15,7 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.lunark.adapters.AccommodationListAdapter;
+import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,8 +32,8 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Set<Integer> topLevelDestinations = new HashSet<>();
-    private ListView accommodationListView;
-    private AccommodationListAdapter accommodationListAdapter = new AccommodationListAdapter(HomeActivity.this);
+    private ListView propertyListView;
+    private PropertyListAdapter propertyListAdapter = new PropertyListAdapter(HomeActivity.this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +67,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
         );
 
-        accommodationListView = binding.activityHomeBase.list;
-        accommodationListView.setAdapter(accommodationListAdapter);
+        propertyListView = binding.activityHomeBase.list;
+        propertyListView.setAdapter(propertyListAdapter);
     }
     @Override
     public boolean onSupportNavigateUp() {

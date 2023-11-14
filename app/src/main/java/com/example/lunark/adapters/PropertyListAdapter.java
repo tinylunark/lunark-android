@@ -1,7 +1,6 @@
 package com.example.lunark.adapters;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,26 +8,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lunark.R;
-import com.example.lunark.models.Accommodation;
-import com.example.lunark.util.AccommodationListMockup;
+import com.example.lunark.models.Property;
+import com.example.lunark.util.PropertyListMockup;
 
-import org.w3c.dom.Text;
-
-public class AccommodationListAdapter extends BaseAdapter {
+public class PropertyListAdapter extends BaseAdapter {
     private Activity activity;
 
-    public AccommodationListAdapter(Activity activity) {
+    public PropertyListAdapter(Activity activity) {
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return AccommodationListMockup.getAccommodations().size();
+        return PropertyListMockup.getProperties().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return AccommodationListMockup.getAccommodations().get(position);
+        return PropertyListMockup.getProperties().get(position);
     }
 
     @Override
@@ -39,10 +36,10 @@ public class AccommodationListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        Accommodation accommodation = AccommodationListMockup.getAccommodations().get(position);
+        Property property = PropertyListMockup.getProperties().get(position);
 
         if (convertView == null)
-            vi = activity.getLayoutInflater().inflate(R.layout.accommodation_card, null);
+            vi = activity.getLayoutInflater().inflate(R.layout.property_card, null);
 
         TextView name = (TextView) vi.findViewById(R.id.name);
         TextView location = (TextView) vi.findViewById(R.id.location);
@@ -50,11 +47,11 @@ public class AccommodationListAdapter extends BaseAdapter {
         TextView price = (TextView) vi.findViewById(R.id.price);
         ImageView thumbnail = (ImageView) vi.findViewById(R.id.thumbnail);
 
-        name.setText(accommodation.getName());
-        location.setText(accommodation.getLocation());
-        description.setText(accommodation.getDescription());
-        price.setText(String.format("$%.0f", accommodation.getPrice()));
-        thumbnail.setImageResource(accommodation.getThumbnailId());
+        name.setText(property.getName());
+        location.setText(property.getLocation());
+        description.setText(property.getDescription());
+        price.setText(String.format("$%.0f", property.getPrice()));
+        thumbnail.setImageResource(property.getThumbnailId());
 
         return vi;
     }

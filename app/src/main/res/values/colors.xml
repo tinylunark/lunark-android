@@ -2,6 +2,9 @@
 <resources>
     <color name="black">#000000</color>
     <color name="seed">#00838f</color>
+    <color name="background_main">#1F1F1F</color>
+    <color name="background_secondary">#2D2D2D</color>
+    <color name="off_white_secondary">#F0EDEE</color>
     <color name="md_theme_light_primary">#006972</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#8FF2FF</color>

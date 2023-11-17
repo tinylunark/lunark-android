@@ -6,16 +6,18 @@ public class Property {
     private String location;
     private double price;
     private int thumbnailId;
+    private double averageRating;
 
     public Property() {
     }
 
-    public Property(String name, String description, String location, double price, int thumbnailId) {
+    public Property(String name, String description, String location, double price, int thumbnailId, double averageRating) {
         this.name = name;
         this.description = description;
         this.location = location;
         this.price = price;
         this.thumbnailId = thumbnailId;
+        this.averageRating = averageRating;
     }
 
     public String getName() {
@@ -56,6 +58,14 @@ public class Property {
 
     public void setThumbnailId(int thumbnailId) {
         this.thumbnailId = thumbnailId;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     @Override

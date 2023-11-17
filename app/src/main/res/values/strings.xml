@@ -15,4 +15,6 @@
     <string name="welcome_to_lunark">Welcome to Lunark!</string>
     <string name="i_am_a_guest">I am a guest</string>
     <string name="i_am_a_host">I am a host</string>
+    <string name="book">Book</string>
+    <string name="view_reviews">View reviews</string>
 </resources>

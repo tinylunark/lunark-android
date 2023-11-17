@@ -1,7 +1,10 @@
 package com.example.lunark;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -15,8 +18,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.lunark.activities.PropertyActivity;
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.models.Property;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
@@ -74,5 +79,26 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Property selectedProperty = (Property) parent.getItemAtPosition(position);
+
+                Intent intent = new Intent(HomeActivity.this, PropertyActivity.class);
+                intent.putExtra("name", selectedProperty.getName());
+                intent.putExtra("rating", selectedProperty.getAverageRating());
+                intent.putExtra("location", selectedProperty.getLocation());
+                intent.putExtra("description", selectedProperty.getDescription());
+                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
+
+                startActivity(intent);
+            }
+        });
     }
 }

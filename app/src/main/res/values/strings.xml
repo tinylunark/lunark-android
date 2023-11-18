@@ -31,8 +31,11 @@
     <string name="starting_price">Starting price</string>
     <string name="end_price">End price</string>
     <string name="choose_date">Choose date</string>
-    <string-array name="amenities_array">
-        <item>Washing machine</item>
-        <item>Stove</item>
+    <string name="stove">Stove</string>
+    <string name="washing_machine">Washing machine</string>
+    <string name="amenities">Amenities</string>
+    <string-array name="property_types_array">
+        <item>Apartment</item>
+        <item>Cottage</item>
     </string-array>
 </resources>

@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +20,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 public class FiltersDialogFragment extends DialogFragment implements View.OnClickListener {
     public static String TAG = "FiltersDialog";
-    private FragmentFiltersDialogBinding binding;
 
     @NonNull
     @Override
@@ -32,6 +33,16 @@ public class FiltersDialogFragment extends DialogFragment implements View.OnClic
                 .setTitle(R.string.filters)
                 .setPositiveButton(R.string.apply, (dialog, which) -> {})
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {});
+
+        // Property type spinner
+        Spinner typeSpinner = (Spinner) view.findViewById(R.id.spType);
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.property_types_array,
+                android.R.layout.simple_spinner_item
+        );
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(typeAdapter);
 
         builder.setView(view);
 

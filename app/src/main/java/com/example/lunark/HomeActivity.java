@@ -1,7 +1,11 @@
 package com.example.lunark;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,7 +18,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.lunark.activities.PropertyActivity;
+import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.FiltersDialogFragment;
+import com.example.lunark.models.Property;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
@@ -30,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Set<Integer> topLevelDestinations = new HashSet<>();
+    private ListView propertyListView;
+    private PropertyListAdapter propertyListAdapter = new PropertyListAdapter(HomeActivity.this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,12 +67,30 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         findViewById(R.id.filterButton).setOnClickListener(v -> {
-            FilterDialogFragment filterDialog = new FilterDialogFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            filterDialog.show(fragmentManager, "filter_dialog");
-                }
-
+                new FiltersDialogFragment().show(
+                        getSupportFragmentManager(), FiltersDialogFragment.TAG
+                );
+            }
         );
+
+        propertyListView = binding.activityHomeBase.list;
+        propertyListView.setAdapter(propertyListAdapter);
+
+        propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Property selectedProperty = (Property) parent.getItemAtPosition(position);
+
+                Intent intent = new Intent(HomeActivity.this, PropertyActivity.class);
+                intent.putExtra("name", selectedProperty.getName());
+                intent.putExtra("rating", selectedProperty.getAverageRating());
+                intent.putExtra("location", selectedProperty.getLocation());
+                intent.putExtra("description", selectedProperty.getDescription());
+                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
+
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {

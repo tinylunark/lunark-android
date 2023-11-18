@@ -1,18 +1,22 @@
 package com.example.lunark;
 
 import android.app.ActionBar;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,6 +30,8 @@ import com.example.lunark.models.Property;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
@@ -73,6 +79,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         );
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.menu_home) {
+                    if (!isActivityRunning(HomeActivity.class)) {
+                        Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                } else if (itemId == R.id.menu_account) {
+
+                    if (!isActivityRunning(AccountScreen.class)) {
+                        Intent intent = new Intent(HomeActivity.this, AccountScreen.class);
+                        startActivity(intent);
+                    }
+
+                } else if (itemId == R.id.menu_reservations) {
+                    Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.menu_notifications) {
+                    Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
+                }
+                drawer.closeDrawers();
+                return true;
+            }
+        });
+
+
+
         propertyListView = binding.activityHomeBase.list;
         propertyListView.setAdapter(propertyListAdapter);
 
@@ -96,5 +131,18 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+    private boolean isActivityRunning(Class<?> activityClass) {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningTaskInfo task : tasks) {
+            assert task.baseActivity != null;
+            if (Objects.equals(activityClass.getCanonicalName(), task.baseActivity.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

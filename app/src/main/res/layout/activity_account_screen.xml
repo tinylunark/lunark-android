@@ -165,8 +165,6 @@
                     android:textColor="@color/off_white_secondary"></com.google.android.material.textfield.TextInputEditText>
 
             </com.google.android.material.textfield.TextInputLayout>
-            <!-- Buttons -->
-            <!-- Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

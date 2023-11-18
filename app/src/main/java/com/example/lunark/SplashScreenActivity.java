@@ -22,7 +22,7 @@ public class SplashScreenActivity extends Activity {
         setContentView(R.layout.splash_screen);
 
         if(!isConnected()) {
-            Toast.makeText(SplashScreenActivity.this, "Not connected to the Internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SplashScreenActivity.this, R.string.not_connected_to_the_internet, Toast.LENGTH_SHORT).show();
             showConnectionDialog();
         } else {
             openLoginScreen();
@@ -33,7 +33,7 @@ public class SplashScreenActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(!isConnected()){
-            Toast.makeText(this, "Failed to connect to the internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.failed_to_connect_to_the_internet, Toast.LENGTH_SHORT).show();
             this.finish();
         } else {
             openLoginScreen();
@@ -60,19 +60,19 @@ public class SplashScreenActivity extends Activity {
     {
         int LAUNCH_SECOND_ACTIVITY = 1;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Connect to wifi or mobile data or quit")
+        builder.setMessage(R.string.connect_to_wifi_or_mobile_data_or_quit)
                 .setCancelable(false)
-                .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), LAUNCH_SECOND_ACTIVITY);
                     }
-                }).setNegativeButton("Connect to mobile data", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.connect_to_mobile_data, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivityForResult(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS), LAUNCH_SECOND_ACTIVITY);
                     }
                 })
-                .setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.quit, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         SplashScreenActivity.this.finish();
                     }

@@ -100,7 +100,13 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.menu_notifications) {
                     Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.menu_logout) {
+                        if (!isActivityRunning(SignUpScreenActivity.class)) {
+                            Intent intent = new Intent(HomeActivity.this, LoginScreenActivity.class);
+                            startActivity(intent);
+                        }
                 }
+
                 drawer.closeDrawers();
                 return true;
             }

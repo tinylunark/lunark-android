@@ -48,6 +48,11 @@ public class AccountScreen extends AppCompatActivity {
                     }
                 } else if (itemId == R.id.menu_reservations || itemId == R.id.menu_notifications) {
                     Toast.makeText(AccountScreen.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.menu_logout) {
+                    if (!isCurrentActivity(LoginScreenActivity.class)) {
+                        Intent intent = new Intent(AccountScreen.this, LoginScreenActivity.class);
+                        startActivity(intent);
+                    }
                 }
 
                 drawerLayout.closeDrawers();

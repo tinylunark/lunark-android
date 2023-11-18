@@ -37,6 +37,12 @@
     <string name="stove">Stove</string>
     <string name="washing_machine">Washing machine</string>
     <string name="amenities">Amenities</string>
+    <string name="not_connected_to_the_internet">Not connected to the Internet</string>
+    <string name="failed_to_connect_to_the_internet">Failed to connect to the internet</string>
+    <string name="connect_to_wifi_or_mobile_data_or_quit">Connect to wifi or mobile data or quit</string>
+    <string name="connect_to_wifi">Connect to WIFI</string>
+    <string name="connect_to_mobile_data">Connect to mobile data</string>
+    <string name="quit">Quit</string>
     <string-array name="property_types_array">
         <item>Apartment</item>
         <item>Cottage</item>

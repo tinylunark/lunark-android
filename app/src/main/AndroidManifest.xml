@@ -41,6 +41,16 @@
         <activity
             android:name=".SignUpScreenActivity"
             android:exported="true" />
+            android:exported="true"></activity>
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".LoginScreenActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".SignUpScreenActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

@@ -75,16 +75,6 @@ public class HomeActivity extends AppCompatActivity {
 
         propertyListView = binding.activityHomeBase.list;
         propertyListView.setAdapter(propertyListAdapter);
-    }
-    @Override
-    public boolean onSupportNavigateUp() {
-        navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -101,5 +91,10 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 }

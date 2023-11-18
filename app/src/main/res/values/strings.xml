@@ -17,4 +17,15 @@
     <string name="i_am_a_host">I am a host</string>
     <string name="book">Book</string>
     <string name="view_reviews">View reviews</string>
+    <string name="filters">Filters</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="number_of_guests">Number of guests</string>
+    <string name="filter">Filter</string>
+    <string name="search">Search</string>
+    <string name="hero">Hero</string>
+    <string-array name="amenities_array">
+        <item>Washing machine</item>
+        <item>Stove</item>
+    </string-array>
 </resources>

@@ -15,6 +15,9 @@
     <string name="welcome_to_lunark">Welcome to Lunark!</string>
     <string name="i_am_a_guest">I am a guest</string>
     <string name="i_am_a_host">I am a host</string>
+    <string name="title_activity_account_screen">AccountScreen</string>
+    <string name="header_your_profile">Your Profile</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="book">Book</string>
     <string name="view_reviews">View reviews</string>
     <string name="filters">Filters</string>
@@ -45,3 +48,4 @@
         <item>Cottage</item>
     </string-array>
 </resources>
+

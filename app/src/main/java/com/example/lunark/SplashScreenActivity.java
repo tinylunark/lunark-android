@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
-import com.example.lunark.tools.CheckConnectionTools;
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,7 +41,7 @@ public class SplashScreenActivity extends Activity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, LoginScreenActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, AccountScreen.class);
                 startActivity(intent);
 
                 finish();

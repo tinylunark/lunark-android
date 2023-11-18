@@ -5,4 +5,12 @@
         <item name="android:textSize">20pt</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="RoundedCorner" parent="">
+       <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="TransparentMaterialButtonWithWhiteStroke" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/transparent_button_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

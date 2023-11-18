@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import com.example.lunark.tools.CheckConnectionTools;
+
 import java.util.Timer;
 import java.util.TimerTask;
 

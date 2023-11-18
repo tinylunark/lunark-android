@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.lunark.activities.PropertyActivity;
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.FiltersDialogFragment;
 import com.example.lunark.models.Property;
 import com.google.android.material.navigation.NavigationView;
 
@@ -66,10 +67,10 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         findViewById(R.id.filterButton).setOnClickListener(v -> {
-            FilterDialogFragment filterDialog = new FilterDialogFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            filterDialog.show(fragmentManager, "filter_dialog");
-                }
+                new FiltersDialogFragment().show(
+                        getSupportFragmentManager(), FiltersDialogFragment.TAG
+                );
+            }
         );
 
         propertyListView = binding.activityHomeBase.list;

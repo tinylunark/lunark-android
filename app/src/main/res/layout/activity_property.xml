@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:minHeight="200dp"
         android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/property_image"/>
 
     <TextView
         android:id="@+id/name"
@@ -34,13 +35,22 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp"
         android:textColor="?colorPrimary"/>
-    
+
+    <ImageView
+        android:id="@+id/starIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/star_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/location"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/location"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/starIcon"
         android:layout_margin="10dp" />
 
     <TextView

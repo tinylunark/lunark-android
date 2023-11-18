@@ -27,4 +27,10 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_notifications_24"
         android:title="Notifications" />
+    <item
+        android:id="@+id/menu_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_logout"
+        android:title="Logout" />
 </menu>

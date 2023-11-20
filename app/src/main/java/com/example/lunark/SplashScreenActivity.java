@@ -43,7 +43,7 @@ public class SplashScreenActivity extends Activity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, AccountScreen.class);
+                Intent intent = new Intent(SplashScreenActivity.this, LoginScreenActivity.class);
                 startActivity(intent);
 
                 finish();

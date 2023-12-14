@@ -1,6 +1,7 @@
 package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
+import com.example.lunark.services.PropertyService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,4 +32,6 @@ public class ClientUtils {
             .addConverterFactory(GsonConverterFactory.create())
             .client(test())
             .build();
+
+    public static PropertyService propertyService = retrofit.create(PropertyService.class);
 }

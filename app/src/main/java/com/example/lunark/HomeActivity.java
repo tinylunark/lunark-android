@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Set<Integer> topLevelDestinations = new HashSet<>();
     private ListView propertyListView;
-    private PropertyListAdapter propertyListAdapter = new PropertyListAdapter(HomeActivity.this);
+    private PropertyListAdapter propertyListAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,10 +119,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
-
         propertyListView = binding.activityHomeBase.list;
-        propertyListView.setAdapter(propertyListAdapter);
+        getProperties();
 
         propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -139,8 +137,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        getProperties();
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -169,6 +165,10 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     Log.d("REZ", "Message received");
                     System.out.println(response.body());
+                    List<Property> properties = response.body();
+                    propertyListAdapter = new PropertyListAdapter(HomeActivity.this, properties);
+                    propertyListView.setAdapter(propertyListAdapter);
+                    propertyListAdapter.notifyDataSetChanged();
                 } else {
                     Log.d("REZ", "Message received: " + response.code());
                 }

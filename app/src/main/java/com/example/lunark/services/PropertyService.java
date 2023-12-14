@@ -1,5 +1,8 @@
 package com.example.lunark.services;
 
+import com.example.lunark.models.Property;
+
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -17,12 +20,12 @@ public interface PropertyService {
             "Content-Type: application/json"
     })
     @GET(PATH)
-    Call<ResponseBody> getAll(@QueryMap Map<String, String> params);
+    Call<List<Property>> getAll(@QueryMap Map<String, String> params);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type: application/json"
     })
     @GET(PATH + "/{id}")
-    Call<ResponseBody> getById(@Path("id") Long id);
+    Call<Property> getById(@Path("id") Long id);
 }

@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,12 +28,18 @@ import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
 import com.example.lunark.fragments.FiltersDialogFragment;
 import com.example.lunark.models.Property;
+import com.example.lunark.util.ClientUtils;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
@@ -132,6 +139,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        getProperties();
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -150,5 +159,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void getProperties() {
+        Call<List<Property>> call = ClientUtils.propertyService.getAll(new HashMap<>());
+        call.enqueue(new Callback<List<Property>>() {
+            @Override
+            public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
+                if (response.code() == 200) {
+                    Log.d("REZ", "Message received");
+                    System.out.println(response.body());
+                } else {
+                    Log.d("REZ", "Message received: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Property>> call, Throwable t) {
+                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+            }
+        });
     }
 }

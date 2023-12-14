@@ -7,17 +7,19 @@ public class Property {
     private double price;
     private int thumbnailId;
     private double averageRating;
+    private PropertyType type;
 
     public Property() {
     }
 
-    public Property(String name, String description, String location, double price, int thumbnailId, double averageRating) {
+    public Property(String name, String description, String location, double price, int thumbnailId, double averageRating, PropertyType type) {
         this.name = name;
         this.description = description;
         this.location = location;
         this.price = price;
         this.thumbnailId = thumbnailId;
         this.averageRating = averageRating;
+        this.type = type;
     }
 
     public String getName() {
@@ -68,11 +70,24 @@ public class Property {
         this.averageRating = averageRating;
     }
 
+    public PropertyType getType() {
+        return type;
+    }
+
+    public void setType(PropertyType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Accommodation{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public enum PropertyType {
+        HUT,
+        APARTMENT
     }
 }

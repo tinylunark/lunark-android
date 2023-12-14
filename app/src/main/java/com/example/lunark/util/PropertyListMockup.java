@@ -9,10 +9,10 @@ import java.util.List;
 public class PropertyListMockup {
     public static List<Property> getProperties() {
         List<Property> properties = new ArrayList<>();
-        Property p1 = new Property("Test1", "Lorem ipsum dolor sit amet.", "Belgrade", 100.0, R.drawable.beach_apartment, 4.5);
-        Property p2 = new Property("Test2", "Lorem ipsum dolor sit amet.", "Novi Sad", 150.0, R.drawable.interior_one, 5.0);
-        Property p3 = new Property("Test3", "Lorem ipsum dolor sit amet.", "Subotica", 200.0, R.drawable.italy_apartment, 4.0);
-        Property p4 = new Property("Test4", "Lorem ipsum dolor sit amet.", "Subotica", 100.0, R.drawable.minimalist_apartment, 5.0);
+        Property p1 = new Property("Test1", "Lorem ipsum dolor sit amet.", "Belgrade", 100.0, R.drawable.beach_apartment, 4.5, Property.PropertyType.HUT);
+        Property p2 = new Property("Test2", "Lorem ipsum dolor sit amet.", "Novi Sad", 150.0, R.drawable.interior_one, 5.0, Property.PropertyType.APARTMENT);
+        Property p3 = new Property("Test3", "Lorem ipsum dolor sit amet.", "Subotica", 200.0, R.drawable.italy_apartment, 4.0, Property.PropertyType.HUT);
+        Property p4 = new Property("Test4", "Lorem ipsum dolor sit amet.", "Subotica", 100.0, R.drawable.minimalist_apartment, 5.0, Property.PropertyType.APARTMENT);
 
         properties.add(p1);
         properties.add(p2);

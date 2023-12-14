@@ -5,7 +5,8 @@ plugins {
 }
 
 fun getIpAddress(): String {
-    return gradleLocalProperties(rootDir).getProperty("ip_addr");
+    val ipAddress: String? = gradleLocalProperties(rootDir).getProperty("ip_addr")
+    return ipAddress ?: ""
 }
 
 android {

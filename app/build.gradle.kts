@@ -21,6 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "IP_ADDR", "\"" + getIpAddress() + "\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -33,6 +34,7 @@ android {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
             )
+            buildConfigField("String", "IP_ADDR", "\"" + getIpAddress() + "\"")
         }
         debug {
             buildConfigField("String", "IP_ADDR", "\"" + getIpAddress() + "\"")

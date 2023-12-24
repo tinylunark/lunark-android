@@ -58,6 +58,9 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -88,4 +91,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+    implementation("io.reactivex.rxjava2:rxandroid:2.0.1")
+    implementation("io.reactivex.rxjava2:rxjava:2.1.1")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.4.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

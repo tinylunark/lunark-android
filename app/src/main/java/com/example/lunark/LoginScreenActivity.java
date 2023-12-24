@@ -16,6 +16,10 @@ import com.example.lunark.databinding.LoginScreenBinding;
 import com.example.lunark.models.Login;
 import com.example.lunark.repositories.LoginRepository;
 
+import org.reactivestreams.Subscription;
+
+import java.util.concurrent.Flow;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -24,42 +28,25 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginScreenActivity extends AppCompatActivity {
     private LoginScreenBinding binding;
     private LoginRepository loginRepository;
+    Button loginButton;
+    EditText emailInput;
+    EditText passwordInput;
+    private Disposable subscription;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = LoginScreenBinding.inflate(getLayoutInflater());
-        loginRepository = new LoginRepository();
+        loginRepository = new LoginRepository(this.getApplication());
 
         setContentView(binding.getRoot());
 
-        Button loginButton = binding.loginButton;
-        EditText emailInput = binding.editTextTextEmailAddress;
-        EditText passwordInput = binding.editTextTextPassword;
+        loginButton = binding.loginButton;
+        emailInput = binding.editTextTextEmailAddress;
+        passwordInput = binding.editTextTextPassword;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginRepository.logIn(emailInput.getText().toString(), passwordInput.getText().toString())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new SingleObserver<Login>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onSuccess(Login login) {
-                                Intent intent = new Intent(LoginScreenActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d("AUTH", "Activity fail");
-                                Toast.makeText(LoginScreenActivity.this, R.string.wrong_username_or_password, Toast.LENGTH_SHORT);
-                            }
-                        });
+                tryLogIn();
             }
         });
 
@@ -73,6 +60,52 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
+        trySkipLogin();
+    }
 
+    @Override
+    protected void onDestroy() {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+        super.onDestroy();
+    }
+
+    private void openHomeActivity() {
+        Intent intent = new Intent(LoginScreenActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void trySkipLogin() {
+        subscription = loginRepository.getLogin()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(login -> openHomeActivity());
+    }
+
+    private void tryLogIn() {
+        loginRepository.logIn(emailInput.getText().toString(), passwordInput.getText().toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Login>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Login login) {
+                        loginRepository.getLogin().
+                                observeOn(Schedulers.io())
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribe(login1 -> openHomeActivity());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(LoginScreenActivity.this, R.string.wrong_username_or_password, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lunark;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.example.lunark.models.Login;
@@ -21,7 +22,7 @@ public class LoginTest {
     @Test
     @Ignore("This test needs a network connection")
     public void testLogin() {
-        LoginRepository loginRepository = new LoginRepository();
+        LoginRepository loginRepository = new LoginRepository(new Application());
         ArrayList<Login> loginArrayList = new ArrayList<>();
 
         loginRepository.logIn("user2@example.com", "password2")

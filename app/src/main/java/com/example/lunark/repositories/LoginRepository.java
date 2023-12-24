@@ -36,8 +36,8 @@ public class LoginRepository {
                 });
     }
 
-    public Flowable<Login> getLogin() {
+    public Single<Login> getLogin() {
         Log.d("AUTH", "Getting token from datastore");
-        return loginLocalDataSource.getToken();
+        return loginLocalDataSource.getToken().firstOrError();
     }
 }

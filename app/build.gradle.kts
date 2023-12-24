@@ -58,6 +58,9 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -91,4 +94,7 @@ dependencies {
     compileOnly("com.github.bumptech.glide:annotations:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
     implementation("org.osmdroid:osmdroid-android:6.1.14")
+    implementation("io.reactivex.rxjava2:rxandroid:2.0.1")
+    implementation("io.reactivex.rxjava2:rxjava:2.1.1")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.4.0")
 }

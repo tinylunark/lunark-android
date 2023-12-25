@@ -44,6 +44,9 @@
     <string name="connect_to_mobile_data">Connect to mobile data</string>
     <string name="quit">Quit</string>
     <string name="wrong_username_or_password">Wrong username or password.</string>
+    <string name="entered_data_is_not_valid">Entered data is not valid</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="signed_up_successfully_check_your_email_for_a_verification_link">Signed up successfully, check your email for a verification link.</string>
     <string-array name="property_types_array">
         <item>Apartment</item>
         <item>Cottage</item>

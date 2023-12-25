@@ -9,13 +9,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lunark.databinding.SignupScreenBinding;
+import com.example.lunark.datasources.AccountRepository;
+import com.example.lunark.dtos.AccountSignUpDto;
+
+import javax.inject.Inject;
 
 public class SignUpScreenActivity extends AppCompatActivity {
 
     private SignupScreenBinding signupScreenBinding;
 
+    @Inject
+    AccountRepository accountRepository;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        ((LunarkApplication) getApplication()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
         signupScreenBinding = SignupScreenBinding.inflate(getLayoutInflater());
         setContentView(signupScreenBinding.getRoot());
@@ -28,5 +36,9 @@ public class SignUpScreenActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private AccountSignUpDto getAccountSignUpDto() {
+        return null;
     }
 }

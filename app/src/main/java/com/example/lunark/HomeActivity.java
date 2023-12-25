@@ -129,13 +129,44 @@ public class HomeActivity extends AppCompatActivity {
                 Property selectedProperty = (Property) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(HomeActivity.this, PropertyActivity.class);
-                intent.putExtra("name", selectedProperty.getName());
-                intent.putExtra("rating", selectedProperty.getAverageRating());
-                intent.putExtra("location", selectedProperty.getLocation());
-                intent.putExtra("description", selectedProperty.getDescription());
-                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
+                intent.putExtra("propertyId", selectedProperty.getId());
 
                 startActivity(intent);
+            }
+        });
+
+        binding.activityHomeBase.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchQuery = binding.activityHomeBase.searchLayout.getEditText().getText().toString();
+                Log.i("TEST", "Search query: " + searchQuery);
+                if (searchQuery.isEmpty()) {
+                    getProperties();
+                } else {
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("location", searchQuery);
+                    Call<List<Property>> call = ClientUtils.propertyService.getAll(params);
+                    call.enqueue(new Callback<List<Property>>() {
+                        @Override
+                        public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
+                            if (response.code() == 200) {
+                                Log.d("REZ", "Message received");
+                                System.out.println(response.body());
+                                List<Property> properties = response.body();
+                                propertyListAdapter = new PropertyListAdapter(HomeActivity.this, properties);
+                                propertyListView.setAdapter(propertyListAdapter);
+                                propertyListAdapter.notifyDataSetChanged();
+                            } else {
+                                Log.d("REZ", "Message received: " + response.code());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Property>> call, Throwable t) {
+                            Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
+                        }
+                    });
+                }
             }
         });
     }

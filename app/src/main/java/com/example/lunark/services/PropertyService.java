@@ -28,4 +28,10 @@ public interface PropertyService {
     })
     @GET(PATH + "/{id}")
     Call<Property> getById(@Path("id") Long id);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+    })
+    @GET(PATH + "/{id}/images/{imageId}")
+    Call<ResponseBody> getImage(@Path("id") Long id, @Path("imageId") Long imageId);
 }

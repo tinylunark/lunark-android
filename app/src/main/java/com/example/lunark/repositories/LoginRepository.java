@@ -10,6 +10,7 @@ import com.example.lunark.models.Login;
 import javax.inject.Inject;
 
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -18,8 +19,8 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class LoginRepository {
-    private LoginNetworkDataSource loginNetworkDataSource;
-    private LoginLocalDataSource loginLocalDataSource;
+    private final LoginNetworkDataSource loginNetworkDataSource;
+    private final LoginLocalDataSource loginLocalDataSource;
 
     @Inject
     public LoginRepository(LoginNetworkDataSource loginNetworkDataSource, LoginLocalDataSource loginLocalDataSource) {
@@ -42,5 +43,9 @@ public class LoginRepository {
     public Single<Login> getLogin() {
         Log.d("AUTH", "Getting token from datastore");
         return loginLocalDataSource.getToken();
+    }
+
+    public Completable logOut() {
+        return loginNetworkDataSource.logOut().doOnComplete(() -> loginLocalDataSource.deleteToken());
     }
 }

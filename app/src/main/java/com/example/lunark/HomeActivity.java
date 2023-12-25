@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,7 +27,9 @@ import com.example.lunark.activities.PropertyActivity;
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
 import com.example.lunark.fragments.FiltersDialogFragment;
+import com.example.lunark.models.Login;
 import com.example.lunark.models.Property;
+import com.example.lunark.repositories.LoginRepository;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
@@ -34,7 +37,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import io.reactivex.CompletableObserver;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
 public class HomeActivity extends AppCompatActivity {
+    @Inject
+    LoginRepository loginRepository;
+    private Disposable subscription;
     private ActivityHomeBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     private DrawerLayout drawer;
@@ -49,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        ((LunarkApplication) getApplicationContext()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
@@ -101,10 +114,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (itemId == R.id.menu_notifications) {
                     Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.menu_logout) {
-                        if (!isActivityRunning(SignUpScreenActivity.class)) {
-                            Intent intent = new Intent(HomeActivity.this, LoginScreenActivity.class);
-                            startActivity(intent);
-                        }
+                    logOut();
                 }
 
                 drawer.closeDrawers();
@@ -133,6 +143,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+        super.onDestroy();
+    }
     @Override
     public boolean onSupportNavigateUp() {
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
@@ -150,5 +168,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void logOut() {
+        this.loginRepository.logOut().subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                HomeActivity.this.subscription = d;
+            }
+
+            @Override
+            public void onComplete() {
+                if (!isActivityRunning(SignUpScreenActivity.class)) {
+                    Intent intent = new Intent(HomeActivity.this, LoginScreenActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 }

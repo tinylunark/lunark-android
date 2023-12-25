@@ -3,8 +3,10 @@ package com.example.lunark.clients;
 import com.example.lunark.dtos.LoginDto;
 import com.example.lunark.models.Login;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -16,4 +18,11 @@ public interface LoginService {
     })
     @POST("auth/login")
     Single<Login> logIn(@Body LoginDto loginDto);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Accept: text/plain"
+    })
+    @GET("auth/logout")
+    Completable logOut();
 }

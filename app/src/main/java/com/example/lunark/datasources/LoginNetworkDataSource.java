@@ -10,6 +10,7 @@ import com.example.lunark.util.ClientUtils;
 import javax.inject.Inject;
 
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,5 +49,12 @@ public class LoginNetworkDataSource {
                     }
         });
         return call;
+    }
+
+    public Completable logOut() {
+        return loginService.logOut()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.e("AUTH", "Logout request error: ", throwable));
     }
 }

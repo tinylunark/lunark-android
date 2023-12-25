@@ -8,12 +8,15 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.rxjava2.RxPreferenceDataStoreBuilder;
 import androidx.datastore.rxjava2.RxDataStore;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class DiskModule {
    @Provides
+   @Singleton
    public RxDataStore<Preferences> provideAuthDataStore(Context appContext) {
        return new RxPreferenceDataStoreBuilder(appContext, "auth").build();
    }

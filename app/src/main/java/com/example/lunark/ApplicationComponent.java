@@ -20,5 +20,6 @@ public interface ApplicationComponent {
         ApplicationComponent create(@BindsInstance Context context);
     }
     void inject(LoginScreenActivity loginScreenActivity);
+    void inject(HomeActivity homeActivity);
 
 }

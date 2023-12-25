@@ -1,5 +1,7 @@
 package com.example.lunark.interceptors;
 
+import android.util.Log;
+
 import com.example.lunark.datasources.LoginLocalDataSource;
 import com.example.lunark.repositories.LoginRepository;
 
@@ -23,11 +25,11 @@ public class JwtInterceptor implements Interceptor {
         Request request = chain.request();
         if (request.header("skip") == null) {
             try {
-                String token = loginLocalDataSource.getToken().blockingGet().getAccessToken();
                 request = request.newBuilder()
                         .addHeader("Authorization", "Bearer " + loginLocalDataSource.getToken().blockingGet().getAccessToken())
                         .build();
             } catch (Exception e) {
+                Log.e("AUTH", e.getMessage());
                 return chain.proceed(request);
             }
         }

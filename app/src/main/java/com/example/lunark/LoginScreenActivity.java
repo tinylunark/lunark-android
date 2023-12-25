@@ -68,6 +68,9 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
         super.onDestroy();
     }
 
@@ -107,25 +110,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(Login login) {
-                        loginRepository.getLogin()
-                                .observeOn(Schedulers.io())
-                                .subscribeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new SingleObserver<Login>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
-                                        LoginScreenActivity.this.subscription = d;
-                                    }
-
-                                    @Override
-                                    public void onSuccess(Login login) {
-                                        openHomeActivity();
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("AUTH", "Could not read saved token.");
-                                    }
-                                });
+                        openHomeActivity();
                     }
 
                     @Override

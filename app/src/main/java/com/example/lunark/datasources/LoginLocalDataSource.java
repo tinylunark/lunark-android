@@ -1,6 +1,7 @@
 package com.example.lunark.datasources;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
@@ -37,6 +38,15 @@ public class LoginLocalDataSource {
         return dataStore.updateDataAsync(preferences -> {
             MutablePreferences mutablePreferences = preferences.toMutablePreferences();
             mutablePreferences.set(AUTH_TOKEN_KEY, token);
+            return Single.just(mutablePreferences);
+        });
+    }
+
+    public Single<Preferences> deleteToken() {
+        return dataStore.updateDataAsync(preferences -> {
+            Log.d("AUTH", "Removing");
+            MutablePreferences mutablePreferences = preferences.toMutablePreferences();
+            mutablePreferences.clear();
             return Single.just(mutablePreferences);
         });
     }

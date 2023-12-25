@@ -1,6 +1,7 @@
 package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
+import com.example.lunark.services.AmenityService;
 import com.example.lunark.services.PropertyService;
 
 import java.util.concurrent.TimeUnit;
@@ -34,4 +35,5 @@ public class ClientUtils {
             .build();
 
     public static PropertyService propertyService = retrofit.create(PropertyService.class);
+    public static AmenityService amenityService = retrofit.create(AmenityService.class);
 }

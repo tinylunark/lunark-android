@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +17,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,18 +27,12 @@ import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.ActivityHomeBinding;
 import com.example.lunark.fragments.FiltersDialogFragment;
 import com.example.lunark.models.Property;
-import com.example.lunark.util.ClientUtils;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
@@ -53,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Set<Integer> topLevelDestinations = new HashSet<>();
     private ListView propertyListView;
-    private PropertyListAdapter propertyListAdapter;
+    private PropertyListAdapter propertyListAdapter = new PropertyListAdapter(HomeActivity.this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,8 +112,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         propertyListView = binding.activityHomeBase.list;
-        getProperties();
+        propertyListView.setAdapter(propertyListAdapter);
 
         propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,44 +123,13 @@ public class HomeActivity extends AppCompatActivity {
                 Property selectedProperty = (Property) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(HomeActivity.this, PropertyActivity.class);
-                intent.putExtra("propertyId", selectedProperty.getId());
+                intent.putExtra("name", selectedProperty.getName());
+                intent.putExtra("rating", selectedProperty.getAverageRating());
+                intent.putExtra("location", selectedProperty.getLocation());
+                intent.putExtra("description", selectedProperty.getDescription());
+                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
 
                 startActivity(intent);
-            }
-        });
-
-        binding.activityHomeBase.searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchQuery = binding.activityHomeBase.searchLayout.getEditText().getText().toString();
-                Log.i("TEST", "Search query: " + searchQuery);
-                if (searchQuery.isEmpty()) {
-                    getProperties();
-                } else {
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("location", searchQuery);
-                    Call<List<Property>> call = ClientUtils.propertyService.getAll(params);
-                    call.enqueue(new Callback<List<Property>>() {
-                        @Override
-                        public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
-                            if (response.code() == 200) {
-                                Log.d("REZ", "Message received");
-                                System.out.println(response.body());
-                                List<Property> properties = response.body();
-                                propertyListAdapter = new PropertyListAdapter(HomeActivity.this, properties);
-                                propertyListView.setAdapter(propertyListAdapter);
-                                propertyListAdapter.notifyDataSetChanged();
-                            } else {
-                                Log.d("REZ", "Message received: " + response.code());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<Property>> call, Throwable t) {
-                            Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
-                        }
-                    });
-                }
             }
         });
     }
@@ -187,29 +150,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    private void getProperties() {
-        Call<List<Property>> call = ClientUtils.propertyService.getAll(new HashMap<>());
-        call.enqueue(new Callback<List<Property>>() {
-            @Override
-            public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
-                if (response.code() == 200) {
-                    Log.d("REZ", "Message received");
-                    System.out.println(response.body());
-                    List<Property> properties = response.body();
-                    propertyListAdapter = new PropertyListAdapter(HomeActivity.this, properties);
-                    propertyListView.setAdapter(propertyListAdapter);
-                    propertyListAdapter.notifyDataSetChanged();
-                } else {
-                    Log.d("REZ", "Message received: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Property>> call, Throwable t) {
-                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
-            }
-        });
     }
 }

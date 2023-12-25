@@ -1,8 +1,6 @@
 package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
-import com.example.lunark.services.AmenityService;
-import com.example.lunark.services.PropertyService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,7 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClientUtils {
-    public static final String SERVICE_API_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/";
+    public static final String SERVICE_API_PATH = "http://" + BuildConfig.IP_ADDR + "8080/api/";
 
     public static OkHttpClient test() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -33,7 +31,4 @@ public class ClientUtils {
             .addConverterFactory(GsonConverterFactory.create())
             .client(test())
             .build();
-
-    public static PropertyService propertyService = retrofit.create(PropertyService.class);
-    public static AmenityService amenityService = retrofit.create(AmenityService.class);
 }

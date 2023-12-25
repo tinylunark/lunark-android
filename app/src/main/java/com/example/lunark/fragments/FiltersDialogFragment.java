@@ -7,26 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentFiltersDialogBinding;
-import com.example.lunark.models.Amenity;
-import com.example.lunark.util.ClientUtils;
 import com.google.android.material.datepicker.MaterialDatePicker;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FiltersDialogFragment extends DialogFragment implements View.OnClickListener {
     public static String TAG = "FiltersDialog";
@@ -34,9 +24,10 @@ public class FiltersDialogFragment extends DialogFragment implements View.OnClic
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        FragmentFiltersDialogBinding binding = FragmentFiltersDialogBinding.inflate(getLayoutInflater());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_filters_dialog, null);
 
-        binding.datePicker.setOnClickListener(this);
+        view.findViewById(R.id.datePicker).setOnClickListener(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.filters)
@@ -44,7 +35,7 @@ public class FiltersDialogFragment extends DialogFragment implements View.OnClic
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {});
 
         // Property type spinner
-        Spinner typeSpinner = (Spinner) binding.spType;
+        Spinner typeSpinner = (Spinner) view.findViewById(R.id.spType);
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(
                 getContext(),
                 R.array.property_types_array,
@@ -53,31 +44,7 @@ public class FiltersDialogFragment extends DialogFragment implements View.OnClic
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
 
-        Call<List<Amenity>> call = ClientUtils.amenityService.getAll();
-        call.enqueue(new Callback<List<Amenity>>() {
-            @Override
-            public void onResponse(Call<List<Amenity>> call, Response<List<Amenity>> response) {
-                if (response.code() == 200) {
-                    List<Amenity> amenities = response.body();
-                    for (Amenity amenity : amenities) {
-                        CheckBox cb = new CheckBox(getContext());
-                        cb.setText(amenity.getName());
-                        cb.setTag(amenity.getId());
-                        ViewGroup vg = (ViewGroup) binding.viewgroup;
-                        vg.addView(cb);
-                    }
-                } else {
-                    Log.d("REZ", "Message received: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Amenity>> call, Throwable t) {
-                Log.d("REZ", t.getMessage() != null?t.getMessage():"error");
-            }
-        });
-
-        builder.setView(binding.getRoot());
+        builder.setView(view);
 
         return builder.create();
     }

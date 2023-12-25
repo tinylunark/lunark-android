@@ -54,26 +54,10 @@
         android:layout_margin="10dp" />
 
     <TextView
-        android:id="@+id/minGuests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/rating"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="10dp" />
-
-    <TextView
-        android:id="@+id/maxGuests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/minGuests"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="10dp" />
-
-    <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/maxGuests"
+        app:layout_constraintTop_toBottomOf="@id/rating"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp" />
 

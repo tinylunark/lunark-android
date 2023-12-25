@@ -99,5 +99,10 @@ dependencies {
     implementation("com.google.dagger:dagger:2.50")
     annotationProcessor("com.google.dagger:dagger-compiler:2.50")
     annotationProcessor("com.google.dagger:dagger-android-processor:2.50")
+    api("io.jsonwebtoken:jjwt-api:0.12.3")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
+    runtimeOnly("io.jsonwebtoken:jjwt-orgjson:0.12.3") {
+        exclude("org.json", "json")
+    }
 
 }

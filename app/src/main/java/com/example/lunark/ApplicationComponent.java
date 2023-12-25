@@ -21,5 +21,5 @@ public interface ApplicationComponent {
     }
     void inject(LoginScreenActivity loginScreenActivity);
     void inject(HomeActivity homeActivity);
-
+    void inject(AccountScreen accountScreen);
 }

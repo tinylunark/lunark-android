@@ -7,6 +7,8 @@ import com.example.lunark.dtos.LoginDto;
 import com.example.lunark.models.Login;
 import com.example.lunark.util.ClientUtils;
 
+import javax.inject.Inject;
+
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -15,9 +17,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
+import retrofit2.Retrofit;
 
 public class LoginNetworkDataSource {
     public static LoginService loginService = ClientUtils.retrofit.create(LoginService.class);
+    @Inject
+    public LoginNetworkDataSource(Retrofit retrofit) {
+        loginService = retrofit.create(LoginService.class);
+    }
     public Single<Login> logIn(String username, String password) {
         LoginDto loginDto = new LoginDto(username, password);
 

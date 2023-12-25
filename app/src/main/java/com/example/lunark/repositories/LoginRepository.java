@@ -7,6 +7,8 @@ import com.example.lunark.datasources.LoginLocalDataSource;
 import com.example.lunark.datasources.LoginNetworkDataSource;
 import com.example.lunark.models.Login;
 
+import javax.inject.Inject;
+
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -19,9 +21,10 @@ public class LoginRepository {
     private LoginNetworkDataSource loginNetworkDataSource;
     private LoginLocalDataSource loginLocalDataSource;
 
-    public LoginRepository(Application application) {
-        this.loginNetworkDataSource = new LoginNetworkDataSource();
-        this.loginLocalDataSource = new LoginLocalDataSource(application);
+    @Inject
+    public LoginRepository(LoginNetworkDataSource loginNetworkDataSource, LoginLocalDataSource loginLocalDataSource) {
+        this.loginNetworkDataSource = loginNetworkDataSource;
+        this.loginLocalDataSource = loginLocalDataSource;
     }
     public Single<Login> logIn(String username, String password) {
         return loginNetworkDataSource.logIn(username, password)
@@ -38,6 +41,6 @@ public class LoginRepository {
 
     public Single<Login> getLogin() {
         Log.d("AUTH", "Getting token from datastore");
-        return loginLocalDataSource.getToken().firstOrError();
+        return loginLocalDataSource.getToken();
     }
 }

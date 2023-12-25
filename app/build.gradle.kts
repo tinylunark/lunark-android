@@ -96,4 +96,8 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxjava:2.1.1")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.4.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.dagger:dagger:2.50")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.50")
+    annotationProcessor("com.google.dagger:dagger-android-processor:2.50")
+
 }

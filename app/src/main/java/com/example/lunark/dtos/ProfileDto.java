@@ -5,6 +5,7 @@ public class ProfileDto {
     private String surname;
     private String email;
     private String phoneNumber;
+    private String role;
 
     public String getName() {
         return name;
@@ -44,6 +45,14 @@ public class ProfileDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     private String address;

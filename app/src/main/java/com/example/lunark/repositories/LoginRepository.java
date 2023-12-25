@@ -3,6 +3,8 @@ package com.example.lunark.repositories;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.datastore.preferences.core.Preferences;
+
 import com.example.lunark.datasources.LoginLocalDataSource;
 import com.example.lunark.datasources.LoginNetworkDataSource;
 import com.example.lunark.models.Login;
@@ -47,5 +49,9 @@ public class LoginRepository {
 
     public Completable logOut() {
         return loginNetworkDataSource.logOut().doOnComplete(() -> loginLocalDataSource.deleteToken());
+    }
+
+    public Completable clearToken() {
+        return loginLocalDataSource.deleteToken().flatMapCompletable(preferences -> Completable.complete());
     }
 }

@@ -18,9 +18,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.lunark.clients.AccountService;
 import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.ProfileDto;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.util.ClientUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,14 +32,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AccountScreen extends AppCompatActivity {
-    private String PROFILE_API_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/";
+    @Inject
+    Retrofit retrofit;
+    @Inject
+    LoginRepository loginRepository;
 
+    Long userId = 1L;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((LunarkApplication) this.getApplication()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        Long userId = 1L;
         fetchUserData(userId);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
@@ -79,11 +86,6 @@ public class AccountScreen extends AppCompatActivity {
     }
 
     private void fetchUserData(Long userId) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ClientUtils.SERVICE_API_PATH)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         AccountService apiService = retrofit.create(AccountService.class);
         Call<AccountDto> call = apiService.getAccount(userId);
         call.enqueue(new Callback<AccountDto>() {
@@ -128,15 +130,7 @@ public class AccountScreen extends AppCompatActivity {
     }
 
     public void onSaveClicked(View view) {
-        new AlertDialog.Builder(this)
-                .setTitle("SUCCESS!")
-                .setMessage("Your profile has been updated.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        openHomeScreen();
-                    }
-                }).show();
+        updateProfile();
     }
 
     public void onDeleteClicked(View view) {
@@ -147,9 +141,7 @@ public class AccountScreen extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // getUserId
-                        Long userId = 1L;
                         deleteAccount(userId);
-                        redirectToLoginScreen();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -162,11 +154,6 @@ public class AccountScreen extends AppCompatActivity {
     }
 
     private void deleteAccount(Long userId) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ClientUtils.SERVICE_API_PATH)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         AccountService apiService = retrofit.create(AccountService.class);
         Call<Void> call = apiService.deleteAccount(userId);
 
@@ -174,7 +161,7 @@ public class AccountScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    redirectToLoginScreen();
+                    AccountScreen.this.loginRepository.clearToken().subscribe(() -> redirectToLoginScreen());
                 } else {
                     Toast.makeText(AccountScreen.this, "Failed to delete account", Toast.LENGTH_SHORT).show();
                 }
@@ -189,23 +176,26 @@ public class AccountScreen extends AppCompatActivity {
     private void updateProfile() {
         ProfileDto updatedProfile = collectProfileData();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ClientUtils.SERVICE_API_PATH)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         AccountService apiService = retrofit.create(AccountService.class);
 
         //String authToken = getAuthorizationToken();
         String authToken = "123456789";
 
-        Call<ProfileDto> call = apiService.updateProfile(updatedProfile, authToken);
+        Call<ProfileDto> call = apiService.updateProfile(userId, updatedProfile);
 
         call.enqueue(new Callback<ProfileDto>() {
             @Override
             public void onResponse(Call<ProfileDto> call, Response<ProfileDto> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(AccountScreen.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(AccountScreen.this)
+                            .setTitle("SUCCESS!")
+                            .setMessage("Your profile has been updated.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    openHomeScreen();
+                                }
+                            }).show();
                 } else {
                     Toast.makeText(AccountScreen.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
                 }
@@ -234,12 +224,13 @@ public class AccountScreen extends AppCompatActivity {
         profile.setEmail(emailEditText.getText().toString());
         profile.setPhoneNumber(phoneEditText.getText().toString());
         profile.setAddress(addressEditText.getText().toString());
+        profile.setRole("HOST");
 
         return profile;
     }
 
     private void redirectToLoginScreen() {
-        startActivity(new Intent(this, LoginScreenActivity.class));
+        startActivity(new Intent(AccountScreen.this, LoginScreenActivity.class));
         finish();
     }
 

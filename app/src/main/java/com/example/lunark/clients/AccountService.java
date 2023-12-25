@@ -17,20 +17,20 @@ public interface AccountService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @GET("{id}")
+    @GET("accounts/{id}")
     Call<AccountDto> getAccount(@Path("id") Long id);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @PUT("{id}")
-    Call<ProfileDto> updateProfile(@Body ProfileDto profile, @Header("Authorization") String authorization);
+    @PUT("accounts/{id}")
+    Call<ProfileDto> updateProfile(@Path("id") Long id, @Body ProfileDto profile);
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @DELETE("{id}")
+    @DELETE("accounts/{id}")
     Call<Void> deleteAccount(@Path("id") Long id);
 }

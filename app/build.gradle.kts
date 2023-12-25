@@ -48,6 +48,7 @@ android {
         viewBinding = true
         compose = true
         buildConfig = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -88,4 +89,5 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+    implementation("com.squareup.picasso:picasso:2.8")
 }

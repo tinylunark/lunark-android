@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewgroup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.FiltersDialogFragment"
-    android:padding="10dp">
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".fragments.FiltersDialogFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -25,9 +25,9 @@
         android:id="@+id/datePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose_date"
         android:layout_marginTop="10dp"
-        android:drawableLeft="@drawable/ic_calendar" />
+        android:drawableLeft="@drawable/ic_calendar"
+        android:text="@string/choose_date" />
 
     <Spinner
         android:id="@+id/spType"
@@ -38,8 +38,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/starting_price"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:hint="@string/starting_price">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etStartPrice"
@@ -52,8 +52,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/end_price"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:hint="@string/end_price">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEndPrice"
@@ -66,17 +66,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/amenities"
-        android:layout_marginTop="20dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/washing_machine" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stove" />
+        android:layout_marginTop="20dp"
+        android:text="@string/amenities" />
 
 </LinearLayout>

@@ -20,23 +20,26 @@ import org.reactivestreams.Subscription;
 
 import java.util.concurrent.Flow;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginScreenActivity extends AppCompatActivity {
+    @Inject
+    LoginRepository loginRepository;
     private LoginScreenBinding binding;
-    private LoginRepository loginRepository;
     Button loginButton;
     EditText emailInput;
     EditText passwordInput;
     private Disposable subscription;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        ((LunarkApplication) getApplicationContext()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
         binding = LoginScreenBinding.inflate(getLayoutInflater());
-        loginRepository = new LoginRepository(this.getApplication());
 
         setContentView(binding.getRoot());
 
@@ -65,9 +68,6 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (subscription != null && !subscription.isDisposed()) {
-            subscription.dispose();
-        }
         super.onDestroy();
     }
 
@@ -78,28 +78,54 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
     private void trySkipLogin() {
-        subscription = loginRepository.getLogin()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(login -> openHomeActivity());
-    }
-
-    private void tryLogIn() {
-        loginRepository.logIn(emailInput.getText().toString(), passwordInput.getText().toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        loginRepository.getLogin()
                 .subscribe(new SingleObserver<Login>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        LoginScreenActivity.this.subscription = d;
                     }
 
                     @Override
                     public void onSuccess(Login login) {
-                        loginRepository.getLogin().
-                                observeOn(Schedulers.io())
+                        openHomeActivity();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    private void tryLogIn() {
+        loginRepository.logIn(emailInput.getText().toString(), passwordInput.getText().toString())
+                .subscribe(new SingleObserver<Login>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        LoginScreenActivity.this.subscription = d;
+                    }
+
+                    @Override
+                    public void onSuccess(Login login) {
+                        loginRepository.getLogin()
+                                .observeOn(Schedulers.io())
                                 .subscribeOn(AndroidSchedulers.mainThread())
-                                .subscribe(login1 -> openHomeActivity());
+                                .subscribe(new SingleObserver<Login>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        LoginScreenActivity.this.subscription = d;
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Login login) {
+                                        openHomeActivity();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("AUTH", "Could not read saved token.");
+                                    }
+                                });
                     }
 
                     @Override

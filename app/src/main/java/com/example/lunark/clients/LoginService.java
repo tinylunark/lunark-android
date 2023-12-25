@@ -11,7 +11,8 @@ import retrofit2.http.POST;
 public interface LoginService {
     @Headers({
             "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
+            "Content-Type:application/json",
+            "skip: true"
     })
     @POST("auth/login")
     Single<Login> logIn(@Body LoginDto loginDto);

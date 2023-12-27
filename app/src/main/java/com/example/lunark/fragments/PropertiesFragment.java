@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +56,23 @@ public class PropertiesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Property selectedProperty = (Property) parent.getItemAtPosition(position);
 
-                Intent intent = new Intent(getActivity(), PropertyActivity.class);
-                intent.putExtra("name", selectedProperty.getName());
-                intent.putExtra("rating", selectedProperty.getAverageRating());
-                intent.putExtra("location", selectedProperty.getLocation());
-                intent.putExtra("description", selectedProperty.getDescription());
-                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
+//                Intent intent = new Intent(getActivity(), PropertyActivity.class);
+//                intent.putExtra("name", selectedProperty.getName());
+//                intent.putExtra("rating", selectedProperty.getAverageRating());
+//                intent.putExtra("location", selectedProperty.getLocation());
+//                intent.putExtra("description", selectedProperty.getDescription());
+//                intent.putExtra("thumbnail", selectedProperty.getThumbnailId());
+//
+//                startActivity(intent);
 
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", selectedProperty.getName());
+                bundle.putDouble("rating", selectedProperty.getAverageRating());
+                bundle.putString("location", selectedProperty.getLocation());
+                bundle.putString("description", selectedProperty.getDescription());
+                bundle.putInt("thumbnail", selectedProperty.getThumbnailId());
+
+                getParentFragmentManager().setFragmentResult("selectedProperty", bundle);
             }
         });
     }

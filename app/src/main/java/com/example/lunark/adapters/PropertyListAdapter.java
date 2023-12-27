@@ -11,21 +11,25 @@ import com.example.lunark.R;
 import com.example.lunark.models.Property;
 import com.example.lunark.util.PropertyListMockup;
 
+import java.util.List;
+
 public class PropertyListAdapter extends BaseAdapter {
     private Activity activity;
+    private List<Property> properties;
 
-    public PropertyListAdapter(Activity activity) {
+    public PropertyListAdapter(Activity activity, List<Property> properties) {
         this.activity = activity;
+        this.properties = properties;
     }
 
     @Override
     public int getCount() {
-        return PropertyListMockup.getProperties().size();
+        return properties.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return PropertyListMockup.getProperties().get(position);
+        return properties.get(position);
     }
 
     @Override
@@ -36,7 +40,7 @@ public class PropertyListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        Property property = PropertyListMockup.getProperties().get(position);
+        Property property = properties.get(position);
 
         if (convertView == null)
             vi = activity.getLayoutInflater().inflate(R.layout.property_card, null);

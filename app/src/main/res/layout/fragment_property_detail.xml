@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PropertyActivity">
+    tools:context=".fragments.PropertyDetailFragment">
 
     <ImageView
         android:id="@+id/thumbnail"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/thumbnail"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent" />
-    
+
     <TextView
         android:id="@+id/location"
         android:layout_width="match_parent"
@@ -60,26 +60,5 @@
         app:layout_constraintTop_toBottomOf="@id/rating"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp" />
-
-    <Button
-        android:id="@+id/bookBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/book"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"/>
-
-    <Button
-        android:id="@+id/viewBtn"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/view_reviews"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bookBtn"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,8 @@ package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
 import com.example.lunark.services.PropertyService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +31,7 @@ public class ClientUtils {
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create((new GsonBuilder()).setDateFormat("yyyy-MM-dd").create()))
             .client(test())
             .build();
 

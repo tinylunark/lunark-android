@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.lunark.R;
 import com.example.lunark.models.Property;
-import com.example.lunark.util.PropertyListMockup;
 
 import java.util.List;
 
@@ -52,10 +51,8 @@ public class PropertyListAdapter extends BaseAdapter {
         ImageView thumbnail = (ImageView) vi.findViewById(R.id.thumbnail);
 
         name.setText(property.getName());
-        location.setText(property.getLocation());
+        location.setText(property.getAddress().getCity() + ", " + property.getAddress().getCountry());
         description.setText(property.getDescription());
-        price.setText(String.format("$%.0f", property.getPrice()));
-        thumbnail.setImageResource(property.getThumbnailId());
 
         return vi;
     }

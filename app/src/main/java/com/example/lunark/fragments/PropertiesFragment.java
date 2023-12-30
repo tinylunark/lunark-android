@@ -64,9 +64,8 @@ public class PropertiesFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", selectedProperty.getName());
                     bundle.putDouble("rating", selectedProperty.getAverageRating());
-                    bundle.putString("location", selectedProperty.getLocation());
+                    bundle.putString("location", selectedProperty.getAddress().getCity() + ", " + selectedProperty.getAddress().getCountry());
                     bundle.putString("description", selectedProperty.getDescription());
-                    bundle.putInt("thumbnail", selectedProperty.getThumbnailId());
 
                     getParentFragmentManager().setFragmentResult("selectedProperty", bundle);
                 }

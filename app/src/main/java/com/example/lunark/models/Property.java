@@ -11,7 +11,7 @@ public class Property {
     private int maxGuests;
     private double latitude;
     private double longitude;
-    private List<Long> images; // Ids of images
+    private List<PropertyImage> images;
     private double averageRating;
     private List<Amenity> amenities;
     private List<AvailabilityEntry> availabilityEntries;
@@ -21,7 +21,7 @@ public class Property {
     public Property() {
     }
 
-    public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<Long> images, double averageRating, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews) {
+    public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, double averageRating, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -102,11 +102,11 @@ public class Property {
         this.longitude = longitude;
     }
 
-    public List<Long> getImages() {
+    public List<PropertyImage> getImages() {
         return images;
     }
 
-    public void setImages(List<Long> images) {
+    public void setImages(List<PropertyImage> images) {
         this.images = images;
     }
 

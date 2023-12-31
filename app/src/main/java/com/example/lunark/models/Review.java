@@ -1,18 +1,19 @@
 package com.example.lunark.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Review {
     private Long id;
     private String author;
-    private String date;
+    private LocalDate date;
     private int rating;
     private String description;
 
     public Review() {
     }
 
-    public Review(Long id, String author, String date, int rating, String description) {
+    public Review(Long id, String author, LocalDate date, int rating, String description) {
         this.id = id;
         this.author = author;
         this.date = date;
@@ -36,11 +37,11 @@ public class Review {
         this.author = author;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

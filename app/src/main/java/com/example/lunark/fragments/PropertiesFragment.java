@@ -1,6 +1,7 @@
 package com.example.lunark.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.FragmentPropertiesBinding;
 import com.example.lunark.models.Property;
+import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertiesViewModel;
 
 public class PropertiesFragment extends Fragment {

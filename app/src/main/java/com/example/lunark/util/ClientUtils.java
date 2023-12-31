@@ -5,6 +5,9 @@ import com.example.lunark.services.PropertyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -28,10 +31,13 @@ public class ClientUtils {
         return client;
     }
 
+    private static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new JsonDateDeserializer())
+            .create();
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create((new GsonBuilder()).setDateFormat("yyyy-MM-dd").create()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(test())
             .build();
 

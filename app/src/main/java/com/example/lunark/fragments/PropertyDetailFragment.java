@@ -8,32 +8,31 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
+import com.example.lunark.models.Property;
+import com.example.lunark.util.ClientUtils;
+import com.example.lunark.viewmodels.PropertyDetailViewModel;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
-    private static final String NAME = "name";
-    private static final String LOCATION = "location";
-    private static final String DESCRIPTION = "description";
-    private static final String RATING = "rating";
-    private static final String THUMBNAIL = "thumbnail";
-
-    private String name;
-    private String location;
-    private String description;
-    private double rating;
-    private int thumbnail;
+    private static final String PROPERTY_ID = "propertyId";
+    private Long propertyId;
+    private PropertyDetailViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
+
         if (getArguments() != null) {
-            name = getArguments().getString(NAME);
-            location = getArguments().getString(LOCATION);
-            description = getArguments().getString(DESCRIPTION);
-            rating = getArguments().getDouble(RATING);
-            thumbnail = getArguments().getInt(THUMBNAIL);
+            propertyId = getArguments().getLong(PROPERTY_ID);
+            viewModel.initProperty(propertyId);
         }
     }
 
@@ -50,10 +49,16 @@ public class PropertyDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.name.setText(name);
-        binding.location.setText(location);
-        binding.description.setText(description);
-        binding.rating.setText(String.valueOf(rating));
-        binding.thumbnail.setImageResource(thumbnail);
+        viewModel.getProperty().observe(getViewLifecycleOwner(), property -> {
+            binding.name.setText(property.getName());
+            binding.location.setText(property.getAddress().getCity() + ", " + property.getAddress().getCountry());
+            binding.description.setText(property.getDescription());
+
+            if (property.getImages().size() > 0) {
+                Glide.with(this)
+                        .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + property.getImages().get(0).getId())
+                        .into(binding.thumbnail);
+            }
+        });
     }
 }

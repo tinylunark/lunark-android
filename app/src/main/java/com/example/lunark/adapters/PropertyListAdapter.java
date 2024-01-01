@@ -1,6 +1,8 @@
 package com.example.lunark.adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,17 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
                     .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + image.getId())
                     .into(holder.getThumbnail());
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("propertyId", property.getId());
+                Log.d("RecyclerViewOnClick", property.getId().toString());
+
+                fragment.getParentFragmentManager().setFragmentResult("selectedProperty", bundle);
+            }
+        });
     }
 
     @Override

@@ -47,5 +47,6 @@
         <item>Apartment</item>
         <item>Cottage</item>
     </string-array>
+    <string name="no_ratings">No ratings</string>
 </resources>
 

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.models.Property;
 import com.example.lunark.util.ClientUtils;
@@ -33,6 +34,7 @@ public class PropertyDetailFragment extends Fragment {
         if (getArguments() != null) {
             propertyId = getArguments().getLong(PROPERTY_ID);
             viewModel.initProperty(propertyId);
+            viewModel.initAverageRating(propertyId);
         }
     }
 
@@ -58,6 +60,14 @@ public class PropertyDetailFragment extends Fragment {
                 Glide.with(this)
                         .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + property.getImages().get(0).getId())
                         .into(binding.thumbnail);
+            }
+        });
+
+        viewModel.getAverageRating().observe(getViewLifecycleOwner(), average -> {
+            if (average != null) {
+                binding.rating.setText(String.format("%.2f", average));
+            } else {
+                binding.rating.setText(R.string.no_ratings);
             }
         });
     }

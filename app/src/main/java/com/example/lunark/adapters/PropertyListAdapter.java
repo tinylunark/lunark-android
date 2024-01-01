@@ -1,12 +1,10 @@
 package com.example.lunark.adapters;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,8 +17,6 @@ import com.example.lunark.R;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.PropertyImage;
 import com.example.lunark.util.ClientUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

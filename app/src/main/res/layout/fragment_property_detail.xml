@@ -62,4 +62,38 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp" />
 
+    <TextView
+        android:id="@+id/minGuests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/minimum_guests"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/minGuestsValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintStart_toEndOf="@id/minGuests"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/maxGuests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/minGuests"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/maximum_guests"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/maxGuestsValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/minGuests"
+        app:layout_constraintStart_toEndOf="@id/maxGuests"
+        android:layout_margin="10dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

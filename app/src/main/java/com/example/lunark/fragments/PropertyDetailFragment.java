@@ -55,6 +55,8 @@ public class PropertyDetailFragment extends Fragment {
             binding.name.setText(property.getName());
             binding.location.setText(property.getAddress().getCity() + ", " + property.getAddress().getCountry());
             binding.description.setText(property.getDescription());
+            binding.minGuestsValue.setText(String.format("%d", property.getMinGuests()));
+            binding.maxGuestsValue.setText(String.format("%d", property.getMaxGuests()));
 
             if (property.getImages().size() > 0) {
                 Glide.with(this)

@@ -32,7 +32,4 @@ public interface PropertyService {
             "User-Agent: Mobile-Android",
     })
     Call<ResponseBody> getPropertyImage(@Path("id") Long id, @Path("imageId") Long imageId);
-
-    @GET("properties/{id}/average")
-    Call<ResponseBody> getAverageRating(@Path("id") Long id);
 }

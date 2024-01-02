@@ -13,7 +13,6 @@ import com.example.lunark.repositories.PropertyRepository;
 public class PropertyDetailViewModel extends AndroidViewModel {
     private final PropertyRepository propertyRepository;
     private LiveData<Property> property = new MutableLiveData<>();
-    private LiveData<Double> averageRating = new MutableLiveData<>();
 
     public PropertyDetailViewModel(@NonNull Application application) {
         super(application);
@@ -25,15 +24,7 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         property = propertyRepository.getProperty(id);
     }
 
-    public void initAverageRating(Long id) {
-        averageRating = propertyRepository.getAverageRating(id);
-    }
-
     public LiveData<Property> getProperty() {
         return property;
-    }
-
-    public LiveData<Double> getAverageRating() {
-        return averageRating;
     }
 }

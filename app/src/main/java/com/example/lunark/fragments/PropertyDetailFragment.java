@@ -35,7 +35,6 @@ public class PropertyDetailFragment extends Fragment {
         if (getArguments() != null) {
             propertyId = getArguments().getLong(PROPERTY_ID);
             viewModel.initProperty(propertyId);
-            viewModel.initAverageRating(propertyId);
         }
     }
 
@@ -59,6 +58,12 @@ public class PropertyDetailFragment extends Fragment {
             binding.minGuestsValue.setText(String.format("%d", property.getMinGuests()));
             binding.maxGuestsValue.setText(String.format("%d", property.getMaxGuests()));
 
+            if (property.getAverageRating() != null) {
+                binding.rating.setText(String.format("%.2f", property.getAverageRating()));
+            } else {
+                binding.rating.setText(R.string.no_ratings);
+            }
+
             if (property.getImages().size() > 0) {
                 Glide.with(this)
                         .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + property.getImages().get(0).getId())
@@ -75,14 +80,6 @@ public class PropertyDetailFragment extends Fragment {
                     tv.setText(amenity.getName());
                     binding.amenitiesList.addView(tv);
                 });
-            }
-        });
-
-        viewModel.getAverageRating().observe(getViewLifecycleOwner(), average -> {
-            if (average != null) {
-                binding.rating.setText(String.format("%.2f", average));
-            } else {
-                binding.rating.setText(R.string.no_ratings);
             }
         });
     }

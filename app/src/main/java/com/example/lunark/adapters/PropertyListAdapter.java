@@ -46,6 +46,12 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
         holder.getDescription().setText(property.getDescription());
         holder.getLocation().setText(property.getAddress().getCity() + ", " + property.getAddress().getCountry());
 
+        if (property.getAverageRating() != null) {
+            holder.getRating().setText(String.format("%.2f", property.getAverageRating()));
+        } else {
+            holder.getRating().setText(R.string.no_ratings);
+        }
+
         if (property.getImages().size() > 0) {
             PropertyImage image = property.getImages().get(0);
             Glide.with(fragment)
@@ -75,6 +81,7 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
         private final TextView name;
         private final TextView location;
         private final TextView description;
+        private final TextView rating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +90,7 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
             name = (TextView) itemView.findViewById(R.id.name);
             location = (TextView) itemView.findViewById(R.id.location);
             description = (TextView) itemView.findViewById(R.id.description);
+            rating = (TextView) itemView.findViewById(R.id.rating);
         }
 
         public ImageView getThumbnail() {
@@ -99,6 +107,10 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
 
         public TextView getDescription() {
             return description;
+        }
+
+        public TextView getRating() {
+            return rating;
         }
     }
 

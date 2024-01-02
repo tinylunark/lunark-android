@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +63,18 @@ public class PropertyDetailFragment extends Fragment {
                 Glide.with(this)
                         .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + property.getImages().get(0).getId())
                         .into(binding.thumbnail);
+            }
+
+            if (property.getAmenities().isEmpty()) {
+                TextView tv = new TextView(getContext());
+                tv.setText(R.string.none);
+                binding.amenitiesList.addView(tv);
+            } else {
+                property.getAmenities().forEach(amenity -> {
+                    TextView tv = new TextView(getContext());
+                    tv.setText(amenity.getName());
+                    binding.amenitiesList.addView(tv);
+                });
             }
         });
 

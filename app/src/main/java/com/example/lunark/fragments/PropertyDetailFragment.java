@@ -1,6 +1,7 @@
 package com.example.lunark.fragments;
 
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.location.GnssStatus;
 import android.location.GnssStatus.Callback;
 import android.location.GpsStatus;
@@ -17,12 +18,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.R;
+import com.example.lunark.adapters.PropertyListAdapter;
+import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.models.Property;
+import com.example.lunark.models.Review;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 
@@ -36,6 +43,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -100,6 +110,7 @@ public class PropertyDetailFragment extends Fragment {
             }
 
             loadMap(property.getLatitude(), property.getLongitude());
+            setUpReviewsRecyclerView(property.getReviews());
         });
     }
 
@@ -113,5 +124,22 @@ public class PropertyDetailFragment extends Fragment {
         GeoPoint startPoint = new GeoPoint(latitude, longitude);
         mapController.setCenter(startPoint);
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+    }
+
+    private void setUpReviewsRecyclerView(List<Review> reviews) {
+        RecyclerView recyclerView = binding.reviews;
+        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews);
+        recyclerView.setAdapter(adapter);
+
+        int scrollPosition = 0;
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.scrollToPosition(scrollPosition);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) recyclerView.getLayoutManager()).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 }

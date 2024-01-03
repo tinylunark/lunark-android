@@ -1,6 +1,11 @@
 package com.example.lunark.fragments;
 
+import android.graphics.Rect;
+import android.location.GnssStatus;
+import android.location.GnssStatus.Callback;
+import android.location.GpsStatus;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +19,23 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.lunark.BuildConfig;
 import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.models.Property;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
+
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -81,6 +98,20 @@ public class PropertyDetailFragment extends Fragment {
                     binding.amenitiesList.addView(tv);
                 });
             }
+
+            loadMap(property.getLatitude(), property.getLongitude());
         });
+    }
+
+    private void loadMap(double latitude, double longitude) {
+        MapView map = binding.osmmap;
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setMultiTouchControls(true);
+        map.setBuiltInZoomControls(true);
+        IMapController mapController = map.getController();
+        mapController.setZoom(16);
+        GeoPoint startPoint = new GeoPoint(latitude, longitude);
+        mapController.setCenter(startPoint);
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
     }
 }

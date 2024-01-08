@@ -17,7 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
 import com.example.lunark.fragments.PropertiesFragment;
@@ -61,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
 
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
+        setNavigationMenu();
         toolbar = binding.toolbar;
 
         setSupportActionBar(toolbar);
@@ -145,6 +148,18 @@ public class HomeActivity extends AppCompatActivity {
             subscription.dispose();
         }
         super.onDestroy();
+    }
+    private void setNavigationMenu() {
+        if(loginRepository.getLogin().blockingGet().getRole().equals("HOST")) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.host_nav_menu);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     private boolean isActivityRunning(Class<?> activityClass) {

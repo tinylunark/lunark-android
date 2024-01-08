@@ -22,6 +22,12 @@
         android:icon="@drawable/ic_reservation"
         android:title="Reservations" />
     <item
+        android:id="@+id/nav_create_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/outline_add_home_24"
+        android:title="Create property" />
+    <item
         android:id="@+id/nav_properties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

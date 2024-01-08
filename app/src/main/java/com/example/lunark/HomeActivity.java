@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
 
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
+        setNavigationMenu();
         toolbar = binding.toolbar;
 
         setSupportActionBar(toolbar);
@@ -130,10 +131,6 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-
     }
 
     @Override
@@ -143,6 +140,14 @@ public class HomeActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+    private void setNavigationMenu() {
+        if(loginRepository.getLogin().blockingGet().getRole().equals("HOST")) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.host_nav_menu);
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);

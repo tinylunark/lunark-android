@@ -1,7 +1,13 @@
 package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
+import com.example.lunark.services.PropertyService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -10,7 +16,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClientUtils {
-    public static final String SERVICE_API_PATH = "http://" + BuildConfig.IP_ADDR + "8080/api/";
+    public static final String SERVICE_API_PATH = "http://" + BuildConfig.IP_ADDR + ":8080/api/";
 
     public static OkHttpClient test() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -25,10 +31,15 @@ public class ClientUtils {
         return client;
     }
 
+    private static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new JsonDateDeserializer())
+            .create();
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(test())
             .build();
+
+    public static PropertyService propertyService = retrofit.create(PropertyService.class);
 }

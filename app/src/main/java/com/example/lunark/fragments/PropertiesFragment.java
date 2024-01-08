@@ -1,6 +1,7 @@
 package com.example.lunark.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,31 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.FragmentPropertiesBinding;
 import com.example.lunark.models.Property;
+import com.example.lunark.util.ClientUtils;
+import com.example.lunark.viewmodels.PropertiesViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertiesFragment extends Fragment {
     private FragmentPropertiesBinding binding;
+    private PropertiesViewModel propertiesViewModel;
+    private PropertyListAdapter adapter;
+    private RecyclerView recyclerView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        propertiesViewModel = new ViewModelProvider(this).get(PropertiesViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -38,27 +57,24 @@ public class PropertiesFragment extends Fragment {
         );
 
         setUpPropertyList();
+
+        propertiesViewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
+            adapter.setProperties(properties);
+            recyclerView.setAdapter(adapter);
+        });
     }
 
     private void setUpPropertyList() {
-        ListView propertyListView = binding.list;
-        PropertyListAdapter propertyListAdapter = new PropertyListAdapter(getActivity());
-        propertyListView.setAdapter(propertyListAdapter);
+        recyclerView = binding.propertiesRecyclerView;
+        adapter = new PropertyListAdapter(this, new ArrayList<>());
+        recyclerView.setAdapter(adapter);
 
-        propertyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Property selectedProperty = (Property) parent.getItemAtPosition(position);
+        int scrollPosition = 0;
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
 
-                Bundle bundle = new Bundle();
-                bundle.putString("name", selectedProperty.getName());
-                bundle.putDouble("rating", selectedProperty.getAverageRating());
-                bundle.putString("location", selectedProperty.getLocation());
-                bundle.putString("description", selectedProperty.getDescription());
-                bundle.putInt("thumbnail", selectedProperty.getThumbnailId());
-
-                getParentFragmentManager().setFragmentResult("selectedProperty", bundle);
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.scrollToPosition(scrollPosition);
     }
 }

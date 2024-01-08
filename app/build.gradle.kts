@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.lunark"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -61,7 +61,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -88,4 +87,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    compileOnly("com.github.bumptech.glide:annotations:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
+    implementation("org.osmdroid:osmdroid-android:6.1.14")
 }

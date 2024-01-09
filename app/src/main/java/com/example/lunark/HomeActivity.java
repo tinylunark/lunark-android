@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,11 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -80,13 +85,6 @@ public class HomeActivity extends AppCompatActivity {
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(binding.fragmentContainerView.getId(), PropertiesFragment.class, null)
-                    .commit();
-        }
-
         getSupportFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
@@ -116,32 +114,8 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.menu_home) {
-                    if (!isActivityRunning(HomeActivity.class)) {
-                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                    }
-                } else if (itemId == R.id.menu_account) {
-                    if (!isActivityRunning(AccountScreen.class)) {
-                        Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
-                        startActivity(accountIntent);
-                    }
-                }
-                else if (itemId == R.id.menu_logout) {
-                    logOut();
-                }
-                drawer.closeDrawers();
-                return true;
-            }
-        });
-
     }
+
     @Override
     protected void onDestroy() {
         if (subscription != null && !subscription.isDisposed()) {
@@ -158,7 +132,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
@@ -240,5 +213,10 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container_view);
+        navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(navigationView, navController);
     }
 }

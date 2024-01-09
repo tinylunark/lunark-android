@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
@@ -27,6 +29,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.FiltersDialogFragment;
+import com.example.lunark.fragments.createProperty.CreatePropertyFragment;
+import com.example.lunark.fragments.createProperty.IAllowBackPressed;
+import com.example.lunark.models.Login;
+import com.example.lunark.models.Property;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.fragments.PropertiesFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.models.Login;
@@ -123,8 +131,9 @@ public class HomeActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
     private void setNavigationMenu() {
-        if(loginRepository.getLogin().blockingGet().getRole().equals("HOST")) {
+        if (loginRepository.getLogin().blockingGet().getRole().equals("HOST")) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.host_nav_menu);
         }
@@ -205,8 +214,7 @@ public class HomeActivity extends AppCompatActivity {
                         Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
                         startActivity(accountIntent);
                     }
-                }
-                else if (itemId == R.id.menu_logout) {
+                } else if (itemId == R.id.menu_logout) {
                     logOut();
                 }
                 drawer.closeDrawers();
@@ -218,5 +226,19 @@ public class HomeActivity extends AppCompatActivity {
                 .findFragmentById(R.id.fragment_container_view);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private Fragment getCurrentlyDisplayed() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.getFragments().get(0);
+        return navHostFragment.getChildFragmentManager().getFragments().get(0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getCurrentlyDisplayed();
+        if (fragment instanceof IAllowBackPressed && ((IAllowBackPressed) fragment).allowBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }

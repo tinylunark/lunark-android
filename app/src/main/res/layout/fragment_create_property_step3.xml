@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/crate_property_step3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/step3_title"
+        style="@style/TextAppearance.MaterialComponents.Headline3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="15sp"
+        android:text="Some basic Information about your property" />
+    <LinearLayout
+        android:paddingTop="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/step3_title"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/step1_title"
+            app:layout_constraintBottom_toBottomOf="@id/type_radio_group"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Amenities"
+            android:gravity="center_vertical|center"
+            android:textSize="18sp"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:id="@+id/radio_group_title" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution
 
 plugins {
     id("com.android.application")
@@ -108,4 +109,5 @@ dependencies {
     compileOnly("com.github.bumptech.glide:annotations:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
     implementation("org.osmdroid:osmdroid-android:6.1.14")
+    implementation("com.stepstone.stepper:material-stepper:4.3.1")
 }

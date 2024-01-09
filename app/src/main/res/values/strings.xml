@@ -56,5 +56,6 @@
     <string name="minimum_guests">Minimum guests: </string>
     <string name="maximum_guests">Maximum guests: </string>
     <string name="none">None</string>
+    <string name="room">Room</string>
 </resources>
 

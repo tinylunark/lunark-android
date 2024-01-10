@@ -12,7 +12,7 @@ import com.example.lunark.repositories.PropertyRepository;
 
 public class PropertyDetailViewModel extends AndroidViewModel {
     private final PropertyRepository propertyRepository;
-    private LiveData<Property> property = new MutableLiveData<>();
+    private MutableLiveData<Property> property = new MutableLiveData<>();
 
     public PropertyDetailViewModel(@NonNull Application application) {
         super(application);
@@ -21,7 +21,8 @@ public class PropertyDetailViewModel extends AndroidViewModel {
     }
 
     public void initProperty(Long id) {
-        property = propertyRepository.getProperty(id);
+        propertyRepository.getProperty(id).observeForever(property1 -> property.setValue(property1));
+
     }
     public void initProperty() {
        property = new MutableLiveData<>(new Property());
@@ -29,5 +30,9 @@ public class PropertyDetailViewModel extends AndroidViewModel {
 
     public LiveData<Property> getProperty() {
         return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property.setValue(property);
     }
 }

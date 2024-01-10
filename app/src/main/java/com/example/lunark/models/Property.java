@@ -20,6 +20,9 @@ public class Property {
     private Double averageRating;
 
     public Property() {
+        address = new Address("", "", "");
+        minGuests = 1;
+        maxGuests = 1;
         images = new ArrayList<>();
         amenities = new ArrayList<>();
         availabilityEntries = new ArrayList<>();

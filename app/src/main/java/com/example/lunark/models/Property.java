@@ -1,5 +1,6 @@
 package com.example.lunark.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Property {
@@ -19,6 +20,10 @@ public class Property {
     private Double averageRating;
 
     public Property() {
+        images = new ArrayList<>();
+        amenities = new ArrayList<>();
+        availabilityEntries = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {

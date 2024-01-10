@@ -23,6 +23,9 @@ public class PropertyDetailViewModel extends AndroidViewModel {
     public void initProperty(Long id) {
         property = propertyRepository.getProperty(id);
     }
+    public void initProperty() {
+       property = new MutableLiveData<>(new Property());
+    }
 
     public LiveData<Property> getProperty() {
         return property;

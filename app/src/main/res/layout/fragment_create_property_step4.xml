@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="24sp"
+        android:textSize="32sp"
         android:text="You are now done" />
     <LinearLayout
         android:paddingTop="12sp"
@@ -20,17 +20,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/step4_title"
         android:orientation="vertical" >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/step1_title"
-            app:layout_constraintBottom_toBottomOf="@id/type_radio_group"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="Amenities"
-            android:gravity="center_vertical|center"
-            android:textSize="18sp"
-            style="@style/TextAppearance.MaterialComponents.Headline4"
-            android:id="@+id/radio_group_title" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

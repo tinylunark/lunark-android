@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.lunark.databinding.FragmentCreatePropertyBinding;
+import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -24,9 +26,12 @@ public class CreatePropertyFragment extends Fragment implements IAllowBackPresse
     private final static int NUM_STEPS = 4;
     private FragmentCreatePropertyBinding binding;
     private StepperLayout stepper;
+    private PropertyDetailViewModel viewModel;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        binding = FragmentCreatePropertyBinding.inflate(inflater, container, false);
+       viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
+       viewModel.initProperty();
        View view = binding.getRoot();
        stepper = binding.stepper;
        stepper.setAdapter(new MyStepperAdapter(getChildFragmentManager(), this.getContext()));

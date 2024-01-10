@@ -57,5 +57,7 @@
     <string name="maximum_guests">Maximum guests: </string>
     <string name="none">None</string>
     <string name="room">Room</string>
+    <string name="choose_dates">Choose dates</string>
+    <string name="price">Price</string>
 </resources>
 

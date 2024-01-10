@@ -10,10 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.lunark.databinding.FragmentCreatePropertyStep4Binding;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
-public class CreatePropertyStep4Fragment extends Fragment implements Step {
+public class CreatePropertyStep4Fragment extends Fragment implements BlockingStep {
     FragmentCreatePropertyStep4Binding binding;
     @Nullable
     @Override
@@ -36,6 +38,22 @@ public class CreatePropertyStep4Fragment extends Fragment implements Step {
 
     @Override
     public void onError(@NonNull VerificationError error) {
+
+    }
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+        //TODO: Upload property
+
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
 
     }
 }

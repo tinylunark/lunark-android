@@ -1,7 +1,9 @@
 package com.example.lunark.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Property {
     private Long id;
@@ -18,6 +20,8 @@ public class Property {
     private String type;
     private List<Review> reviews;
     private Double averageRating;
+    private String pricingMode;
+    private int cancellationDeadline;
 
     public Property() {
         address = new Address("", "", "");
@@ -156,5 +160,41 @@ public class Property {
 
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+    public void addAvailability(LocalDate beginDate, LocalDate endDate, Double price) {
+        for (LocalDate date = beginDate; !date.isAfter(endDate); date = date.plusDays(1))
+        {
+            LocalDate finalDate = date;
+            if (this.getAvailabilityEntries().stream().anyMatch(availabilityEntry -> availabilityEntry.getDate().equals(finalDate))) {
+                AvailabilityEntry entryForDate = this.getAvailabilityEntries().stream().filter(availabilityEntry -> availabilityEntry.getDate().equals(finalDate)).findFirst().get();
+                entryForDate.setPrice(price);
+            } else {
+                this.getAvailabilityEntries().add(new AvailabilityEntry(date, price));
+            }
+        }
+    }
+
+    public void deleteAvailability(LocalDate beginDate, LocalDate endDate) {
+        this.availabilityEntries = this.availabilityEntries.stream()
+                .filter(availabilityEntry ->
+                        availabilityEntry.getDate().isBefore(beginDate) ||
+                        availabilityEntry.getDate().isAfter(endDate))
+                .collect(Collectors.toList());
+    }
+
+    public String getPricingMode() {
+        return pricingMode;
+    }
+
+    public void setPricingMode(String pricingMode) {
+        this.pricingMode = pricingMode;
+    }
+
+    public int getCancellationDeadline() {
+        return cancellationDeadline;
+    }
+
+    public void setCancellationDeadline(int cancellationDeadline) {
+        this.cancellationDeadline = cancellationDeadline;
     }
 }

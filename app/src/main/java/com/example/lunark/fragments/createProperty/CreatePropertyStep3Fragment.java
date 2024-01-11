@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentCreatePropertyStep3Binding;
+import com.example.lunark.models.Property;
+import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.stepstone.stepper.Step;
@@ -21,6 +24,8 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 public class CreatePropertyStep3Fragment extends Fragment implements Step {
+    PropertyDetailViewModel viewModel;
+    Property property;
     FragmentCreatePropertyStep3Binding binding;
     @Nullable
     @Override
@@ -28,6 +33,8 @@ public class CreatePropertyStep3Fragment extends Fragment implements Step {
         binding = FragmentCreatePropertyStep3Binding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.datePicker.setOnClickListener(v -> openDateRangePicker());
+        assert this.getParentFragment() != null;
+        viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
         return view;
     }
 

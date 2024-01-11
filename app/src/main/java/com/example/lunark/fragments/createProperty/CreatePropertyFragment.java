@@ -87,32 +87,4 @@ public class CreatePropertyFragment extends Fragment implements IAllowBackPresse
                     .create();
         }
     }
-
-    private class CreatePropertySliderPagerAdapter extends FragmentStateAdapter {
-
-        public CreatePropertySliderPagerAdapter(@NonNull Fragment fragment) {
-            super(fragment);
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                    return new CreatePropertyStep1Fragment();
-                case 1:
-                    return new CreatePropertyStep2Fragment();
-                case 2:
-                    return new CreatePropertyStep3Fragment();
-                case 3:
-                    return new CreatePropertyStep4Fragment();
-            }
-            throw new RuntimeException("Attempted to create nonexistent create property step");
-        }
-
-        @Override
-        public int getItemCount() {
-            return NUM_STEPS;
-        }
-    }
 }

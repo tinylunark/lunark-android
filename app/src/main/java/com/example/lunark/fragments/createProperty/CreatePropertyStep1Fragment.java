@@ -38,13 +38,31 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-public class CreatePropertyStep1Fragment extends Fragment implements BlockingStep {
+public class CreatePropertyStep1Fragment extends Fragment implements Step {
 
     PropertyDetailViewModel viewModel;
     FragmentCreatePropertyStep1Binding binding;
     Property property;
     ItemizedOverlayWithFocus<OverlayItem> mapOverlay;
     ArrayList<OverlayItem> overlayItems = new ArrayList<OverlayItem>();
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateViewModel();
+        }
+    };
+    boolean updatesEnabled = false;
+    boolean readsEnabled = true;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +72,6 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
         setUpNumberPickers();
         loadMap(45.2432787, 19.8467293);
-        setUpChangeListeners();
         return view;
     }
 
@@ -63,17 +80,28 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         super.onViewCreated(view, savedInstanceState);
         readViewModel();
     }
-
     @Nullable
     @Override
     public VerificationError verifyStep() {
         if (binding.typeRadioGroup.getCheckedRadioButtonId() != -1 &&
                 binding.minGuestsNumberPicker.getValue() <= binding.maxGuestsNumberPicker.getValue() &&
                 !binding.addressEditText.getText().toString().equals("") &&
-                overlayItems.size() > 0) {
+                getSelectedLatLong() != null) {
             return null;
         }
         return new VerificationError(getString(R.string.some_fields_are_not_filled_or_are_filled_incorrectly));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpChangeListeners();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeChangeListeners();
     }
 
     @Override
@@ -88,22 +116,9 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
 
     private void setUpChangeListeners() {
         binding.typeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> updateViewModel());
-        binding.addressEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateViewModel();
-            }
-        });
+        binding.minGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
+        binding.maxGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
+        binding.addressEditText.addTextChangedListener(textWatcher);
         MapView map = binding.osmmap;
         MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
             @Override
@@ -127,7 +142,19 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         map.getOverlayManager().add(mapEventsOverlay);
     }
 
+    private void removeChangeListeners() {
+        binding.typeRadioGroup.setOnCheckedChangeListener(null);
+        binding.minGuestsNumberPicker.setOnValueChangedListener(null);
+        binding.maxGuestsNumberPicker.setOnValueChangedListener(null);
+        binding.addressEditText.removeTextChangedListener(textWatcher);
+    }
+
     private void updateViewModel() {
+        if (!updatesEnabled) {
+            return;
+        }
+        this.readsEnabled = false;
+        Log.d("CREATE_PROPERTY", "Updating view model");
         if (binding.roomRadio.isChecked()) {
             property.setType("ROOM");
         }
@@ -137,15 +164,25 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         if (binding.sharedRoomRadio.isChecked()) {
             property.setType("SHARED_ROOM");
         }
+        property.setMinGuests(binding.minGuestsNumberPicker.getValue());
+        property.setMaxGuests(binding.maxGuestsNumberPicker.getValue());
+        property.setAddress(new Address(binding.addressEditText.getText().toString(), "", ""));
         Pair<Double, Double> location = getSelectedLatLong();
         if (location != null) {
             property.setLatitude(location.first);
             property.setLongitude(location.second);
         }
+        viewModel.setProperty(property);
+        this.readsEnabled = true;
     }
 
     private void readViewModel() {
         viewModel.getProperty().observe(getViewLifecycleOwner(), property -> {
+            if (!readsEnabled) {
+                return;
+            }
+            Log.d("CREATE_PROPERTY", "Reading values from view model");
+            this.updatesEnabled = false;
             this.property = property;
             restorePropertyType(property);
             binding.minGuestsNumberPicker.setValue(property.getMinGuests());
@@ -154,6 +191,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
             if(property.getType() != null) {
                 restoreLocation(property);
             }
+            this.updatesEnabled = true;
         });
     }
 
@@ -189,8 +227,6 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         binding.minGuestsNumberPicker.setMaxValue(10);
         binding.maxGuestsNumberPicker.setMinValue(1);
         binding.maxGuestsNumberPicker.setMaxValue(10);
-        binding.minGuestsNumberPicker.setValue(1);
-        binding.maxGuestsNumberPicker.setValue(1);
     }
 
     private void loadMap(double latitude, double longitude) {
@@ -224,24 +260,5 @@ public class CreatePropertyStep1Fragment extends Fragment implements BlockingSte
         this.overlayItems.clear();
         this.overlayItems.add(new OverlayItem("Your property", "", p));
         this.mapOverlay.setFocusedItem(overlayItems.get(0));
-    }
-
-    @Override
-    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-        updateViewModel();
-        callback.goToNextStep();
-    }
-
-
-    @Override
-    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
-        updateViewModel();
-        callback.complete();
-    }
-
-    @Override
-    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-        updateViewModel();
-        callback.goToPrevStep();
     }
 }

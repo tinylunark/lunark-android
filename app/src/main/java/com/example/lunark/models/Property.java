@@ -22,6 +22,7 @@ public class Property {
     private Double averageRating;
     private String pricingMode;
     private int cancellationDeadline;
+    private boolean autoApproveEnabled;
 
     public Property() {
         address = new Address("", "", "");
@@ -196,5 +197,13 @@ public class Property {
 
     public void setCancellationDeadline(int cancellationDeadline) {
         this.cancellationDeadline = cancellationDeadline;
+    }
+
+    public boolean isAutoApproveEnabled() {
+        return autoApproveEnabled;
+    }
+
+    public void setAutoApproveEnabled(boolean autoApproveEnabled) {
+        this.autoApproveEnabled = autoApproveEnabled;
     }
 }

@@ -43,17 +43,17 @@ public class CreatePropertyStep4Fragment extends Fragment implements BlockingSte
 
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
-
     }
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
         //TODO: Upload property
+        callback.complete();
 
     }
 
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-
+        callback.goToPrevStep();
     }
 }

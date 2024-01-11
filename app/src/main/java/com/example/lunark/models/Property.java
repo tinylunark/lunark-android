@@ -21,7 +21,7 @@ public class Property {
     private List<Review> reviews;
     private Double averageRating;
     private String pricingMode;
-    private int cancellationDeadline;
+    private Integer cancellationDeadline;
     private boolean autoApproveEnabled;
 
     public Property() {
@@ -32,6 +32,7 @@ public class Property {
         amenities = new ArrayList<>();
         availabilityEntries = new ArrayList<>();
         reviews = new ArrayList<>();
+        pricingMode = "";
     }
 
     public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {
@@ -191,11 +192,11 @@ public class Property {
         this.pricingMode = pricingMode;
     }
 
-    public int getCancellationDeadline() {
+    public Integer getCancellationDeadline() {
         return cancellationDeadline;
     }
 
-    public void setCancellationDeadline(int cancellationDeadline) {
+    public void setCancellationDeadline(Integer cancellationDeadline) {
         this.cancellationDeadline = cancellationDeadline;
     }
 

@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:text="New property"
         style="@style/TextAppearance.Material3.HeadlineLarge"
+        android:gravity="center"
         android:id="@+id/title"
         ></TextView>
     <!-- Container -->

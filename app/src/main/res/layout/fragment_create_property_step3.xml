@@ -113,27 +113,24 @@
                     />
             </LinearLayout>
 
+            <EditText
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Canecllation deadline in days"
+                android:id="@+id/cancellation_deadline_edit_text"
+                android:inputType="number">
+            </EditText>
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/radio_group_title"
                 android:layout_marginTop="12dp"
+                android:orientation="horizontal"
                 android:id="@+id/pricing_mode_radio_group"
                 >
-
-                <EditText
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Canecllation deadline in days"
-                    android:inputType="number">
-                </EditText>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
                     <RadioButton
                         android:id="@+id/per_person_radio"
                         android:layout_width="wrap_content"
@@ -148,7 +145,6 @@
                         android:width="0dp"
                         android:layout_weight="1"
                         android:text="Price is for whole unit" />
-                </LinearLayout>
             </RadioGroup>
 
             <CheckBox
@@ -194,6 +190,12 @@
                         android:layout_weight="1"
                         />
                 </TableRow>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/availability_entries_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                />
                 <TableRow>
                     <com.google.android.material.divider.MaterialDivider
                         android:layout_height="wrap_content"

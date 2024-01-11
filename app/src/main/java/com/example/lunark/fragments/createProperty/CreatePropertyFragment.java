@@ -31,7 +31,9 @@ public class CreatePropertyFragment extends Fragment implements IAllowBackPresse
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        binding = FragmentCreatePropertyBinding.inflate(inflater, container, false);
        viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
-       viewModel.initProperty();
+       if (viewModel.getProperty().getValue() == null) {
+           viewModel.initProperty();
+       }
        View view = binding.getRoot();
        stepper = binding.stepper;
        stepper.setAdapter(new MyStepperAdapter(getChildFragmentManager(), this.getContext()));

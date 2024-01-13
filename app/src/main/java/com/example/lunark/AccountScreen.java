@@ -18,12 +18,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.lunark.clients.AccountService;
 import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.ProfileDto;
+import com.example.lunark.models.Login;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.util.ClientUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import javax.inject.Inject;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +48,27 @@ public class AccountScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+
+        this.loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(Login login) {
+                userId = login.getProfileId();
+                fetchUserData(userId);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+
         fetchUserData(userId);
+
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

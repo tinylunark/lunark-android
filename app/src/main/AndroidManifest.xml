@@ -25,7 +25,6 @@
         <activity
             android:name=".activities.PropertyActivity"
             android:exported="false" />
-
         <activity
             android:name=".ChangePasswordActivity"
             android:exported="true"

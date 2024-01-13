@@ -21,7 +21,8 @@ import io.reactivex.subjects.Subject;
 import retrofit2.Retrofit;
 
 public class LoginNetworkDataSource {
-    public static LoginService loginService = ClientUtils.retrofit.create(LoginService.class);
+    public static LoginService loginService;
+
     @Inject
     public LoginNetworkDataSource(Retrofit retrofit) {
         loginService = retrofit.create(LoginService.class);

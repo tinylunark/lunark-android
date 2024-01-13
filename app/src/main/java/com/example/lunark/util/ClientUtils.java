@@ -43,6 +43,7 @@ public class ClientUtils {
             .baseUrl(SERVICE_API_PATH)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(test())
             .build();
 

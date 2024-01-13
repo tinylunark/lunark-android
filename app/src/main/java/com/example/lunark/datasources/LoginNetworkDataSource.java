@@ -22,6 +22,7 @@ import retrofit2.Retrofit;
 
 public class LoginNetworkDataSource {
     public static LoginService loginService;
+
     @Inject
     public LoginNetworkDataSource(Retrofit retrofit) {
         loginService = retrofit.create(LoginService.class);

@@ -28,6 +28,7 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +48,7 @@ public class AccountScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+
         this.loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -64,6 +66,9 @@ public class AccountScreen extends AppCompatActivity {
 
             }
         });
+
+        fetchUserData(userId);
+
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

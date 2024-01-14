@@ -4,33 +4,60 @@
     tools:showIn="navigation_view" >
 
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/menu_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_home"
         android:title="Main" />
+
     <item
-        android:id="@+id/nav_account"
+        android:id="@+id/menu_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_account"
         android:title="Account" />
     <item
-        android:id="@+id/nav_reservations"
+        android:id="@+id/menu_new_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_new_property"
+        android:title="New Property" />
+    <item
+        android:id="@+id/menu_my_properties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_folder"
+        android:title="My Properties"/>
+    <item
+        android:id="@+id/menu_reservations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_reservation"
         android:title="Reservations" />
     <item
-        android:id="@+id/nav_properties"
+        android:id="@+id/menu_unapproved_reservations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/ic_account"
-        android:title="Properties" />
+        android:icon="@drawable/ic_check"
+        android:title="Unapproved Reservations" />
     <item
-        android:id="@+id/nav_notifications"
+        android:id="@+id/menu_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_notifications_24"
         android:title="Notifications" />
+
+    <item
+        android:id="@+id/menu_reports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_reports"
+        android:title="Income Reports" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_logout"
+        android:title="Logout" />
 </menu>

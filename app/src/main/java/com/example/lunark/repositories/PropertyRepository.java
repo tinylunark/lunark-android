@@ -6,27 +6,39 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.lunark.models.Property;
+import com.example.lunark.services.PropertyService;
 import com.example.lunark.util.ClientUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class PropertyRepository {
     private static final String LOG_TAG = "PropertyRepository";
+    PropertyService propertyService;
+
+    public PropertyRepository() {
+        this.propertyService = ClientUtils.propertyService;
+    }
+
+    @Inject
+    public void setRetrofit(Retrofit retrofit) {
+        this.propertyService = retrofit.create(PropertyService.class);
+    }
 
     public LiveData<List<Property>> getProperties(Map<String, String> options) {
         final MutableLiveData<List<Property>> data = new MutableLiveData<>();
 
-        ClientUtils.propertyService.getProperties(options).enqueue(new Callback<List<Property>>() {
+        propertyService.getProperties(options).enqueue(new Callback<List<Property>>() {
             @Override
             public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
                 if (response.isSuccessful()) {
@@ -49,7 +61,7 @@ public class PropertyRepository {
     public LiveData<Property> getProperty(Long id) {
         final MutableLiveData<Property> data = new MutableLiveData<>();
 
-        ClientUtils.propertyService.getProperty(id).enqueue(new Callback<Property>() {
+        propertyService.getProperty(id).enqueue(new Callback<Property>() {
             @Override
             public void onResponse(Call<Property> call, Response<Property> response) {
                 if (response.isSuccessful()) {
@@ -70,7 +82,7 @@ public class PropertyRepository {
     }
 
     public Single<Property> createProperty(Property property) {
-        return ClientUtils.propertyService.createProperty(property)
+        return propertyService.createProperty(property)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(property1 -> {
@@ -80,5 +92,4 @@ public class PropertyRepository {
                     Log.e(LOG_TAG, "Upload property failure: " + throwable.getMessage());
                 });
     }
-
 }

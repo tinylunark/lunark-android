@@ -69,7 +69,7 @@ public class CreatePropertyStep2Fragment extends Fragment implements BlockingSte
         View view = binding.getRoot();
         takePictureButton = binding.buttonImage;
         assert this.getParentFragment() != null;
-        viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
+        viewModel = new ViewModelProvider(this.getParentFragment(), ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
         setUpCheckBoxMap();
         return view;
     }
@@ -211,6 +211,7 @@ public class CreatePropertyStep2Fragment extends Fragment implements BlockingSte
             if (amenityCheckboxes.get(amenity).isChecked()) {
                 this.property.getAmenities().add(new Amenity(amenityIds.get(amenity), amenity));
             }
+            this.property.setAmenities(this.property.getAmenities());
         }
 
         this.property.setName(binding.nameEdittext.getText().toString());

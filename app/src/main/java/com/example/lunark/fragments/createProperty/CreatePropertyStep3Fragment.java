@@ -61,7 +61,7 @@ public class CreatePropertyStep3Fragment extends Fragment implements Step {
         View view = binding.getRoot();
         binding.datePicker.setOnClickListener(v -> openDateRangePicker());
         assert this.getParentFragment() != null;
-        viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
+        viewModel = new ViewModelProvider(this.getParentFragment(), ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
         setUpElementBindings();
         return view;
     }

@@ -23,6 +23,8 @@ public class Property {
     private String pricingMode;
     private Integer cancellationDeadline;
     private boolean autoApproveEnabled;
+    private List<Long> amenityIds;
+    private Long hostId;
 
     public Property() {
         address = new Address("", "", "");
@@ -30,6 +32,7 @@ public class Property {
         maxGuests = 1;
         images = new ArrayList<>();
         amenities = new ArrayList<>();
+        amenityIds = new ArrayList<>();
         availabilityEntries = new ArrayList<>();
         reviews = new ArrayList<>();
         pricingMode = "";
@@ -132,6 +135,7 @@ public class Property {
 
     public void setAmenities(List<Amenity> amenities) {
         this.amenities = amenities;
+        this.amenityIds = amenities.stream().map(amenity -> amenity.getId()).collect(Collectors.toList());
     }
 
     public List<AvailabilityEntry> getAvailabilityEntries() {
@@ -208,5 +212,17 @@ public class Property {
 
     public void setAutoApproveEnabled(boolean autoApproveEnabled) {
         this.autoApproveEnabled = autoApproveEnabled;
+    }
+
+    public List<Long> getAmenityIds() {
+        return amenityIds;
+    }
+
+    public Long getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(Long hostId) {
+        this.hostId = hostId;
     }
 }

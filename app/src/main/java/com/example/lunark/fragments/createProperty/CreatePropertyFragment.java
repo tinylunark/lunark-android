@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.lunark.databinding.FragmentCreatePropertyBinding;
+import com.example.lunark.viewmodels.PropertiesViewModel;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
@@ -30,7 +31,7 @@ public class CreatePropertyFragment extends Fragment implements IAllowBackPresse
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        binding = FragmentCreatePropertyBinding.inflate(inflater, container, false);
-       viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
+       viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
        if (viewModel.getProperty().getValue() == null) {
            viewModel.initProperty();
        }

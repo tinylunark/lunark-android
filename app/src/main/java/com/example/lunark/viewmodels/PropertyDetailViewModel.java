@@ -1,5 +1,8 @@
 package com.example.lunark.viewmodels;
 
+import static androidx.lifecycle.SavedStateHandleSupport.createSavedStateHandle;
+import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
+
 import android.app.Application;
 import android.graphics.Bitmap;
 
@@ -7,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
+import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.Property;
 import com.example.lunark.repositories.PropertyRepository;
 
@@ -26,6 +32,12 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         super(application);
 
         propertyRepository = new PropertyRepository();
+    }
+
+    public PropertyDetailViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
+        super(application);
+
+        this.propertyRepository = propertyRepository;
     }
 
     public void initProperty(Long id) {
@@ -58,7 +70,17 @@ public class PropertyDetailViewModel extends AndroidViewModel {
     }
 
     public Single<Property> uploadProperty() {
-       return this.propertyRepository.createProperty(this.property.getValue())
+        return this.propertyRepository.createProperty(this.property.getValue())
                .doOnSuccess(property1 -> initProperty());
     }
+
+    public static final ViewModelInitializer<PropertyDetailViewModel> initializer = new ViewModelInitializer<>(
+            PropertyDetailViewModel.class,
+            creationExtras -> {
+                LunarkApplication app = (LunarkApplication) creationExtras.get(APPLICATION_KEY);
+                assert app != null;
+
+                return new PropertyDetailViewModel(app, app.getPropertyRepository());
+            }
+    );
 }

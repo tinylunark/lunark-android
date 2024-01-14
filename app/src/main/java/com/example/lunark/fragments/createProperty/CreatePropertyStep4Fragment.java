@@ -32,7 +32,7 @@ public class CreatePropertyStep4Fragment extends Fragment implements BlockingSte
         binding = FragmentCreatePropertyStep4Binding.inflate(inflater, container, false);
         View view = binding.getRoot();
         assert this.getParentFragment() != null;
-        viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
+        viewModel = new ViewModelProvider(this.getParentFragment(), ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
         return view;
     }
 

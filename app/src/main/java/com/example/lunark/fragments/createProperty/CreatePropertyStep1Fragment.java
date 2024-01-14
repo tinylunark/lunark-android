@@ -69,7 +69,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         binding = FragmentCreatePropertyStep1Binding.inflate(inflater, container, false);
         View view = binding.getRoot();
         assert this.getParentFragment() != null;
-        viewModel = new ViewModelProvider(this.getParentFragment()).get(PropertyDetailViewModel.class);
+        viewModel = new ViewModelProvider(this.getParentFragment(), ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
         setUpNumberPickers();
         loadMap(45.2432787, 19.8467293);
         return view;
@@ -166,7 +166,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         }
         property.setMinGuests(binding.minGuestsNumberPicker.getValue());
         property.setMaxGuests(binding.maxGuestsNumberPicker.getValue());
-        property.setAddress(new Address(binding.addressEditText.getText().toString(), "", ""));
+        property.setAddress(new Address(binding.addressEditText.getText().toString(), "N/A", "N/A"));
         Pair<Double, Double> location = getSelectedLatLong();
         if (location != null) {
             property.setLatitude(location.first);

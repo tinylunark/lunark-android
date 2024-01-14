@@ -92,15 +92,10 @@ public class HomeActivity extends AppCompatActivity {
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        getSupportFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(binding.fragmentContainerView.getId(), PropertyDetailFragment.class, bundle)
-                        .commit();
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_property, bundle);
             }
         });
 

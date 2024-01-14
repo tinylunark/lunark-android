@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentCreatePropertyStep4Binding;
@@ -67,6 +69,7 @@ public class CreatePropertyStep4Fragment extends Fragment implements BlockingSte
             @Override
             public void onSuccess(Property property) {
                 Toast.makeText(getContext(), getString(R.string.property_created_successfully), Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().popBackStack();
                 callback.complete();
             }
 

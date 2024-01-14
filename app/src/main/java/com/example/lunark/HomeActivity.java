@@ -76,7 +76,6 @@ public class HomeActivity extends AppCompatActivity {
 
         drawer = binding.drawerLayout;
         navigationView = binding.navView;
-        setNavigationMenu();
         toolbar = binding.toolbar;
 
         setSupportActionBar(toolbar);
@@ -130,13 +129,6 @@ public class HomeActivity extends AppCompatActivity {
             subscription.dispose();
         }
         super.onDestroy();
-    }
-
-    private void setNavigationMenu() {
-        if (loginRepository.getLogin().blockingGet().getRole().equals("HOST")) {
-            navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.host_nav_menu);
-        }
     }
 
     @Override
@@ -216,6 +208,8 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 } else if (itemId == R.id.menu_logout) {
                     logOut();
+                } else {
+                    NavigationUI.onNavDestinationSelected(item, navController);
                 }
                 drawer.closeDrawers();
                 return true;
@@ -225,7 +219,6 @@ public class HomeActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container_view);
         navController = navHostFragment.getNavController();
-        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     private Fragment getCurrentlyDisplayed() {

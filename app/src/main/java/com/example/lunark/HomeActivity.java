@@ -225,7 +225,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment fragment = getCurrentlyDisplayed();
-        if (fragment instanceof IAllowBackPressed && ((IAllowBackPressed) fragment).allowBackPressed()) {
+        if (!(fragment instanceof IAllowBackPressed) || ((IAllowBackPressed) fragment).allowBackPressed()) {
             super.onBackPressed();
         }
     }

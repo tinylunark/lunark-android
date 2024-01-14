@@ -90,7 +90,11 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(Login login) {
-                        openHomeActivity();
+                        if (!login.hasExpired()) {
+                            openHomeActivity();
+                        } else {
+                            loginRepository.clearToken();
+                        }
                     }
 
                     @Override

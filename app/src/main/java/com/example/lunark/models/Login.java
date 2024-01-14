@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.util.Date;
 
 import io.jsonwebtoken.Jwts;
 
@@ -37,6 +39,30 @@ public class Login {
     }
 
     public Long getProfileId() {
+        try {
+            return this.toJson().getLong("profileId");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getRole() {
+        try {
+            return ((JSONObject)this.toJson().getJSONArray("role").get(0)).getString("authority");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean hasExpired() {
+        try {
+            Long expirationTimestamp = this.toJson().getLong("exp");
+            return expirationTimestamp < (new Date().getTime() / 1000);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private JSONObject toJson() {
         String payload = this.accessToken.split("\\.")[1];
         try {
             payload = new String(Base64.decode(payload, Base64.URL_SAFE), "UTF-8");
@@ -45,7 +71,7 @@ public class Login {
         }
         try {
             JSONObject payloadJson = new JSONObject(payload);
-            return payloadJson.getLong("profileId");
+            return payloadJson;
         } catch (JSONException e) {
             return null;
         }

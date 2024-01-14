@@ -1,24 +1,21 @@
 package com.example.lunark.repositories;
 
-import android.app.Application;
+import android.util.Base64;
 import android.util.Log;
-
-import androidx.datastore.preferences.core.Preferences;
 
 import com.example.lunark.datasources.LoginLocalDataSource;
 import com.example.lunark.datasources.LoginNetworkDataSource;
 import com.example.lunark.models.Login;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.BehaviorSubject;
 
 public class LoginRepository {
     private final LoginNetworkDataSource loginNetworkDataSource;
@@ -46,6 +43,27 @@ public class LoginRepository {
         Log.d("AUTH", "Getting token from datastore");
         return loginLocalDataSource.getToken();
     }
+
+    public String extractRoleFromJwt(String token) {
+        try {
+            String[] splitToken = token.split("\\.");
+            String base64EncodedBody = splitToken[1];
+            String body = new String(Base64.decode(base64EncodedBody, Base64.DEFAULT));
+            JSONObject jsonObject = new JSONObject(body);
+
+            JSONArray roles = jsonObject.getJSONArray("role");
+            if (roles.length() > 0) {
+                JSONObject firstRole = roles.getJSONObject(0);
+                return firstRole.getString("authority");
+            }
+
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public Completable logOut() {
         return loginNetworkDataSource.logOut().doOnComplete(() -> loginLocalDataSource.deleteToken());

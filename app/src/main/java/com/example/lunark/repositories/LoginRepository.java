@@ -56,12 +56,10 @@ public class LoginRepository {
                 JSONObject firstRole = roles.getJSONObject(0);
                 return firstRole.getString("authority");
             }
-
-            return null;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
 

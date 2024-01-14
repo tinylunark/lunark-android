@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,4 +68,17 @@ public class PropertyRepository {
 
         return data;
     }
+
+    public Single<Property> createProperty(Property property) {
+        return ClientUtils.propertyService.createProperty(property)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(property1 -> {
+                    Log.i(LOG_TAG, "Uploaded property. New property id" + property1.getId());
+                })
+                .doOnError(throwable -> {
+                    Log.e(LOG_TAG, "Upload property failure: " + throwable.getMessage());
+                });
+    }
+
 }

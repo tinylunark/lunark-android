@@ -65,5 +65,7 @@
     <string name="the_entered_price_is_invalid">The entered price is invalid</string>
     <string name="please_choose_the_start_and_end_dates">Please choose the start and end dates</string>
     <string name="please_input_a_price">Please input a price</string>
+    <string name="property_created_successfully">Property created successfully</string>
+    <string name="something_went_wrong_while_adding_your_property">Something went wrong while adding your property</string>
 </resources>
 

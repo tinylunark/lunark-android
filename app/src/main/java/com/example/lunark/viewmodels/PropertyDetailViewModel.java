@@ -13,6 +13,9 @@ import com.example.lunark.repositories.PropertyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+
+import io.reactivex.Single;
 
 public class PropertyDetailViewModel extends AndroidViewModel {
     private final PropertyRepository propertyRepository;
@@ -52,5 +55,10 @@ public class PropertyDetailViewModel extends AndroidViewModel {
        } else {
            return this.images.get(this.images.size() - 1);
        }
+    }
+
+    public Single<Property> uploadProperty() {
+       return this.propertyRepository.createProperty(this.property.getValue())
+               .doOnSuccess(property1 -> initProperty());
     }
 }

@@ -30,7 +30,8 @@ public class ClientUtils {
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .addInterceptor(interceptor)
+                .build();
 
         return client;
     }

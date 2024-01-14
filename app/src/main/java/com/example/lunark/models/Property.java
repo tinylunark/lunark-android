@@ -33,6 +33,8 @@ public class Property {
         availabilityEntries = new ArrayList<>();
         reviews = new ArrayList<>();
         pricingMode = "";
+        address.setCity("N/A");
+        address.setCountry("N/A");
     }
 
     public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {

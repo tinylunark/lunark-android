@@ -1,6 +1,5 @@
 package com.example.lunark.viewmodels;
 
-import static androidx.lifecycle.SavedStateHandleSupport.createSavedStateHandle;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
 import android.app.Application;
@@ -10,18 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.Property;
 import com.example.lunark.repositories.PropertyRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class PropertyDetailViewModel extends AndroidViewModel {
     private final PropertyRepository propertyRepository;
@@ -69,8 +71,18 @@ public class PropertyDetailViewModel extends AndroidViewModel {
        }
     }
 
-    public Single<Property> uploadProperty() {
-        return this.propertyRepository.createProperty(this.property.getValue());
+    public Completable uploadProperty() {
+        return this.propertyRepository.createProperty(this.property.getValue()).flatMapCompletable(property1 -> {
+            Completable imageUploadCompletable = null;
+            for (Bitmap image: this.images) {
+                if (imageUploadCompletable == null) {
+                    imageUploadCompletable = this.propertyRepository.uploadImage(property1.getId(), image);
+                } else {
+                    imageUploadCompletable = imageUploadCompletable.andThen(this.propertyRepository.uploadImage(property1.getId(), image));
+                }
+            }
+            return imageUploadCompletable;
+        });
     }
 
     public static final ViewModelInitializer<PropertyDetailViewModel> initializer = new ViewModelInitializer<>(

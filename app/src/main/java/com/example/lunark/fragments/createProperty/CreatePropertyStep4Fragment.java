@@ -60,23 +60,10 @@ public class CreatePropertyStep4Fragment extends Fragment implements BlockingSte
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
-        this.viewModel.uploadProperty().subscribe(new SingleObserver<Property>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onSuccess(Property property) {
-                Toast.makeText(getContext(), getString(R.string.property_created_successfully), Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack();
-                callback.complete();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Toast.makeText(getContext(), R.string.something_went_wrong_while_adding_your_property, Toast.LENGTH_SHORT).show();
-            }
+        this.viewModel.uploadProperty().subscribe(() -> {
+            Toast.makeText(getContext(), getString(R.string.property_created_successfully), Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager().popBackStack();
+            callback.complete();
         });
 
     }

@@ -70,8 +70,7 @@ public class PropertyDetailViewModel extends AndroidViewModel {
     }
 
     public Single<Property> uploadProperty() {
-        return this.propertyRepository.createProperty(this.property.getValue())
-               .doOnSuccess(property1 -> initProperty());
+        return this.propertyRepository.createProperty(this.property.getValue());
     }
 
     public static final ViewModelInitializer<PropertyDetailViewModel> initializer = new ViewModelInitializer<>(

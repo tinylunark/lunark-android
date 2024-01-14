@@ -142,8 +142,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Property address"
-                android:layout_width="match_parent">
-            </EditText>
+                android:layout_width="match_parent"/>
+            <EditText
+                android:id="@+id/city_edit_text"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="City"
+                android:layout_width="match_parent"/>
+            <EditText
+                android:id="@+id/country_edit_text"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Country"
+                android:layout_width="match_parent"/>
             <org.osmdroid.views.MapView android:id="@+id/osmmap"
                 android:layout_width="fill_parent"
                 android:layout_height="2in"

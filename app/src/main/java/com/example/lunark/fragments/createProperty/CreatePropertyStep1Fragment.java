@@ -86,6 +86,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         if (binding.typeRadioGroup.getCheckedRadioButtonId() != -1 &&
                 binding.minGuestsNumberPicker.getValue() <= binding.maxGuestsNumberPicker.getValue() &&
                 !binding.addressEditText.getText().toString().equals("") &&
+                !binding.cityEditText.getText().toString().equals("") &&
+                !binding.countryEditText.getText().toString().equals("") &&
                 getSelectedLatLong() != null) {
             return null;
         }
@@ -166,7 +168,11 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         }
         property.setMinGuests(binding.minGuestsNumberPicker.getValue());
         property.setMaxGuests(binding.maxGuestsNumberPicker.getValue());
-        property.setAddress(new Address(binding.addressEditText.getText().toString(), "N/A", "N/A"));
+        property.setAddress(new Address(
+                binding.addressEditText.getText().toString(),
+                binding.cityEditText.getText().toString(),
+                binding.cityEditText.getText().toString())
+        );
         Pair<Double, Double> location = getSelectedLatLong();
         if (location != null) {
             property.setLatitude(location.first);

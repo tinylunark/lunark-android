@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,17 +17,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
-import com.example.lunark.fragments.FiltersDialogFragment;
-import com.example.lunark.models.Login;
-import com.example.lunark.models.Property;
-import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.fragments.PropertiesFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
+import com.example.lunark.models.Login;
+import com.example.lunark.repositories.LoginRepository;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashSet;
@@ -72,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         actionBar = getActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
             actionBar.setHomeButtonEnabled(true);
@@ -101,6 +96,24 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                subscription = d;
+            }
+
+            @Override
+            public void onSuccess(Login login) {
+                String userRole = loginRepository.extractRoleFromJwt(login.getAccessToken());
+                setupNavigationMenu(userRole);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -108,45 +121,30 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (itemId == R.id.menu_home) {
                     if (!isActivityRunning(HomeActivity.class)) {
-                        Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
+                        startActivity(homeIntent);
                     }
                 } else if (itemId == R.id.menu_account) {
-
                     if (!isActivityRunning(AccountScreen.class)) {
-                        Intent intent = new Intent(HomeActivity.this, AccountScreen.class);
-                        startActivity(intent);
+                        Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
+                        startActivity(accountIntent);
                     }
-
-                } else if (itemId == R.id.menu_reservations) {
-                    Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
-                } else if (itemId == R.id.menu_notifications) {
-                    Toast.makeText(HomeActivity.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
-                } else if (itemId == R.id.menu_logout) {
+                }
+                else if (itemId == R.id.menu_logout) {
                     logOut();
                 }
-
                 drawer.closeDrawers();
                 return true;
             }
         });
 
-
-
-
     }
-
     @Override
     protected void onDestroy() {
         if (subscription != null && !subscription.isDisposed()) {
             subscription.dispose();
         }
         super.onDestroy();
-    }
-    @Override
-    public boolean onSupportNavigateUp() {
-        navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     private boolean isActivityRunning(Class<?> activityClass) {
@@ -174,12 +172,57 @@ public class HomeActivity extends AppCompatActivity {
                 if (!isActivityRunning(SignUpScreenActivity.class)) {
                     Intent intent = new Intent(HomeActivity.this, LoginScreenActivity.class);
                     startActivity(intent);
+                    finish(); // Finish the current activity after logging out
                 }
             }
 
             @Override
             public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    private void setupNavigationMenu(String userRole) {
+        Log.d("NAV", "Setting up navigation menu for role: " + userRole);
+        navigationView.getMenu().clear();
+        int menuResId = R.menu.nav_menu;
+        if (userRole != null) {
+            switch (userRole) {
+                case "ADMIN":
+                    menuResId = R.menu.admin_nav_menu;
+                    break;
+                case "HOST":
+                    menuResId = R.menu.host_nav_menu;
+                    break;
+                case "GUEST":
+                    menuResId = R.menu.nav_menu;
+                    break;
+            }
+        }
+
+        navigationView.inflateMenu(menuResId);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.menu_home) {
+                    if (!isActivityRunning(HomeActivity.class)) {
+                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
+                        startActivity(homeIntent);
+                    }
+                } else if (itemId == R.id.menu_account) {
+                    if (!isActivityRunning(AccountScreen.class)) {
+                        Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
+                        startActivity(accountIntent);
+                    }
+                }
+                else if (itemId == R.id.menu_logout) {
+                    logOut();
+                }
+                drawer.closeDrawers();
+                return true;
             }
         });
     }

@@ -6,7 +6,7 @@ import com.example.lunark.repositories.PropertyRepository;
 
 
 public class LunarkApplication extends Application {
-    ApplicationComponent applicationComponent;
+    public ApplicationComponent applicationComponent;
     PropertyRepository propertyRepository;
 
     @Override

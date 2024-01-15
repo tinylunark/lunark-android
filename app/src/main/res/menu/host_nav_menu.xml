@@ -35,12 +35,6 @@
         android:icon="@drawable/ic_reservation"
         android:title="Reservations" />
     <item
-        android:id="@+id/menu_unapproved_reservations"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="@drawable/ic_check"
-        android:title="Unapproved Reservations" />
-    <item
         android:id="@+id/menu_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

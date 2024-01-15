@@ -58,8 +58,6 @@ public class ReservationRepository {
                             Log.e("AYO", reservation.toString());
                         }
                     }
-                    Log.e("AYO", "REZERVACIJE FECOVANE");
-
                     data.setValue(pendingReservations);
                 } else {
                     Log.w(LOG_TAG, "Get reservations response not successful: " + response.code());

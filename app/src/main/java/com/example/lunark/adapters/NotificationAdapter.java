@@ -17,6 +17,7 @@ import com.example.lunark.R;
 import com.example.lunark.models.AvailabilityEntry;
 import com.example.lunark.models.Notification;
 import com.example.lunark.notifications.NotificationReceiver;
+import com.example.lunark.util.RelativeDateConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Drawable icon = context.getResources().getDrawable(NotificationReceiver.iconResourceIds.get(notification.getType()), context.getTheme());
         holder.getIcon().setImageDrawable(icon);
         holder.getText().setText(notification.getText());
-        holder.getTime().setText(notification.getDate().toString());
+        holder.getTime().setText(RelativeDateConverter.convertToRelativeString(notification.getDate()));
     }
 
     @Override

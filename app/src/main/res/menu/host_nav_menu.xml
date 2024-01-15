@@ -29,7 +29,7 @@
         android:icon="@drawable/ic_folder"
         android:title="My Properties"/>
     <item
-        android:id="@+id/menu_reservations"
+        android:id="@+id/menu_reservations_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_reservation"

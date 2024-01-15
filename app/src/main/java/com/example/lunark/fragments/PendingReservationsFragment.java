@@ -12,28 +12,28 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.lunark.adapters.PropertyListAdapter;
-import com.example.lunark.databinding.FragmentPropertiesBinding;
-import com.example.lunark.viewmodels.PropertiesViewModel;
+import com.example.lunark.adapters.ReservationsListAdapter;
+import com.example.lunark.databinding.FragmentPendingReservationBinding;
+import com.example.lunark.viewmodels.ReservationsViewModel;
 
 import java.util.ArrayList;
 
-public class PropertiesFragment extends Fragment {
-    private FragmentPropertiesBinding binding;
-    private PropertiesViewModel propertiesViewModel;
-    private PropertyListAdapter adapter;
+public class PendingReservationsFragment extends Fragment {
+    private FragmentPendingReservationBinding binding;
+    private ReservationsViewModel reservationsViewModel;
+    private ReservationsListAdapter adapter;
     private RecyclerView recyclerView;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        propertiesViewModel = new ViewModelProvider(this).get(PropertiesViewModel.class);
+        reservationsViewModel = new ViewModelProvider(this).get(ReservationsViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentPropertiesBinding.inflate(inflater, container, false);
+        binding = FragmentPendingReservationBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         return view;
     }
@@ -42,24 +42,17 @@ public class PropertiesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.filterButton.setOnClickListener(v -> {
-                    new FiltersDialogFragment().show(
-                            getChildFragmentManager(), FiltersDialogFragment.TAG
-                    );
-                }
-        );
+        setUpReservationList();
 
-        setUpPropertyList();
-
-        propertiesViewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
-            adapter.setProperties(properties);
+        reservationsViewModel.getReservations().observe(getViewLifecycleOwner(), reservations -> {
+            adapter.setReservations(reservations);
             recyclerView.setAdapter(adapter);
         });
     }
 
-    private void setUpPropertyList() {
-        recyclerView = binding.propertiesRecyclerView;
-        adapter = new PropertyListAdapter(this, new ArrayList<>());
+    private void setUpReservationList() {
+        recyclerView = binding.reservationsRecyclerView;
+        adapter = new ReservationsListAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         int scrollPosition = 0;

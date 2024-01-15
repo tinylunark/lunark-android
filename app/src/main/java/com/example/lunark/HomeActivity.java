@@ -129,8 +129,12 @@ public class HomeActivity extends AppCompatActivity {
                         Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
                         startActivity(accountIntent);
                     }
-                }
-                else if (itemId == R.id.menu_logout) {
+                } else if (itemId == R.id.menu_reservations_host) {
+                    if (!isActivityRunning(HostReservationScreenActivity.class)) {
+                        Intent accountIntent = new Intent(HomeActivity.this, HostReservationScreenActivity.class);
+                        startActivity(accountIntent);
+                    }
+                } else if (itemId == R.id.menu_logout) {
                     logOut();
                 }
                 drawer.closeDrawers();
@@ -217,8 +221,12 @@ public class HomeActivity extends AppCompatActivity {
                         Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
                         startActivity(accountIntent);
                     }
-                }
-                else if (itemId == R.id.menu_logout) {
+                } else if (itemId == R.id.menu_reservations_host) {
+                    if (!isActivityRunning(HostReservationScreenActivity.class)) {
+                        Intent accountIntent = new Intent(HomeActivity.this, HostReservationScreenActivity.class);
+                        startActivity(accountIntent);
+                    }
+                } else if (itemId == R.id.menu_logout) {
                     logOut();
                 }
                 drawer.closeDrawers();

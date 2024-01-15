@@ -56,5 +56,8 @@
     <string name="minimum_guests">Minimum guests: </string>
     <string name="maximum_guests">Maximum guests: </string>
     <string name="none">None</string>
+    <string name="title_activity_host_reservation_screen">HostReservationScreenActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
 

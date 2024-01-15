@@ -41,6 +41,9 @@
             android:foregroundServiceType="remoteMessaging"
             android:enabled="true"
             android:exported="false" />
+        <receiver
+            android:name=".notifications.NotificationReceiver"
+            android:exported="false" />
         <activity
             android:name=".ChangePasswordActivity"
             android:exported="true"

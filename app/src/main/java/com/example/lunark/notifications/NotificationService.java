@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -90,40 +91,38 @@ public class NotificationService extends Service {
         return START_NOT_STICKY;
     }
 
-    /* Used to build and start foreground service. */
     private void startForegroundService()
     {
         Log.d(TAG_NOTIFICATION_SERVICE, "Start foreground service.");
 
-        // Create notification default intent.
+        connectStomp();
+
+        android.app.Notification permanentNotification = createPermanentNotification();
+
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(notificationID, permanentNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
+        } else {
+            startForeground(notificationID, permanentNotification);
+        }
+    }
+
+    @NonNull
+    private android.app.Notification createPermanentNotification() {
         Intent intent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationID, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        // Create notification builder.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
 
-        // Make notification show big text.
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-        bigTextStyle.setBigContentTitle("Music player implemented by foreground service.");
-        bigTextStyle.bigText("Android foreground service is a android service which can run in foreground always," +
-                "it can be controlled by user via notification.");
-        // Set big text style.
+        bigTextStyle.setBigContentTitle("Listening for notifications");
         builder.setStyle(bigTextStyle);
 
         builder.setWhen(System.currentTimeMillis());
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.mipmap.lunark_icon);
         Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_check);
         builder.setLargeIcon(largeIconBitmap);
-        // Make head-up notification.
         builder.setFullScreenIntent(pendingIntent, true);
-
-        connectStomp();
-        // Start foreground service.
-        if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(notificationID, builder.build(), ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
-        } else {
-            startForeground(notificationID, builder.build());
-        }
+        return builder.build();
     }
 
     public void connectStomp() {
@@ -170,6 +169,7 @@ public class NotificationService extends Service {
                         Log.d(TAG_NOTIFICATION_SERVICE, "Received unread notification count or could not parse notification");
                     } else {
                         Log.d(TAG_NOTIFICATION_SERVICE, "Received proper notification with id " + notification.getId() + " and text \"" + notification.getText() + "\" which was sent on " + notification.getDate());
+                        show(notification);
                     }
                 }, throwable -> {
                     Log.e(TAG_NOTIFICATION_SERVICE, "Error on subscribe topic", throwable);
@@ -203,20 +203,14 @@ public class NotificationService extends Service {
         notificationManager.createNotificationChannel(channel);
     }
 
+    private void show(Notification notification) {
+        Intent intent = new Intent(NotificationReceiver.PUSH_NOTIFICATION);
+        intent.putExtra(NotificationReceiver.NOTIFICATION_KEY, notification);
+        getApplicationContext().sendBroadcast(intent);
+    }
+
     private Notification parseNotification(String json) {
         Notification notification = gson.fromJson(json, Notification.class);
         return notification.getId() != null ? notification : null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mStompClient.disconnect();
-        if (compositeDisposable != null) compositeDisposable.dispose();
-
-        Toast.makeText(getApplicationContext(), "Stop foreground service.", Toast.LENGTH_LONG).show();
-        // Stop foreground service and remove the notification.
-        stopForeground(true);
-        stopSelf();
     }
 }

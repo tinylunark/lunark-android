@@ -2,6 +2,7 @@ package com.example.lunark;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lunark.databinding.LoginScreenBinding;
 import com.example.lunark.models.Login;
+import com.example.lunark.notifications.NotificationReceiver;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.LoginRepository;
 
@@ -84,8 +86,8 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
     private void logIn() {
-       startNotificationService();
-       openHomeActivity();
+        startNotificationService();
+        openHomeActivity();
     }
 
     private void startNotificationService() {

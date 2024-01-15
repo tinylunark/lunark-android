@@ -7,6 +7,7 @@ import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
+import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
@@ -34,4 +35,5 @@ public interface ApplicationComponent {
     void inject(GeneralReportFragment generalReportFragment);
     void inject(PropertyReportFragment propertyReportFragment);
     void inject(NotificationService notificationService);
+    void inject(NotificationsFragment notificationsFragment);
 }

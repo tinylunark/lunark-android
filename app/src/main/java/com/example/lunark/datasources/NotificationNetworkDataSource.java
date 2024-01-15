@@ -26,25 +26,10 @@ public class NotificationNetworkDataSource {
     }
 
     public Single<List<Notification>> getNotifications() {
-       Single<List<Notification>> call = notificationService.getNotifications();
-        call.subscribeOn(Schedulers.io())
+       return notificationService.getNotifications()
+               .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Notification>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<Notification> notifications) {
-                        Log.d("NOTIFICATIONS", "Successfully fetched notifications from server");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("NOTIFICATIONS", "Error while fetching notifications\n" + e.getMessage());
-                    }
-                });
-        return call;
+               .doOnSuccess(notifications -> Log.d("NOTIFICATIONS", "Successfully fetched notifications from server"))
+               .doOnError(throwable -> Log.e("NOTIFICATIONS", "Error while fetching notifications\n" + throwable.getMessage()));
     }
 }

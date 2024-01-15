@@ -79,9 +79,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         mBuilder.setSmallIcon(iconResourceIds.get(type));
     }
 
-    private static final HashMap<String, Integer> iconResourceIds = new HashMap<>();
-    private static final HashMap<String, Integer> notificationIds = new HashMap<>();
-    private static final HashMap<String, String> titles = new HashMap<>();
+    public static final HashMap<String, Integer> iconResourceIds = new HashMap<>();
+    public static final HashMap<String, Integer> notificationIds = new HashMap<>();
+    public static final HashMap<String, String> titles = new HashMap<>();
 
     static {
         iconResourceIds.put("PROPERTY_REVIEW", R.drawable.ic_grade);

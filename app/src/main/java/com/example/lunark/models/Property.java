@@ -1,6 +1,9 @@
 package com.example.lunark.models;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Property {
     private Long id;
@@ -17,8 +20,23 @@ public class Property {
     private String type;
     private List<Review> reviews;
     private Double averageRating;
+    private String pricingMode;
+    private Integer cancellationDeadline;
+    private boolean autoApproveEnabled;
+    private List<Long> amenityIds;
 
     public Property() {
+        address = new Address("", "", "");
+        minGuests = 1;
+        maxGuests = 1;
+        images = new ArrayList<>();
+        amenities = new ArrayList<>();
+        amenityIds = new ArrayList<>();
+        availabilityEntries = new ArrayList<>();
+        reviews = new ArrayList<>();
+        pricingMode = "";
+        address.setCity("N/A");
+        address.setCountry("N/A");
     }
 
     public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {
@@ -116,6 +134,7 @@ public class Property {
 
     public void setAmenities(List<Amenity> amenities) {
         this.amenities = amenities;
+        this.amenityIds = amenities.stream().map(amenity -> amenity.getId()).collect(Collectors.toList());
     }
 
     public List<AvailabilityEntry> getAvailabilityEntries() {
@@ -148,5 +167,53 @@ public class Property {
 
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+    public void addAvailability(LocalDate beginDate, LocalDate endDate, Double price) {
+        for (LocalDate date = beginDate; !date.isAfter(endDate); date = date.plusDays(1))
+        {
+            LocalDate finalDate = date;
+            if (this.getAvailabilityEntries().stream().anyMatch(availabilityEntry -> availabilityEntry.getDate().equals(finalDate))) {
+                AvailabilityEntry entryForDate = this.getAvailabilityEntries().stream().filter(availabilityEntry -> availabilityEntry.getDate().equals(finalDate)).findFirst().get();
+                entryForDate.setPrice(price);
+            } else {
+                this.getAvailabilityEntries().add(new AvailabilityEntry(date, price));
+            }
+        }
+    }
+
+    public void deleteAvailability(LocalDate beginDate, LocalDate endDate) {
+        this.availabilityEntries = this.availabilityEntries.stream()
+                .filter(availabilityEntry ->
+                        availabilityEntry.getDate().isBefore(beginDate) ||
+                        availabilityEntry.getDate().isAfter(endDate))
+                .collect(Collectors.toList());
+    }
+
+    public String getPricingMode() {
+        return pricingMode;
+    }
+
+    public void setPricingMode(String pricingMode) {
+        this.pricingMode = pricingMode;
+    }
+
+    public Integer getCancellationDeadline() {
+        return cancellationDeadline;
+    }
+
+    public void setCancellationDeadline(Integer cancellationDeadline) {
+        this.cancellationDeadline = cancellationDeadline;
+    }
+
+    public boolean isAutoApproveEnabled() {
+        return autoApproveEnabled;
+    }
+
+    public void setAutoApproveEnabled(boolean autoApproveEnabled) {
+        this.autoApproveEnabled = autoApproveEnabled;
+    }
+
+    public List<Long> getAmenityIds() {
+        return amenityIds;
     }
 }

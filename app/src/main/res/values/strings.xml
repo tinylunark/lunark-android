@@ -56,5 +56,16 @@
     <string name="minimum_guests">Minimum guests: </string>
     <string name="maximum_guests">Maximum guests: </string>
     <string name="none">None</string>
+    <string name="room">Room</string>
+    <string name="choose_dates">Choose dates</string>
+    <string name="price">Price</string>
+    <string name="some_fields_are_not_filled_or_are_filled_incorrectly">Some fields are not filled or are filled incorrectly</string>
+    <string name="property_availability_can_not_be_set_changed_for_dates_in_the_past">Property availability can not be set/changed for dates in the past</string>
+    <string name="select_dates_and_add_price_before_adding_availability">Select dates and add price before adding availability</string>
+    <string name="the_entered_price_is_invalid">The entered price is invalid</string>
+    <string name="please_choose_the_start_and_end_dates">Please choose the start and end dates</string>
+    <string name="please_input_a_price">Please input a price</string>
+    <string name="property_created_successfully">Property created successfully</string>
+    <string name="something_went_wrong_while_adding_your_property">Something went wrong while adding your property</string>
 </resources>
 

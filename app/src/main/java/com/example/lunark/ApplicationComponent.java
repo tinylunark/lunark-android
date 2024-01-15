@@ -6,6 +6,8 @@ import android.content.Context;
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.interceptors.JwtInterceptor;
+import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.viewmodels.PropertyDetailViewModel;
 
 import javax.inject.Singleton;
 
@@ -23,4 +25,5 @@ public interface ApplicationComponent {
     void inject(HomeActivity homeActivity);
     void inject(AccountScreen accountScreen);
     void inject(SignUpScreenActivity signUpScreenActivity);
+    void inject(PropertyRepository propertyRepository);
 }

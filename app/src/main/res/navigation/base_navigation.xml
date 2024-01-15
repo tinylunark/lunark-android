@@ -2,11 +2,39 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_base"
+    android:id="@+id/base_navigation"
     app:startDestination="@+id/nav_main">
 
     <fragment
         android:id="@+id/nav_main"
         android:label="Main screen"
-        tools:layout="@layout/fragment_main_screen" />
+        android:name="com.example.lunark.fragments.PropertiesFragment"
+        tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_nav_main_to_nav_create_property"
+            app:destination="@id/nav_new_property" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_new_property"
+        android:label="Create property"
+        android:name="com.example.lunark.fragments.createProperty.CreatePropertyFragment"
+        app:popUpTo="@+id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_create_property">
+        <action
+            android:id="@+id/action_nav_create_property_to_nav_main"
+            app:destination="@id/nav_main" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_property"
+        android:label="Property detail"
+        android:name="com.example.lunark.fragments.PropertyDetailFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_property_detail"
+        >
+        <action
+            android:id="@+id/action_nav_property_to_nav_main"
+            app:destination="@id/nav_main" />
+    </fragment>
 </navigation>

@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution
 
 plugins {
     id("com.android.application")
@@ -79,6 +80,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
+    implementation("androidx.fragment:fragment:1.6.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -107,4 +109,5 @@ dependencies {
     compileOnly("com.github.bumptech.glide:annotations:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
     implementation("org.osmdroid:osmdroid-android:6.1.14")
+    implementation("com.stepstone.stepper:material-stepper:4.3.1")
 }

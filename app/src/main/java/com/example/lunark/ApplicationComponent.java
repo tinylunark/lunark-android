@@ -7,10 +7,7 @@ import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
-import com.example.lunark.interceptors.JwtInterceptor;
 import com.example.lunark.repositories.PropertyRepository;
-import com.example.lunark.viewmodels.FavoritePropertiesViewModel;
-import com.example.lunark.viewmodels.PropertyDetailViewModel;
 
 import javax.inject.Singleton;
 

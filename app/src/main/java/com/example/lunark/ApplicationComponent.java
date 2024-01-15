@@ -9,6 +9,7 @@ import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
+import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
 
 import javax.inject.Singleton;
@@ -32,4 +33,5 @@ public interface ApplicationComponent {
     void inject(PropertyDetailFragment propertyDetailFragment);
     void inject(GeneralReportFragment generalReportFragment);
     void inject(PropertyReportFragment propertyReportFragment);
+    void inject(NotificationService notificationService);
 }

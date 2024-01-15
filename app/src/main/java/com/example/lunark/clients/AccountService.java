@@ -60,4 +60,16 @@ public interface AccountService {
             "Content-Type:application/json"
     })
     Call<List<Property>> getFavoriteProperties();
+
+    @POST("accounts/favorites/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+    })
+    Call<Void> addFavoriteProperty(@Path("id") Long id);
+
+    @DELETE("accounts/favorites/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+    })
+    Call<Void> deleteFavoriteProperty(@Path("id") Long id);
 }

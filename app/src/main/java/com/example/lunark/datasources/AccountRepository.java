@@ -32,4 +32,12 @@ public class AccountRepository {
     public LiveData<List<Property>> getFavoriteProperties() {
         return accountNetworkDataSource.getFavoriteProperties();
     }
+
+    public void addFavoriteProperty(Long id) {
+        accountNetworkDataSource.addFavoriteProperty(id);
+    }
+
+    public void deleteFavoriteProperty(Long id) {
+        accountNetworkDataSource.deleteFavoriteProperty(id);
+    }
 }

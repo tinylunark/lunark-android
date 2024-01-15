@@ -59,4 +59,36 @@ public class AccountNetworkDataSource {
 
         return data;
     }
+
+    public void addFavoriteProperty(Long id) {
+        accountService.addFavoriteProperty(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.w(TAG, "Add favorite property response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, "Add favorite property failure: " + t.getMessage());
+            }
+        });
+    }
+
+    public void deleteFavoriteProperty(Long id) {
+        accountService.deleteFavoriteProperty(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.w(TAG, "Delete favorite property response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, "Delete favorite property failure: " + t.getMessage());
+            }
+        });
+    }
 }

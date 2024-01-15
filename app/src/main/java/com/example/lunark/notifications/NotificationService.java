@@ -19,7 +19,9 @@ import androidx.core.app.NotificationCompat;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
+import com.example.lunark.models.Notification;
 import com.example.lunark.repositories.LoginRepository;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,9 @@ public class NotificationService extends Service {
     private CompositeDisposable compositeDisposable;
     @Inject
     LoginRepository loginRepository;
+
+    @Inject
+    Gson gson;
 
     private int notificationID = 50;
     @Nullable
@@ -160,6 +165,12 @@ public class NotificationService extends Service {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d(TAG_NOTIFICATION_SERVICE, "Received " + topicMessage.getPayload());
+                    Notification notification = parseNotification(topicMessage.getPayload());
+                    if (notification == null) {
+                        Log.d(TAG_NOTIFICATION_SERVICE, "Received unread notification count or could not parse notification");
+                    } else {
+                        Log.d(TAG_NOTIFICATION_SERVICE, "Received proper notification with id " + notification.getId() + " and text \"" + notification.getText() + "\" which was sent on " + notification.getDate());
+                    }
                 }, throwable -> {
                     Log.e(TAG_NOTIFICATION_SERVICE, "Error on subscribe topic", throwable);
                 });
@@ -190,6 +201,11 @@ public class NotificationService extends Service {
 
         notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    private Notification parseNotification(String json) {
+        Notification notification = gson.fromJson(json, Notification.class);
+        return notification.getId() != null ? notification : null;
     }
 
     @Override

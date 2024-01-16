@@ -23,7 +23,7 @@ public abstract class ProximitySensorFragment extends Fragment implements Sensor
     private SensorManager sensorManager;
     private Sensor proximitySensor;
 
-    private final int WAVE_TIME = 2000;
+    private final int WAVE_TIME = 3000;
     private final int WAVE_NEEDED_MOVEMENTS = 3;
     private long lastWaveTime = 0;
     private float lastSensorValue;
@@ -54,7 +54,6 @@ public abstract class ProximitySensorFragment extends Fragment implements Sensor
         if (proximitySensor == null) {
             Toast.makeText(requireContext(), "No proximity sensor found in device.", Toast.LENGTH_SHORT).show();
         } else {
-            // registering our sensor with sensor manager
             sensorManager.registerListener(this,
                     proximitySensor,
                     SensorManager.SENSOR_DELAY_NORMAL);

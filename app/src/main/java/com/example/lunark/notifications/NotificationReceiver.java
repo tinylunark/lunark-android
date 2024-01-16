@@ -2,6 +2,7 @@ package com.example.lunark.notifications;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -59,8 +60,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
         setIcons(mBuilder, notification.getType(), context);
-        mBuilder.setContentTitle(titles.get(notification.getType()));
-        mBuilder.setContentText(notification.getText());
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
+        mBuilder.setContentTitle(titles.get(notification.getType()))
+                .setContentText(notification.getText())
+                .setAutoCancel(true)
+                .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE));
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context, permissions, 101);

@@ -2,7 +2,6 @@ package com.example.lunark.notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
@@ -44,8 +43,10 @@ public class NotificationService extends Service {
     public static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     public static final String ACTION_STOP_NOTIFICATION_SERVICE = "ACTION_STOP_NOTIFICATION_SERVICE";
     private static final String CHANNEL_ID = "Zero channel";
+    private static final String PERMANENT_NOTIFICATION_CHANNEL_ID = "Permanent channel";
     private NotificationManager notificationManager;
     private NotificationChannel channel;
+    private NotificationChannel permanentNotificationChannel;
 
     private StompClient mStompClient;
     private CompositeDisposable compositeDisposable;
@@ -67,7 +68,7 @@ public class NotificationService extends Service {
         super.onCreate();
         ((LunarkApplication) getApplicationContext()).applicationComponent.inject(this);
         mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://" + BuildConfig.IP_ADDR + ":8080/api/non-sockjs-socket");
-        createNotificationChannel();
+        createNotificationChannels();
     }
 
     @Override
@@ -107,10 +108,7 @@ public class NotificationService extends Service {
 
     @NonNull
     private android.app.Notification createPermanentNotification() {
-        Intent intent = new Intent();
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationID, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PERMANENT_NOTIFICATION_CHANNEL_ID);
 
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
         bigTextStyle.setBigContentTitle("Listening for notifications");
@@ -120,7 +118,7 @@ public class NotificationService extends Service {
         builder.setSmallIcon(R.mipmap.lunark_icon);
         Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_check);
         builder.setLargeIcon(largeIconBitmap);
-        builder.setFullScreenIntent(pendingIntent, true);
+        builder.setPriority(NotificationCompat.PRIORITY_MIN);
         return builder.build();
     }
 
@@ -185,15 +183,17 @@ public class NotificationService extends Service {
         compositeDisposable = new CompositeDisposable();
     }
 
-    private void createNotificationChannel() {
+    private void createNotificationChannels() {
         CharSequence name = "Notification channel";
         String description = "Description";
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
+        permanentNotificationChannel = new NotificationChannel(PERMANENT_NOTIFICATION_CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
 
         notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+        notificationManager.createNotificationChannel(permanentNotificationChannel);
     }
 
     private void show(Notification notification) {

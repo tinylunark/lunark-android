@@ -14,11 +14,17 @@ import android.view.ViewGroup;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentGeneralReportBinding;
+import com.example.lunark.models.DailyReport;
 import com.example.lunark.repositories.ReportRepository;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +35,7 @@ public class GeneralReportFragment extends Fragment {
     FragmentGeneralReportBinding mBinding;
     @Inject
     ReportRepository mReportRepository;
+    LineChart mChart;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class GeneralReportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding= FragmentGeneralReportBinding.inflate(inflater, container, false);
+        mBinding = FragmentGeneralReportBinding.inflate(inflater, container, false);
         View view = mBinding.getRoot();
         return view;
     }
@@ -48,21 +55,39 @@ public class GeneralReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 1));
-        entries.add(new Entry(2, 2));
-        entries.add(new Entry(3, 3));
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label");
-        dataSet.setColor(R.color.md_theme_dark_primary);
-        dataSet.setValueTextColor(R.color.md_theme_dark_primaryContainer);
-
-        LineData lineData = new LineData(dataSet);
-        mBinding.chart.setData(lineData);
-        mBinding.chart.invalidate();
+        mChart = mBinding.chart;
+        mChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                LocalDate date = LocalDate.ofEpochDay((long) value);
+                return date.toString();
+            }
+        });
 
         mReportRepository.getGeneralReport("2020-01-01", "2025-01-01").observe(getViewLifecycleOwner(), generalReport -> {
             Log.d(TAG, "Daily reports size: " + generalReport.getDailyReports().size());
+            setUpChart(new ArrayList<>(generalReport.getDailyReports()));
         });
+    }
+
+    private void setUpChart(List<DailyReport> dailyReports) {
+        List<Entry> profitEntries = new ArrayList<>();
+        List<Entry> reservationCountEntries = new ArrayList<>();
+        for (DailyReport dailyReport : dailyReports) {
+            profitEntries.add(new Entry(dailyReport.getDate().toEpochDay(), dailyReport.getProfit().floatValue()));
+            reservationCountEntries.add(new Entry(dailyReport.getDate().toEpochDay(), dailyReport.getReservationCount().floatValue()));
+        }
+
+        LineDataSet profitDataSet = new LineDataSet(profitEntries, "Profit");
+        profitDataSet.setColor(R.color.md_theme_dark_error);
+        LineDataSet reservationCountDataSet = new LineDataSet(reservationCountEntries, "Reservation count");
+
+        List<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(profitDataSet);
+        dataSets.add(reservationCountDataSet);
+
+        LineData data = new LineData(dataSets);
+        mChart.setData(data);
+        mChart.invalidate();
     }
 }

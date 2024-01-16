@@ -24,6 +24,8 @@ import com.example.lunark.models.Notification;
 import com.example.lunark.repositories.LoginRepository;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -204,6 +206,7 @@ public class NotificationService extends Service {
     }
 
     private void show(Notification notification) {
+        EventBus.getDefault().post(new NotificationEvent(notification));
         Intent intent = new Intent(NotificationReceiver.PUSH_NOTIFICATION);
         intent.putExtra(NotificationReceiver.NOTIFICATION_KEY, notification);
         getApplicationContext().sendBroadcast(intent);

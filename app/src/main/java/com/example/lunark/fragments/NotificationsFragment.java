@@ -15,7 +15,12 @@ import com.example.lunark.LunarkApplication;
 import com.example.lunark.adapters.NotificationAdapter;
 import com.example.lunark.databinding.FragmentNotificationsBinding;
 import com.example.lunark.models.Notification;
+import com.example.lunark.notifications.NotificationEvent;
 import com.example.lunark.repositories.NotificationRepository;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +67,26 @@ public class NotificationsFragment extends Fragment {
             }
         });
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNotificationEvent(NotificationEvent event) {
+        this.adapter.add(event.notification);
+        if (this.notificationsRecyclerView.computeVerticalScrollOffset() < 10) {
+            this.notificationsRecyclerView.scrollToPosition(0);
+        }
     }
 
     private void setUpNotificationsRecyclerView() {

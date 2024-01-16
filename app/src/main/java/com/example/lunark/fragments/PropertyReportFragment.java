@@ -19,17 +19,28 @@ import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.adapters.PropertySpinnerAdapter;
 import com.example.lunark.databinding.FragmentPropertyReportBinding;
+import com.example.lunark.models.DailyReport;
 import com.example.lunark.models.Login;
+import com.example.lunark.models.MonthlyReport;
 import com.example.lunark.models.Property;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.repositories.PropertyRepository;
 import com.example.lunark.repositories.ReportRepository;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -92,6 +103,7 @@ public class PropertyReportFragment extends Fragment {
 
             mReportRepository.getPropertyReport(year, propertyId).observe(getViewLifecycleOwner(), report -> {
                 Log.d(TAG, "getPropertyReport: " + report);
+                setUpChart(new ArrayList<>(report.getMonthlyReports()));
             });
         });
 
@@ -107,5 +119,26 @@ public class PropertyReportFragment extends Fragment {
             adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
             mBinding.spnProperty.setAdapter(adapter);
         });
+    }
+
+    private void setUpChart(List<MonthlyReport> monthlyReports) {
+        List<BarEntry> profitEntries = new ArrayList<>();
+        List<BarEntry> reservationCountEntries = new ArrayList<>();
+        for (MonthlyReport monthlyReport : monthlyReports) {
+            profitEntries.add(new BarEntry(monthlyReport.getMonth(), monthlyReport.getProfit().floatValue()));
+            reservationCountEntries.add(new BarEntry(monthlyReport.getMonth(), monthlyReport.getReservationCount().floatValue()));
+        }
+
+        BarDataSet profitDataSet = new BarDataSet(profitEntries, "Profit");
+        profitDataSet.setColor(R.color.md_theme_dark_error);
+        BarDataSet reservationCountDataSet = new BarDataSet(reservationCountEntries, "Reservation count");
+
+        List<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(profitDataSet);
+        dataSets.add(reservationCountDataSet);
+
+        BarData data = new BarData(dataSets);
+        mBinding.chart.setData(data);
+        mBinding.chart.invalidate();
     }
 }

@@ -219,16 +219,19 @@ public class CreatePropertyStep3Fragment extends Fragment implements Step {
             Log.d("CREATE_PROPERTY", "Reading values from view model");
             this.updatesEnabled = false;
             this.property = property;
+            perPersonRadio.setChecked(false);
+            wholeUnitRadio.setChecked(false);
             if (this.property.getPricingMode().equals("PER_PERSON")) {
                 perPersonRadio.setChecked(true);
             }
             if (this.property.getPricingMode().equals("WHOLE_UNIT")) {
                 wholeUnitRadio.setChecked(true);
             }
-            if (property.getCancellationDeadline() != null){
-                cancellationDeadlineEditText.setText(Integer.toString(property.getCancellationDeadline()));
+            cancellationDeadlineEditText.setText("");
+            if (this.property.getCancellationDeadline() != null) {
+                cancellationDeadlineEditText.setText(this.property.getCancellationDeadline().toString());
             }
-            autoApproveCheckbox.setChecked(property.isAutoApproveEnabled());
+            autoApproveCheckbox.setChecked(this.property.isAutoApproveEnabled());
             this.adapter.setAvailabilityEntries(property.getAvailabilityEntries());
             this.updatesEnabled = true;
         });
@@ -249,6 +252,7 @@ public class CreatePropertyStep3Fragment extends Fragment implements Step {
             int cancellationDeadline = Integer.parseInt(cancellationDeadlineEditText.getText().toString());
             property.setCancellationDeadline(cancellationDeadline);
         } catch (NumberFormatException ex) {
+
         }
         property.setAutoApproveEnabled(autoApproveCheckbox.isChecked());
         viewModel.setProperty(property);

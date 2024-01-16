@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.lunark.databinding.FragmentCreatePropertyBinding;
+import com.example.lunark.sensors.ProximitySensorFragment;
 import com.example.lunark.viewmodels.PropertiesViewModel;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.stepstone.stepper.Step;
@@ -23,7 +24,7 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
-public class CreatePropertyFragment extends Fragment implements IAllowBackPressed {
+public class CreatePropertyFragment extends ProximitySensorFragment implements IAllowBackPressed {
     private final static int NUM_STEPS = 4;
     private FragmentCreatePropertyBinding binding;
     private StepperLayout stepper;
@@ -52,6 +53,15 @@ public class CreatePropertyFragment extends Fragment implements IAllowBackPresse
             return false;
         }
     }
+
+    @Override
+    public void onWave() {
+        Log.d("CREATE_PROPERTY", "GOT WAVE");
+        viewModel.initProperty();
+        stepper.setCurrentStepPosition(0);
+    }
+
+
     private static class MyStepperAdapter extends AbstractFragmentStepAdapter {
 
         public MyStepperAdapter(FragmentManager fm, Context context) {

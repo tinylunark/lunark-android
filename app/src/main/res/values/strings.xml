@@ -69,5 +69,6 @@
     <string name="something_went_wrong_while_adding_your_property">Something went wrong while adding your property</string>
     <string name="favorites">Favorites</string>
     <string name="favorite">Favorite</string>
+    <string name="reports">Reports</string>
 </resources>
 

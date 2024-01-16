@@ -66,6 +66,8 @@ public class GeneralReportFragment extends Fragment {
 
         mReportRepository.getGeneralReport("2020-01-01", "2025-01-01").observe(getViewLifecycleOwner(), generalReport -> {
             Log.d(TAG, "Daily reports size: " + generalReport.getDailyReports().size());
+            mBinding.totalProfitValue.setText(generalReport.getTotalProfit().toString());
+            mBinding.totalReservationCountValue.setText(generalReport.getTotalReservationCount().toString());
             setUpChart(new ArrayList<>(generalReport.getDailyReports()));
         });
     }

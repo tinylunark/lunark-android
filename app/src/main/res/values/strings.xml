@@ -70,5 +70,7 @@
     <string name="favorites">Favorites</string>
     <string name="favorite">Favorite</string>
     <string name="reports">Reports</string>
+    <string name="total_profit">Total profit:</string>
+    <string name="total_reservation_count">Total reservation count:</string>
 </resources>
 

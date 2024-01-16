@@ -115,4 +115,6 @@ dependencies {
     implementation("com.stepstone.stepper:material-stepper:4.3.1")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation("org.greenrobot:eventbus:3.3.1")
+
 }

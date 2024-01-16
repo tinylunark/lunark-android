@@ -69,5 +69,12 @@
     <string name="something_went_wrong_while_adding_your_property">Something went wrong while adding your property</string>
     <string name="favorites">Favorites</string>
     <string name="favorite">Favorite</string>
+    <string name="reports">Reports</string>
+    <string name="total_profit">Total profit:</string>
+    <string name="total_reservation_count">Total reservation count:</string>
+    <string name="get_report">Get report</string>
+    <string name="invalid_date_format">Invalid date format - should be yyyy/MM/dd</string>
+    <string name="year">Year</string>
+    <string name="invalid_year">Invalid year - should be yyyy</string>
 </resources>
 

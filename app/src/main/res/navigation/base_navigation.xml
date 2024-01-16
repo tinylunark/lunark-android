@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_main_to_nav_favorites"
             app:destination="@id/nav_favorites" />
+        <action
+            android:id="@+id/action_nav_main_to_generalReportFragment"
+            app:destination="@id/nav_reports" />
     </fragment>
     <fragment
         android:id="@+id/nav_new_property"
@@ -45,4 +48,9 @@
         android:name="com.example.lunark.fragments.FavoritePropertiesFragment"
         android:label="Favorite properties"
         tools:layout="@layout/fragment_favorite_properties" />
+    <fragment
+        android:id="@+id/nav_reports"
+        android:name="com.example.lunark.fragments.ReportsFragment"
+        android:label="Reports"
+        tools:layout="@layout/fragment_reports" />
 </navigation>

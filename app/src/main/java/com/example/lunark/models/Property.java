@@ -12,8 +12,8 @@ public class Property {
     private Address address;
     private int minGuests;
     private int maxGuests;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private List<PropertyImage> images;
     private List<Amenity> amenities;
     private List<AvailabilityEntry> availabilityEntries;
@@ -35,11 +35,11 @@ public class Property {
         availabilityEntries = new ArrayList<>();
         reviews = new ArrayList<>();
         pricingMode = "";
-        address.setCity("N/A");
-        address.setCountry("N/A");
+        latitude = null;
+        longitude = null;
     }
 
-    public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, double latitude, double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {
+    public Property(Long id, String name, String description, Address address, int minGuests, int maxGuests, Double latitude, Double longitude, List<PropertyImage> images, List<Amenity> amenities, List<AvailabilityEntry> availabilityEntries, String type, List<Review> reviews, Double averageRating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -104,19 +104,19 @@ public class Property {
         this.maxGuests = maxGuests;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

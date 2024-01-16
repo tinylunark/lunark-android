@@ -19,11 +19,8 @@ import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentCreatePropertyStep1Binding;
 import com.example.lunark.models.Address;
 import com.example.lunark.models.Property;
-import com.example.lunark.sensors.ProximitySensorFragment;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
-import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
-import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import org.osmdroid.api.IMapController;
@@ -201,9 +198,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
             binding.addressEditText.setText(property.getAddress().getStreet());
             binding.cityEditText.setText(property.getAddress().getCity());
             binding.countryEditText.setText(property.getAddress().getCountry());
-            if(property.getType() != null) {
-                restoreLocation(property);
-            }
+            restoreLocation(property);
             this.updatesEnabled = true;
         });
     }
@@ -225,6 +220,10 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
     }
 
     private void restoreLocation(Property property) {
+        this.overlayItems.clear();
+        if (property.getLatitude() == null) {
+            return;
+        }
         setMarker(new GeoPoint(property.getLatitude(), property.getLongitude()));
     }
 
@@ -270,7 +269,6 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
     }
 
     private void setMarker(GeoPoint p) {
-        this.overlayItems.clear();
         this.overlayItems.add(new OverlayItem("Your property", "", p));
         this.mapOverlay.setFocusedItem(overlayItems.get(0));
     }

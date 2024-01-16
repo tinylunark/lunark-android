@@ -1,10 +1,5 @@
 package com.example.lunark.fragments;
 
-import android.graphics.Rect;
-import android.graphics.drawable.GradientDrawable;
-import android.location.GnssStatus;
-import android.location.GnssStatus.Callback;
-import android.location.GpsStatus;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,38 +19,39 @@ import com.bumptech.glide.Glide;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
-import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.datasources.AccountRepository;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
+import com.example.lunark.repositories.ReviewRepository;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.events.MapListener;
-import org.osmdroid.events.ScrollEvent;
-import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
     private static final String PROPERTY_ID = "propertyId";
+    private static final String TAG = "PROPERTY_DETAIL_FRAGMENT";
     private Long propertyId;
     private PropertyDetailViewModel viewModel;
     @Inject
     AccountRepository accountRepository;
+    @Inject
+    ReviewRepository reviewRepository;
+    private Disposable subscription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +85,7 @@ public class PropertyDetailFragment extends Fragment {
             binding.description.setText(property.getDescription());
             binding.minGuestsValue.setText(String.format("%d", property.getMinGuests()));
             binding.maxGuestsValue.setText(String.format("%d", property.getMaxGuests()));
+            checkEligibilityToReviewProperty();
 
             if (property.getAverageRating() != null) {
                 binding.rating.setText(String.format("%.2f", property.getAverageRating()));
@@ -132,6 +127,7 @@ public class PropertyDetailFragment extends Fragment {
                 accountRepository.deleteFavoriteProperty(propertyId);
             }
         });
+
     }
 
     private void loadMap(double latitude, double longitude) {
@@ -161,5 +157,32 @@ public class PropertyDetailFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) recyclerView.getLayoutManager()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void checkEligibilityToReviewProperty() {
+        this.reviewRepository.isEligibleToReviewProperty(propertyId).subscribe(new SingleObserver<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                subscription = d;
+            }
+
+            @Override
+            public void onSuccess(Boolean eligible) {
+                binding.writeReviewButton.setEnabled(eligible);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "Error while checking property review eligibility: " + e.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        if(subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+        super.onDestroy();
     }
 }

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,10 +81,8 @@ public class NotificationService extends Service {
             {
                 case ACTION_START_NOTIFICATION_SERVICE:
                     startForegroundService();
-                    Toast.makeText(getApplicationContext(), "Foreground service is started.", Toast.LENGTH_LONG).show();
                     break;
                 case ACTION_STOP_NOTIFICATION_SERVICE:
-                    Toast.makeText(getApplicationContext(), "You clicked Stop button.", Toast.LENGTH_LONG).show();
                     stopForeground(true);
                     break;
             }
@@ -142,18 +139,17 @@ public class NotificationService extends Service {
                 .subscribe(lifecycleEvent -> {
                     switch (lifecycleEvent.getType()) {
                         case OPENED:
-                            toast("Stomp connection opened");
+                            Log.d(TAG_NOTIFICATION_SERVICE, "Stomp connection opened");
                             break;
                         case ERROR:
                             Log.e(TAG_NOTIFICATION_SERVICE, "Stomp connection error", lifecycleEvent.getException());
-                            toast("Stomp connection error");
                             break;
                         case CLOSED:
-                            toast("Stomp connection closed");
+                            Log.d(TAG_NOTIFICATION_SERVICE, "Stomp connection closed");
                             resetSubscriptions();
                             break;
                         case FAILED_SERVER_HEARTBEAT:
-                            toast("Stomp failed server heartbeat");
+                            Log.e(TAG_NOTIFICATION_SERVICE, "Stomp failed server heartbeat");
                             break;
                     }
                 });
@@ -187,11 +183,6 @@ public class NotificationService extends Service {
             compositeDisposable.dispose();
         }
         compositeDisposable = new CompositeDisposable();
-    }
-
-    private void toast(String text) {
-        Log.i(TAG_NOTIFICATION_SERVICE, text);
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     private void createNotificationChannel() {

@@ -23,8 +23,13 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,11 +69,22 @@ public class GeneralReportFragment extends Fragment {
             }
         });
 
-        mReportRepository.getGeneralReport("2020-01-01", "2025-01-01").observe(getViewLifecycleOwner(), generalReport -> {
-            Log.d(TAG, "Daily reports size: " + generalReport.getDailyReports().size());
-            mBinding.totalProfitValue.setText(generalReport.getTotalProfit().toString());
-            mBinding.totalReservationCountValue.setText(generalReport.getTotalReservationCount().toString());
-            setUpChart(new ArrayList<>(generalReport.getDailyReports()));
+        mBinding.btnGetReports.setOnClickListener(v -> {
+            try {
+                DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("yyyy/MM/dd").toFormatter();
+
+                String startDate = LocalDate.parse(mBinding.etStartDate.getText().toString(), formatter).toString();
+                String endDate = LocalDate.parse(mBinding.etEndDate.getText().toString(), formatter).toString();
+
+                mReportRepository.getGeneralReport(startDate, endDate).observe(getViewLifecycleOwner(), generalReport -> {
+                    Log.d(TAG, "Daily reports size: " + generalReport.getDailyReports().size());
+                    mBinding.totalProfitValue.setText(generalReport.getTotalProfit().toString());
+                    mBinding.totalReservationCountValue.setText(generalReport.getTotalReservationCount().toString());
+                    setUpChart(new ArrayList<>(generalReport.getDailyReports()));
+                });
+            } catch (DateTimeParseException e) {
+                Snackbar.make(mBinding.getRoot(), R.string.invalid_date_format, Snackbar.LENGTH_SHORT).show();
+            }
         });
     }
 

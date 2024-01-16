@@ -72,5 +72,7 @@
     <string name="reports">Reports</string>
     <string name="total_profit">Total profit:</string>
     <string name="total_reservation_count">Total reservation count:</string>
+    <string name="get_reports">Get reports</string>
+    <string name="invalid_date_format">Invalid date format - should be yyyy/MM/dd</string>
 </resources>
 

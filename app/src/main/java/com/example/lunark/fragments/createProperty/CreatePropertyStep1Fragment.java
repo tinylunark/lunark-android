@@ -216,6 +216,10 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
                     binding.sharedRoomRadio.setChecked(true);
                     break;
             }
+        } else {
+            binding.roomRadio.setChecked(false);
+            binding.wholeHouseRadio.setChecked(false);
+            binding.sharedRoomRadio.setChecked(false);
         }
     }
 

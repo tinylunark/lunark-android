@@ -3,11 +3,11 @@ package com.example.lunark.adapters;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.lunark.fragments.GeneralReportFragment;
+import com.example.lunark.fragments.PropertyReportFragment;
 
 public class ReportsPagerAdapter extends FragmentStateAdapter {
 
@@ -18,7 +18,14 @@ public class ReportsPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new GeneralReportFragment();
+        Fragment fragment;
+        if (position == 0) {
+            fragment = new GeneralReportFragment();
+        } else {
+            fragment = new PropertyReportFragment();
+        }
+
+        return fragment;
     }
 
     @Override

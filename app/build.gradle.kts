@@ -113,4 +113,5 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
     implementation("org.osmdroid:osmdroid-android:6.1.14")
     implementation("com.stepstone.stepper:material-stepper:4.3.1")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

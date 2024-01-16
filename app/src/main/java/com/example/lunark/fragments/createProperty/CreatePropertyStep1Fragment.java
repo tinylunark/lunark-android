@@ -19,6 +19,7 @@ import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentCreatePropertyStep1Binding;
 import com.example.lunark.models.Address;
 import com.example.lunark.models.Property;
+import com.example.lunark.sensors.ProximitySensorFragment;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
@@ -121,6 +122,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         binding.minGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
         binding.maxGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
         binding.addressEditText.addTextChangedListener(textWatcher);
+        binding.cityEditText.addTextChangedListener(textWatcher);
+        binding.countryEditText.addTextChangedListener(textWatcher);
         MapView map = binding.osmmap;
         MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
             @Override
@@ -149,6 +152,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         binding.minGuestsNumberPicker.setOnValueChangedListener(null);
         binding.maxGuestsNumberPicker.setOnValueChangedListener(null);
         binding.addressEditText.removeTextChangedListener(textWatcher);
+        binding.cityEditText.removeTextChangedListener(textWatcher);
+        binding.countryEditText.removeTextChangedListener(textWatcher);
     }
 
     private void updateViewModel() {
@@ -194,6 +199,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
             binding.minGuestsNumberPicker.setValue(property.getMinGuests());
             binding.maxGuestsNumberPicker.setValue(property.getMaxGuests());
             binding.addressEditText.setText(property.getAddress().getStreet());
+            binding.cityEditText.setText(property.getAddress().getCity());
+            binding.countryEditText.setText(property.getAddress().getCountry());
             if(property.getType() != null) {
                 restoreLocation(property);
             }

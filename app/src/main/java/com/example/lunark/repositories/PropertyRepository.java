@@ -3,6 +3,7 @@ package com.example.lunark.repositories;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -118,5 +119,28 @@ public class PropertyRepository {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream);
         return stream.toByteArray();
+    }
+
+    public LiveData<List<Property>> getMyProperties(@NonNull String hostId) {
+        final MutableLiveData<List<Property>> data = new MutableLiveData<>();
+
+        propertyService.getMyProperties(hostId).enqueue(new Callback<List<Property>>() {
+            @Override
+            public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
+                if (response.isSuccessful()) {
+                    Log.i(LOG_TAG, "Get my properties response: " + response.body());
+                    data.setValue(response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get my properties response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Property>> call, Throwable t) {
+                Log.e(LOG_TAG, "Get my properties failure: " + t.getMessage());
+            }
+        });
+
+        return data;
     }
 }

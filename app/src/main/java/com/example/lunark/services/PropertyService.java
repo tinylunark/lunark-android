@@ -17,6 +17,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface PropertyService {
@@ -53,5 +54,12 @@ public interface PropertyService {
             "User-Agent: Mobile-Android",
     })
     Completable uploadImage(@Path("id") Long propertyId, @Part MultipartBody.Part partFile);
+
+    @GET("properties/my-properties")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<List<Property>> getMyProperties(@Query("hostId") String hostId);
 }
 

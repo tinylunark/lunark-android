@@ -85,6 +85,10 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         });
     }
 
+    public LiveData<List<Property>> getMyProperties(String hostId) {
+        return propertyRepository.getMyProperties(hostId);
+    }
+
     public static final ViewModelInitializer<PropertyDetailViewModel> initializer = new ViewModelInitializer<>(
             PropertyDetailViewModel.class,
             creationExtras -> {

@@ -24,6 +24,7 @@ public class Property {
     private Integer cancellationDeadline;
     private boolean autoApproveEnabled;
     private List<Long> amenityIds;
+    private Host host;
 
     public Property() {
         address = new Address("", "", "");
@@ -215,5 +216,13 @@ public class Property {
 
     public List<Long> getAmenityIds() {
         return amenityIds;
+    }
+
+    public Host getHost() {
+        return host;
+    }
+
+    public void setHost(Host host) {
+        this.host = host;
     }
 }

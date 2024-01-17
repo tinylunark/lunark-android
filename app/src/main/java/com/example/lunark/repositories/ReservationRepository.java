@@ -24,6 +24,7 @@ public class ReservationRepository {
     private static final String LOG_TAG = "ReservationRepository";
     ReservationService reservationService;
 
+    @Inject
     public ReservationRepository() {
         this.reservationService = ClientUtils.reservationService;
     }
@@ -31,29 +32,6 @@ public class ReservationRepository {
     @Inject
     public void setRetrofit(Retrofit retrofit) {
         this.reservationService = retrofit.create(ReservationService.class);
-    }
-
-    public LiveData<List<Reservation>> getReservations() {
-        final MutableLiveData<List<Reservation>> data = new MutableLiveData<>();
-
-        ClientUtils.reservationService.getReservations().enqueue(new Callback<List<Reservation>>() {
-            @Override
-            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                if (response.isSuccessful()) {
-                    Log.i(LOG_TAG, "Get reservations response: " + response.body());
-                    Log.e("AYO", "REZERVACIJE FECOVANE");
-                    data.setValue(response.body());
-                } else {
-                    Log.w(LOG_TAG, "Get reservations response not successful: " + response.code());
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Reservation>> call, Throwable t) {
-                Log.e(LOG_TAG, "Get reservations failure: " + t.getMessage());
-            }
-        });
-
-        return data;
     }
 
     public LiveData<List<Reservation>> getPendingReservations(@NonNull Long hostId) {
@@ -79,10 +57,32 @@ public class ReservationRepository {
         return data;
     }
 
+    public LiveData<List<Reservation>> getCurrentReservations() {
+        final MutableLiveData<List<Reservation>> data = new MutableLiveData<>();
 
-    public void acceptReservation(long reservationId) {
-        Call<ResponseBody> call = ClientUtils.reservationService.acceptReservation(reservationId);
-        call.enqueue(new Callback<ResponseBody>() {
+        reservationService.getCurrentReservations().enqueue(new Callback<List<Reservation>>() {
+            @Override
+            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                if (response.isSuccessful()) {
+                    List<Reservation> reservations = response.body();
+                    data.setValue(response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get reservations response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Reservation>> call, Throwable t) {
+                Log.e(LOG_TAG, "Get reservations failure: " + t.getMessage());
+            }
+        });
+
+        return data;
+    }
+
+
+    public void acceptReservation(Long reservationId) {
+        reservationService.acceptReservation(reservationId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -98,9 +98,8 @@ public class ReservationRepository {
         });
     }
 
-    public void declineReservation(long reservationId) {
-        Call<ResponseBody> call = ClientUtils.reservationService.declineReservation(reservationId);
-        call.enqueue(new Callback<ResponseBody>() {
+    public void declineReservation(Long reservationId) {
+        ClientUtils.reservationService.declineReservation(reservationId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {

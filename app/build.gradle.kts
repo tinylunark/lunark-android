@@ -14,6 +14,10 @@ android {
     namespace = "com.example.lunark"
     compileSdk = 34
 
+    dataBinding {
+        enable = true
+    }
+
     defaultConfig {
         applicationId = "com.example.lunark"
         minSdk = 26
@@ -49,6 +53,7 @@ android {
         viewBinding = true
         compose = true
         buildConfig = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"

@@ -38,12 +38,6 @@
             android:exported="false" />
 <<<<<<< HEAD
         -->
-        <activity
-            android:name=".HostReservationScreenActivity"
-            android:exported="true"
-            android:label="HostReservationScreenActivity"/>
-=======
-           -->
         <service
             android:name=".notifications.NotificationService"
             android:foregroundServiceType="remoteMessaging"
@@ -52,7 +46,6 @@
         <receiver
             android:name=".notifications.NotificationReceiver"
             android:exported="false" />
->>>>>>> bda00670ba6ff1798fcf67762fc682bacd1b4bb2
         <activity
             android:name=".ChangePasswordActivity"
             android:exported="true"

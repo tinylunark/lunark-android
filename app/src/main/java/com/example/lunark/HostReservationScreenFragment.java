@@ -1,32 +1,27 @@
-package com.example.lunark;
+package com.example.lunark.fragments;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.lunark.databinding.ActivityHostReservationScreenBinding;
-import com.example.lunark.fragments.AllReservationsFragment;
-import com.example.lunark.fragments.*;
+import com.example.lunark.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class HostReservationScreenActivity extends AppCompatActivity {
+public class HostReservationScreenFragment extends Fragment {
 
-    private ActivityHostReservationScreenBinding binding;
-    FrameLayout frameLayout;
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_host_reservation_screen);
-        binding = ActivityHostReservationScreenBinding.inflate(getLayoutInflater());
-        frameLayout = (FrameLayout) findViewById(R.id.all_res_frame_lay);
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_host_reservation_screen, container, false);
+        tabLayout = rootView.findViewById(R.id.tablayout);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.setCustomAnimations(
                 android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right
@@ -46,7 +41,7 @@ public class HostReservationScreenActivity extends AppCompatActivity {
                         fragment = new AllReservationsFragment();
                         break;
                 }
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(
                         android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right
@@ -66,5 +61,7 @@ public class HostReservationScreenActivity extends AppCompatActivity {
 
             }
         });
+
+        return rootView;
     }
 }

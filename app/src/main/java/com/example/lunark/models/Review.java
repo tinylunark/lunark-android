@@ -9,6 +9,7 @@ public class Review {
     private LocalDate date;
     private int rating;
     private String description;
+    private Long authorId;
 
     public Review() {
     }
@@ -59,5 +60,13 @@ public class Review {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }

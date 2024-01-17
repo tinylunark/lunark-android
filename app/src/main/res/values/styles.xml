@@ -13,4 +13,8 @@
         <item name="android:background">@drawable/transparent_button_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="ButtonDanger">
+        <item name="backgroundTint">?attr/colorError</item>
+        <item name="android:textColor">?attr/colorOnError</item>
+    </style>
 </resources>

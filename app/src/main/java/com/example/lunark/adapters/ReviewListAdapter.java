@@ -1,5 +1,6 @@
 package com.example.lunark.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,30 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.models.Review;
+import com.example.lunark.repositories.LoginRepository;
+import com.example.lunark.repositories.ReviewRepository;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private Fragment fragment;
     private List<Review> reviews;
+    @Inject
+    LoginRepository loginRepository;
+    @Inject
+    ReviewRepository reviewRepository;
+    private Long currentUserId;
 
     public ReviewListAdapter(Fragment fragment, List<Review> reviews) {
         this.fragment = fragment;
         this.reviews = reviews;
+        ((LunarkApplication) fragment.getActivity().getApplication()).applicationComponent.inject(this);
+        this.currentUserId = this.loginRepository.getLogin().blockingGet().getProfileId();
     }
 
     @NonNull
@@ -41,6 +54,15 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         holder.getRating().setText(String.format("%d", review.getRating()));
         holder.getDate().setText(review.getDate().toString());
         holder.getComment().setText(review.getDescription());
+
+        if (review.getAuthorId() == null || !review.getAuthorId().equals(this.currentUserId)) {
+           holder.deleteButton.setVisibility(View.GONE);
+        } else {
+            holder.deleteButton.setOnClickListener(v -> {
+                // TODO: Delete review
+                Log.d("REVIEW_LIST_ADAPTER", "Tried to delete review with id: " + review.getId());
+            });
+        }
     }
 
     @Override

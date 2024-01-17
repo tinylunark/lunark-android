@@ -3,6 +3,7 @@ package com.example.lunark;
 
 import android.content.Context;
 
+import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
@@ -38,4 +39,5 @@ public interface ApplicationComponent {
     void inject(NotificationService notificationService);
     void inject(NotificationsFragment notificationsFragment);
     void inject(ReviewViewModel reviewViewModel);
+    void inject(ReviewListAdapter reviewListAdapter);
 }

@@ -3,7 +3,8 @@
 
     <PreferenceCategory
         app:key="notifications"
-        app:title="Notifications">
+        app:title="Notifications"
+        app:icon="@drawable/baseline_notifications_24">
 
         <SwitchPreferenceCompat
             app:key="property_review_notifications"

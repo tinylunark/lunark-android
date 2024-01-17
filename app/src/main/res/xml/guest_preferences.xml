@@ -3,11 +3,12 @@
 
     <PreferenceCategory
         app:key="notifications"
-        app:title="Notifications">
+        app:title="Notifications"
+        app:icon="@drawable/baseline_notifications_24">
 
         <SwitchPreferenceCompat
             app:key="reservation_response_notifications"
-            app:summary="Toggle notifications when the host responds to reservation request."
+            app:summary="Toggle notifications when the host responds to reservation requests."
             app:title="Reservation response" />
 
     </PreferenceCategory>

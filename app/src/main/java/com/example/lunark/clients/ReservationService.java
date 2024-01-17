@@ -24,9 +24,6 @@ public interface ReservationService {
     })
     Call<List<Reservation>> getReservations();
 
-    @GET("properties/images/{imageId}")
-    Call<ResponseBody> getImage(@Query("propertyId") Long propertyId, @Query("imageId") Long imageId);
-
     @GET("reservations/incoming-reservations")
     @Headers({
             "User-Agent: Mobile-Android",
@@ -34,13 +31,28 @@ public interface ReservationService {
     })
     Call<List<Reservation>> getIncomingReservations(@Query("hostId") Long hostId);
 
+    @GET("reservations/current")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<List<Reservation>> getCurrentReservations();
+
     @GET("reservations/accepted")
     Call<List<Reservation>> getAcceptedReservations(@Query("guestId") Long guestId);
 
     @POST("reservations/accept/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     Call<ResponseBody> acceptReservation(@Path("id") Long reservationId);
 
-    @POST("reservations/decline/{id}")
+    @POST("reservations/reject/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     Call<ResponseBody> declineReservation(@Path("id") Long reservationId);
 
 

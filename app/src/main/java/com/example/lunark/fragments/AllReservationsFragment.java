@@ -5,61 +5,108 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.lunark.R;
+import com.example.lunark.LunarkApplication;
+import com.example.lunark.adapters.ReservationsListAdapterBase;
+import com.example.lunark.databinding.FragmentPendingReservationBinding;
+import com.example.lunark.models.Login;
+import com.example.lunark.repositories.LoginRepository;
+import com.example.lunark.viewmodels.ReservationsViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AllReservationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
 public class AllReservationsFragment extends Fragment {
+    private FragmentPendingReservationBinding binding;
+    private ReservationsViewModel reservationsViewModel;
+    private ReservationsListAdapterBase adapter;
+    private RecyclerView recyclerView;
+    @Inject
+    public LoginRepository loginRepository;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AllReservationsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AllReservationsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AllReservationsFragment newInstance(String param1, String param2) {
-        AllReservationsFragment fragment = new AllReservationsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((LunarkApplication)getActivity().getApplication()).applicationComponent.inject(this); ;
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentPendingReservationBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        reservationsViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(ReservationsViewModel.initializer)).get(ReservationsViewModel.class);
+        return view;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_reservations, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUpReservationList();
+
+        loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onSuccess(Login login) {
+                Long profileId = login.getProfileId();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        observeCurrentReservations();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+        });
+    }
+
+    private void observeCurrentReservations() {
+        reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
+            adapter.setReservations(reservations);
+            recyclerView.setAdapter(adapter);
+        });
+    }
+
+    public void acceptReservation(long reservationId) {
+        reservationsViewModel.acceptReservation(reservationId);
+        observeCurrentReservations();
+    }
+
+    public void declineReservation(long reservationId) {
+        reservationsViewModel.declineReservation(reservationId);
+        observeCurrentReservations();
+    }
+
+
+    private void setUpReservationList() {
+        recyclerView = binding.reservationsRecyclerView;
+        adapter = new ReservationsListAdapterBase(this, new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        int scrollPosition = 0;
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.scrollToPosition(scrollPosition);
     }
 }

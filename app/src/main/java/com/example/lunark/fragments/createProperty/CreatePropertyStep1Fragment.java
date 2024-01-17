@@ -20,9 +20,7 @@ import com.example.lunark.databinding.FragmentCreatePropertyStep1Binding;
 import com.example.lunark.models.Address;
 import com.example.lunark.models.Property;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
-import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
-import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import org.osmdroid.api.IMapController;
@@ -121,6 +119,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         binding.minGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
         binding.maxGuestsNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> updateViewModel());
         binding.addressEditText.addTextChangedListener(textWatcher);
+        binding.cityEditText.addTextChangedListener(textWatcher);
+        binding.countryEditText.addTextChangedListener(textWatcher);
         MapView map = binding.osmmap;
         MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
             @Override
@@ -149,6 +149,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         binding.minGuestsNumberPicker.setOnValueChangedListener(null);
         binding.maxGuestsNumberPicker.setOnValueChangedListener(null);
         binding.addressEditText.removeTextChangedListener(textWatcher);
+        binding.cityEditText.removeTextChangedListener(textWatcher);
+        binding.countryEditText.removeTextChangedListener(textWatcher);
     }
 
     private void updateViewModel() {
@@ -194,9 +196,9 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
             binding.minGuestsNumberPicker.setValue(property.getMinGuests());
             binding.maxGuestsNumberPicker.setValue(property.getMaxGuests());
             binding.addressEditText.setText(property.getAddress().getStreet());
-            if(property.getType() != null) {
-                restoreLocation(property);
-            }
+            binding.cityEditText.setText(property.getAddress().getCity());
+            binding.countryEditText.setText(property.getAddress().getCountry());
+            restoreLocation(property);
             this.updatesEnabled = true;
         });
     }
@@ -214,10 +216,18 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
                     binding.sharedRoomRadio.setChecked(true);
                     break;
             }
+        } else {
+            binding.roomRadio.setChecked(false);
+            binding.wholeHouseRadio.setChecked(false);
+            binding.sharedRoomRadio.setChecked(false);
         }
     }
 
     private void restoreLocation(Property property) {
+        this.overlayItems.clear();
+        if (property.getLatitude() == null) {
+            return;
+        }
         setMarker(new GeoPoint(property.getLatitude(), property.getLongitude()));
     }
 
@@ -263,7 +273,6 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
     }
 
     private void setMarker(GeoPoint p) {
-        this.overlayItems.clear();
         this.overlayItems.add(new OverlayItem("Your property", "", p));
         this.mapOverlay.setFocusedItem(overlayItems.get(0));
     }

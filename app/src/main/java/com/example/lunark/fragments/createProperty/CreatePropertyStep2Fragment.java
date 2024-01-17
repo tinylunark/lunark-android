@@ -186,6 +186,7 @@ public class CreatePropertyStep2Fragment extends Fragment implements BlockingSte
             }
             this.updatesEnabled = false;
             this.property = property;
+            amenityCheckboxes.values().forEach(checkBox -> checkBox.setChecked(false));
             for (Amenity amenity: property.getAmenities()) {
                 if (amenityCheckboxes.containsKey(amenity.getName())) {
                     amenityCheckboxes.get(amenity.getName()).setChecked(true);

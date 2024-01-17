@@ -4,6 +4,12 @@
     <PreferenceCategory
         app:key="notifications"
         app:title="Notifications">
+
+        <SwitchPreferenceCompat
+            app:key="reservation_response_notifications"
+            app:summary="Toggle notifications when the host responds to reservation request."
+            app:title="Reservation response" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

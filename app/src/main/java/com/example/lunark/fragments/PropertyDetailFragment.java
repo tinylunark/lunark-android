@@ -22,8 +22,8 @@ import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.datasources.AccountRepository;
-import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
+import com.example.lunark.models.ReviewType;
 import com.example.lunark.repositories.ReviewRepository;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
@@ -128,6 +128,8 @@ public class PropertyDetailFragment extends Fragment {
             }
         });
 
+        binding.writeReviewButton.setOnClickListener(v -> openWriteReviewFragment());
+
     }
 
     private void loadMap(double latitude, double longitude) {
@@ -184,5 +186,12 @@ public class PropertyDetailFragment extends Fragment {
             subscription.dispose();
         }
         super.onDestroy();
+    }
+
+    private void openWriteReviewFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.propertyId);
+        bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.PROPERTY.toString());
+        getParentFragmentManager().setFragmentResult("review", bundle);
     }
 }

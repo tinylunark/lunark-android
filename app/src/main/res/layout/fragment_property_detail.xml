@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.PropertyDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".fragments.PropertyDetailFragment">
+        >
 
         <ImageView
             android:id="@+id/thumbnail"
@@ -145,6 +146,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:id="@+id/write_review_button"
+            android:onClick="openWriteReviewFragment"
             android:text="@string/write_a_review"/>
 
         <androidx.recyclerview.widget.RecyclerView

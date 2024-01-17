@@ -2,10 +2,12 @@ package com.example.lunark.datasources;
 
 import android.util.Log;
 
+import com.example.lunark.models.Review;
 import com.example.lunark.services.ReviewService;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -29,6 +31,13 @@ public class ReviewNetworkDataSource {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
+    }
+
+    public Completable createPropertyReview(Review review, Long propertyId) {
+        return this.reviewService.createPropertyReview(review, propertyId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> Log.d(TAG, "Successfully uploaded property review"));
     }
 
 }

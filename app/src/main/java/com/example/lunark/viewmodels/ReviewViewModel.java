@@ -74,13 +74,13 @@ public class ReviewViewModel extends AndroidViewModel {
     }
 
     public Completable uploadPropertyReview(Review review) {
-        // TODO: Upload review; call appropriate method of repository based on type
         Log.d("REVIEW", "Uploading property review. Rating: " + review.getRating() + " Comment: " + review.getDescription());
-        return Completable.complete();
+        return reviewRepository.createPropertyReview(review, reviewedEntityId);
     }
 
     public Completable uploadHostReview(Review review) {
         // TODO: Upload host reviews
+        Log.d("REVIEW", "Uploading host review. Rating: " + review.getRating() + " Comment: " + review.getDescription());
         return Completable.complete();
     }
 

@@ -3,6 +3,7 @@ package com.example.lunark.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         private final TextView rating;
         private final TextView date;
         private final TextView comment;
+        private final Button deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +62,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             rating = (TextView) itemView.findViewById(R.id.rating);
             date = (TextView) itemView.findViewById(R.id.date);
             comment = (TextView) itemView.findViewById(R.id.comment);
+            deleteButton = (Button) itemView.findViewById(R.id.delete_button);
         }
 
         public TextView getAuthor() {
@@ -76,6 +79,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
         public TextView getComment() {
             return comment;
+        }
+
+        public Button getDeleteButton() {
+            return deleteButton;
         }
     }
 

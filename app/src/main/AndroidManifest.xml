@@ -31,13 +31,6 @@
         android:theme="@style/Theme.BookingAppTim1"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!--
-        <activity
-            android:name=".PropertyActivity"
-            android:exported="false" />
-<<<<<<< HEAD
-        -->
         <service
             android:name=".notifications.NotificationService"
             android:foregroundServiceType="remoteMessaging"

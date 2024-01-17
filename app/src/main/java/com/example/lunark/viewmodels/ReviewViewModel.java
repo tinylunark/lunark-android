@@ -15,6 +15,8 @@ import java.time.LocalDate;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+
 public class ReviewViewModel extends AndroidViewModel {
     @Inject
     ReviewRepository reviewRepository;
@@ -61,22 +63,25 @@ public class ReviewViewModel extends AndroidViewModel {
         this.rating = rating;
     }
 
-    public void uploadReview() {
+    public Completable uploadReview() {
         Review review = new Review(null, null, null, this.rating, this.comment);
         if (this.type.equals(ReviewType.PROPERTY)) {
-            uploadPropertyReview(review);
+            return uploadPropertyReview(review);
         } else if (this.type.equals(ReviewType.HOST)) {
-            uploadHostReview(review);
+            return uploadHostReview(review);
         }
+        return Completable.error(new IllegalArgumentException("Invalid review type in ReviewViewModel"));
     }
 
-    public void uploadPropertyReview(Review review) {
+    public Completable uploadPropertyReview(Review review) {
         // TODO: Upload review; call appropriate method of repository based on type
         Log.d("REVIEW", "Uploading property review. Rating: " + review.getRating() + " Comment: " + review.getDescription());
+        return Completable.complete();
     }
 
-    public void uploadHostReview(Review review) {
+    public Completable uploadHostReview(Review review) {
         // TODO: Upload host reviews
+        return Completable.complete();
     }
 
 

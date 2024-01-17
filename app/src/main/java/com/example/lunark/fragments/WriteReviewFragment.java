@@ -36,6 +36,7 @@ public class WriteReviewFragment extends Fragment {
     private ReviewType reviewType;
     private ReviewViewModel viewModel;
     private FragmentWriteReviewBinding binding;
+    private Disposable subscription;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +55,48 @@ public class WriteReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_write_review, container, false);
+        binding.submitButton.setOnClickListener(v -> submitReview());
         binding.setViewmodel(viewModel);
         return binding.getRoot();
+    }
+
+    private boolean isValid() {
+       return viewModel.getComment() != null &&
+               !viewModel.getComment().isEmpty() &&
+               !viewModel.getComment().matches(" +") &&
+                viewModel.getComment().matches("[a-zA-Z0-9 \\.!\\?]+") &&
+                viewModel.getRating() != null;
+    }
+
+    private void submitReview() {
+        if (!isValid()) {
+            Snackbar.make(binding.getRoot(), R.string.one_of_the_fields_was_not_filled_properly, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        viewModel.uploadReview().subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                subscription = d;
+            }
+
+            @Override
+            public void onComplete() {
+                Snackbar.make(binding.getRoot(), R.string.review_submitted_successfully, Snackbar.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Snackbar.make(binding.getRoot(), R.string.something_went_wrong, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
+        }
+        super.onDestroy();
     }
 }

@@ -72,8 +72,9 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
                     @Override
                     public void onComplete() {
-                        reviews.remove(position);
-                        notifyItemRemoved(position);
+                        int currentPosition = holder.getAdapterPosition();
+                        reviews.remove(currentPosition);
+                        notifyItemRemoved(currentPosition);
                     }
 
                     @Override

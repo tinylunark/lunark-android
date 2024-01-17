@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +33,6 @@ public class PendingReservationsFragment extends Fragment {
     private RecyclerView recyclerView;
     @Inject
     public LoginRepository loginRepository;
-    final MutableLiveData<Long> profileId = new MutableLiveData<>();
 
 
     @Override
@@ -69,10 +67,7 @@ public class PendingReservationsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        reservationsViewModel.getPendingReservations(profileId).observe(getViewLifecycleOwner(), reservations -> {
-                            adapter.setReservations(reservations);
-                            recyclerView.setAdapter(adapter);
-                        });
+                        observePendingReservations(profileId);
                     }
                 });
             }
@@ -81,6 +76,23 @@ public class PendingReservationsFragment extends Fragment {
             public void onError(Throwable e) {
             }
         });
+    }
+
+    private void observePendingReservations(Long profileId) {
+        reservationsViewModel.getPendingReservations(profileId).observe(getViewLifecycleOwner(), reservations -> {
+            adapter.setReservations(reservations);
+            recyclerView.setAdapter(adapter);
+        });
+    }
+
+    public void acceptReservation(long reservationId) {
+        reservationsViewModel.acceptReservation(reservationId);
+        observePendingReservations(loginRepository.getLogin().blockingGet().getProfileId());
+    }
+
+    public void declineReservation(long reservationId) {
+        reservationsViewModel.declineReservation(reservationId);
+        observePendingReservations(loginRepository.getLogin().blockingGet().getProfileId());
     }
 
 

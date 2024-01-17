@@ -78,5 +78,10 @@
     <string name="invalid_year">Invalid year - should be yyyy</string>
     <string name="notifications">Notifications</string>
     <string name="write_a_review">Write a review</string>
+    <string name="write_review">Write review</string>
+    <string name="review">Review</string>
+    <string name="comment">Comment</string>
+    <string name="rate_your_stay">Rate your stay</string>
+    <string name="submit">Submit</string>
 </resources>
 

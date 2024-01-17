@@ -12,6 +12,7 @@ import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.viewmodels.ReviewViewModel;
 
 import javax.inject.Singleton;
 
@@ -36,4 +37,5 @@ public interface ApplicationComponent {
     void inject(PropertyReportFragment propertyReportFragment);
     void inject(NotificationService notificationService);
     void inject(NotificationsFragment notificationsFragment);
+    void inject(ReviewViewModel reviewViewModel);
 }

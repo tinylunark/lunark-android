@@ -5,7 +5,8 @@ import android.content.Context;
 
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
-import com.example.lunark.interceptors.JwtInterceptor;
+import com.example.lunark.repositories.ReservationRepository;
+import com.example.lunark.fragments.*;
 
 import javax.inject.Singleton;
 
@@ -20,7 +21,9 @@ public interface ApplicationComponent {
         ApplicationComponent create(@BindsInstance Context context);
     }
     void inject(LoginScreenActivity loginScreenActivity);
+    void inject(ReservationRepository reservationRepository);
     void inject(HomeActivity homeActivity);
     void inject(AccountScreen accountScreen);
     void inject(SignUpScreenActivity signUpScreenActivity);
+    void inject(PendingReservationsFragment pendingReservationsFragment);
 }

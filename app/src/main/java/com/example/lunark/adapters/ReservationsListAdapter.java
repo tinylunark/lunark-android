@@ -6,11 +6,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.lunark.R;
 import com.example.lunark.models.Reservation;
+
 import java.util.List;
 
 public class ReservationsListAdapter extends RecyclerView.Adapter<ReservationsListAdapter.ViewHolder> {

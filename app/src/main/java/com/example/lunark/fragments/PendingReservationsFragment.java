@@ -8,26 +8,39 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.adapters.ReservationsListAdapter;
 import com.example.lunark.databinding.FragmentPendingReservationBinding;
+import com.example.lunark.models.Login;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.viewmodels.ReservationsViewModel;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 public class PendingReservationsFragment extends Fragment {
     private FragmentPendingReservationBinding binding;
     private ReservationsViewModel reservationsViewModel;
     private ReservationsListAdapter adapter;
     private RecyclerView recyclerView;
+    @Inject
+    public LoginRepository loginRepository;
+    final MutableLiveData<Long> profileId = new MutableLiveData<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((LunarkApplication)getActivity().getApplication()).applicationComponent.inject(this); ;
         super.onCreate(savedInstanceState);
-        reservationsViewModel = new ViewModelProvider(this).get(ReservationsViewModel.class);
     }
 
     @Nullable
@@ -35,20 +48,41 @@ public class PendingReservationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPendingReservationBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        reservationsViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(ReservationsViewModel.initializer)).get(ReservationsViewModel.class);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setUpReservationList();
 
-        reservationsViewModel.getReservations().observe(getViewLifecycleOwner(), reservations -> {
-            adapter.setReservations(reservations);
-            recyclerView.setAdapter(adapter);
+        loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onSuccess(Login login) {
+                Long profileId = login.getProfileId();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reservationsViewModel.getPendingReservations(profileId).observe(getViewLifecycleOwner(), reservations -> {
+                            adapter.setReservations(reservations);
+                            recyclerView.setAdapter(adapter);
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
         });
     }
+
 
     private void setUpReservationList() {
         recyclerView = binding.reservationsRecyclerView;

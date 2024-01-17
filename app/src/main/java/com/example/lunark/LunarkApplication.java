@@ -15,8 +15,6 @@ public class LunarkApplication extends Application {
     public void onCreate() {
         super.onCreate();
         applicationComponent = DaggerApplicationComponent.factory().create(this.getApplicationContext());
-        reservationRepository = new ReservationRepository();
-        applicationComponent.inject(reservationRepository);
         propertyRepository = new PropertyRepository();
         applicationComponent.inject(propertyRepository);
     }

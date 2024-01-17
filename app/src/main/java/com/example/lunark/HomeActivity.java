@@ -4,8 +4,11 @@ import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,13 +16,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.FiltersDialogFragment;
+import com.example.lunark.fragments.createProperty.CreatePropertyFragment;
+import com.example.lunark.fragments.createProperty.IAllowBackPressed;
+import com.example.lunark.models.Login;
+import com.example.lunark.models.Property;
+import com.example.lunark.notifications.NotificationReceiver;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.fragments.PropertiesFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.models.Login;
@@ -77,22 +93,12 @@ public class HomeActivity extends AppCompatActivity {
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(binding.fragmentContainerView.getId(), PropertiesFragment.class, null)
-                    .commit();
-        }
+        setUpNotificationReceiver();
 
-        getSupportFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(binding.fragmentContainerView.getId(), PropertyDetailFragment.class, bundle)
-                        .commit();
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_property, bundle);
             }
         });
 
@@ -116,32 +122,21 @@ public class HomeActivity extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
+            public void onSubscribe(Disposable d) {
+                subscription = d;
+            }
 
-                if (itemId == R.id.menu_home) {
-                    if (!isActivityRunning(HomeActivity.class)) {
-                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                    }
-                } else if (itemId == R.id.menu_account) {
-                    if (!isActivityRunning(AccountScreen.class)) {
-                        Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
-                        startActivity(accountIntent);
-                    }
-                } else if (itemId == R.id.menu_reservations_host) {
-                    if (!isActivityRunning(HostReservationScreenActivity.class)) {
-                        Intent accountIntent = new Intent(HomeActivity.this, HostReservationScreenActivity.class);
-                        startActivity(accountIntent);
-                    }
-                } else if (itemId == R.id.menu_logout) {
-                    logOut();
-                }
-                drawer.closeDrawers();
-                return true;
+            @Override
+            public void onSuccess(Login login) {
+                String userRole = loginRepository.extractRoleFromJwt(login.getAccessToken());
+                setupNavigationMenu(userRole);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
             }
         });
-
     }
     @Override
     protected void onDestroy() {
@@ -149,6 +144,11 @@ public class HomeActivity extends AppCompatActivity {
             subscription.dispose();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     private boolean isActivityRunning(Class<?> activityClass) {
@@ -233,5 +233,77 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void setupNavigationMenu(String userRole) {
+        Log.d("NAV", "Setting up navigation menu for role: " + userRole);
+        navigationView.getMenu().clear();
+        int menuResId = R.menu.nav_menu;
+        if (userRole != null) {
+            switch (userRole) {
+                case "ADMIN":
+                    menuResId = R.menu.admin_nav_menu;
+                    break;
+                case "HOST":
+                    menuResId = R.menu.host_nav_menu;
+                    break;
+                case "GUEST":
+                    menuResId = R.menu.nav_menu;
+                    break;
+            }
+        }
+
+        navigationView.inflateMenu(menuResId);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.menu_home) {
+                    if (!isActivityRunning(HomeActivity.class)) {
+                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
+                        startActivity(homeIntent);
+                    }
+                } else if (itemId == R.id.menu_account) {
+                    if (!isActivityRunning(AccountScreen.class)) {
+                        Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
+                        startActivity(accountIntent);
+                    }
+                } else if (itemId == R.id.menu_logout) {
+                    logOut();
+                } else {
+                    NavigationUI.onNavDestinationSelected(item, navController);
+                }
+                drawer.closeDrawers();
+                return true;
+            }
+        });
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container_view);
+        navController = navHostFragment.getNavController();
+    }
+
+    private Fragment getCurrentlyDisplayed() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.getFragments().get(0);
+        return navHostFragment.getChildFragmentManager().getFragments().get(0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getCurrentlyDisplayed();
+        if (!(fragment instanceof IAllowBackPressed) || ((IAllowBackPressed) fragment).allowBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    private void setUpNotificationReceiver() {
+
+        NotificationReceiver notificationReceiver = new NotificationReceiver();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(NotificationReceiver.PUSH_NOTIFICATION);
+        registerReceiver(notificationReceiver, filter);
     }
 }

@@ -6,7 +6,10 @@ import com.example.lunark.dtos.ProfileDto;
 
 import io.reactivex.Completable;
 import com.example.lunark.dtos.ProfileDto;
+import com.example.lunark.models.Property;
 
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -50,4 +53,23 @@ public interface AccountService {
     })
     @POST("accounts")
     Completable signUp(@Body AccountSignUpDto accountSignUpDto);
+
+    @GET("accounts/favorites")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<List<Property>> getFavoriteProperties();
+
+    @POST("accounts/favorites/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+    })
+    Call<Void> addFavoriteProperty(@Path("id") Long id);
+
+    @DELETE("accounts/favorites/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+    })
+    Call<Void> deleteFavoriteProperty(@Path("id") Long id);
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_create_property"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.createProperty.CreatePropertyFragment"
+    >
+
+    <!-- Header -->
+
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:text="New property"
+        style="@style/TextAppearance.Material3.HeadlineLarge"
+        android:gravity="center"
+        android:id="@+id/title"
+        ></TextView>
+    <!-- Container -->
+    <LinearLayout
+        android:id="@+id/main_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        >
+
+        <!-- Stepper -->
+        <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stepper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:ms_stepperType="progress_bar" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

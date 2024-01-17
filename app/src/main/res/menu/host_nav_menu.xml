@@ -5,6 +5,7 @@
 
     <item
         android:id="@+id/menu_home"
+        android:id="@+id/nav_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_home"
@@ -17,7 +18,7 @@
         android:icon="@drawable/ic_account"
         android:title="Account" />
     <item
-        android:id="@+id/menu_new_property"
+        android:id="@+id/nav_new_property"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_new_property"

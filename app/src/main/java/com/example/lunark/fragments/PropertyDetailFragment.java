@@ -24,10 +24,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.lunark.BuildConfig;
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
+import com.example.lunark.datasources.AccountRepository;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
 import com.example.lunark.util.ClientUtils;
@@ -47,14 +49,19 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
     private static final String PROPERTY_ID = "propertyId";
     private Long propertyId;
     private PropertyDetailViewModel viewModel;
+    @Inject
+    AccountRepository accountRepository;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((LunarkApplication) getActivity().getApplication()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
@@ -111,6 +118,19 @@ public class PropertyDetailFragment extends Fragment {
 
             loadMap(property.getLatitude(), property.getLongitude());
             setUpReviewsRecyclerView(property.getReviews());
+        });
+
+        accountRepository.getFavoriteProperties().observe(getViewLifecycleOwner(), favorites -> {
+            boolean isFavorite = favorites.stream().anyMatch(favorite -> favorite.getId().equals(propertyId));
+            binding.favoriteCheckbox.setChecked(isFavorite);
+        });
+
+        binding.favoriteCheckbox.setOnClickListener(v -> {
+            if (binding.favoriteCheckbox.isChecked()) {
+                accountRepository.addFavoriteProperty(propertyId);
+            } else {
+                accountRepository.deleteFavoriteProperty(propertyId);
+            }
         });
     }
 

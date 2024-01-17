@@ -83,6 +83,27 @@ public String extractRoleFromJwt(String token) {
     }
 
 
+    public String extractRoleFromJwt(String token) {
+        try {
+            String[] splitToken = token.split("\\.");
+            String base64EncodedBody = splitToken[1];
+            String body = new String(Base64.decode(base64EncodedBody, Base64.DEFAULT));
+            JSONObject jsonObject = new JSONObject(body);
+
+            JSONArray roles = jsonObject.getJSONArray("role");
+            if (roles.length() > 0) {
+                JSONObject firstRole = roles.getJSONObject(0);
+                return firstRole.getString("authority");
+            }
+
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public Completable logOut() {
         return loginNetworkDataSource.logOut().doOnComplete(() -> loginLocalDataSource.deleteToken());
     }

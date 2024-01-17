@@ -3,7 +3,13 @@ package com.example.lunark.datasources;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.interceptors.JwtInterceptor;
 import com.example.lunark.repositories.LoginRepository;
+import com.example.lunark.util.JsonDateDeserializer;
+import com.example.lunark.util.JsonDateTimeDeserializer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
@@ -37,12 +43,20 @@ public class NetworkModule {
         return client;
     }
 
+    @Provides
+    public static Gson provideGson() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new JsonDateDeserializer())
+                .registerTypeAdapter(ZonedDateTime.class, new JsonDateTimeDeserializer())
+                .create();
+        return gson;
+    }
 
     @Provides
-    public static Retrofit provideRetrofit(OkHttpClient okHttpClient) {
+    public static Retrofit provideRetrofit(OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(okHttpClient)
             .build();

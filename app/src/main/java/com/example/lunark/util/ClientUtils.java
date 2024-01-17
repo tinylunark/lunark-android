@@ -2,6 +2,8 @@ package com.example.lunark.util;
 
 import com.example.lunark.BuildConfig;
 import com.example.lunark.clients.ReservationService;
+import com.example.lunark.datasources.LoginLocalDataSource;
+import com.example.lunark.interceptors.JwtInterceptor;
 import com.example.lunark.services.PropertyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,7 +28,8 @@ public class ClientUtils {
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .addInterceptor(interceptor)
+                .build();
 
         return client;
     }

@@ -8,7 +8,7 @@ public class FloatToIntegerConverter {
 
     @InverseMethod("FloatToInteger")
     public static float IntegerToFloat(Integer value) {
-        return value;
+        return (value != null) ? value : 0;
     }
 
     public static Integer FloatToInteger(float value) {

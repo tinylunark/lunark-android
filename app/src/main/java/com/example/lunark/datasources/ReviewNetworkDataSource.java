@@ -40,4 +40,12 @@ public class ReviewNetworkDataSource {
                 .doOnComplete(() -> Log.d(TAG, "Successfully uploaded property review"));
     }
 
+    public Completable deleteReview(Long id) {
+        return this.reviewService.deleteReview(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> Log.d(TAG, "Successfully delete review with id: " + id));
+    }
+
+
 }

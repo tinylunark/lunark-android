@@ -25,4 +25,8 @@ public class ReviewRepository {
     public Completable createPropertyReview(Review review, Long propertyId) {
         return this.reviewNetworkDataSource.createPropertyReview(review, propertyId);
     }
+
+    public Completable deleteReview(Long id) {
+        return this.reviewNetworkDataSource.deleteReview(id);
+    }
 }

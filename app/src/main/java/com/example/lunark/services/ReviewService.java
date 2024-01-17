@@ -6,6 +6,7 @@ import com.example.lunark.models.Review;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -25,4 +26,12 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     public Completable createPropertyReview(@Body Review review, @Path("propertyId") Long id);
+
+    @DELETE("reviews/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Completable deleteReview(@Path("id") Long id);
+
 }

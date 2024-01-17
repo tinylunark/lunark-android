@@ -21,6 +21,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private Fragment fragment;
     private List<Review> reviews;
@@ -29,6 +32,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
     @Inject
     ReviewRepository reviewRepository;
     private Long currentUserId;
+    private static final String TAG = "REVIEW_LIST_ADAPTER";
 
     public ReviewListAdapter(Fragment fragment, List<Review> reviews) {
         this.fragment = fragment;
@@ -59,8 +63,24 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
            holder.deleteButton.setVisibility(View.GONE);
         } else {
             holder.deleteButton.setOnClickListener(v -> {
-                // TODO: Delete review
-                Log.d("REVIEW_LIST_ADAPTER", "Tried to delete review with id: " + review.getId());
+                Log.d(TAG, "Tried to delete review with id: " + review.getId());
+                reviewRepository.deleteReview(review.getId()).subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        reviews.remove(position);
+                        notifyItemRemoved(position);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "Error while deleting review: " + e.getMessage());
+                    }
+                });
             });
         }
     }

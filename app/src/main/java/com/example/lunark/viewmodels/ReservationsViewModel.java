@@ -20,14 +20,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class ReservationsViewModel extends AndroidViewModel {
-    private final ReservationRepository reservationRepository;
+    @Inject
+    ReservationRepository reservationRepository;
     @Inject
     LoginRepository loginRepository;
     private final LiveData<List<Reservation>> reservations = new MutableLiveData<>();
 
+    @Inject
     public ReservationsViewModel(@NonNull Application application, ReservationRepository reservationRepository) {
         super(application);
-        this.reservationRepository = reservationRepository;
+        ((LunarkApplication) application).applicationComponent.inject(this);
     }
 
     public LiveData<List<Reservation>> getReservations() {
@@ -36,6 +38,10 @@ public class ReservationsViewModel extends AndroidViewModel {
 
     public LiveData<List<Reservation>> getPendingReservations(Long hostId) {
         return reservationRepository.getPendingReservations(hostId);
+    }
+
+    public LiveData<List<Reservation>> getCurrentReservations() {
+        return reservationRepository.getCurrentReservations();
     }
     public void acceptReservation(long reservationId) {
         reservationRepository.acceptReservation(reservationId);

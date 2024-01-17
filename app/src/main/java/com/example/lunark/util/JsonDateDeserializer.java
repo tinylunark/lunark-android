@@ -32,6 +32,7 @@ public class JsonDateDeserializer implements JsonDeserializer<LocalDate>, JsonSe
 
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd['T'HH:mm:ss]")
+                .appendPattern("[.SSSSSSSSS][.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
                 .toFormatter();
 
         return LocalDate.parse(dateStr, formatter);

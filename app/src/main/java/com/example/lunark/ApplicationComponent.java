@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.lunark.adapters.ReservationsListAdapter;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
+import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
@@ -17,6 +18,7 @@ import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.viewmodels.ReviewViewModel;
 
 import javax.inject.Singleton;
 
@@ -46,4 +48,6 @@ public interface ApplicationComponent {
     void inject(ReservationsListAdapter reservationListAdapter);
     void inject(ReservationsListAdapterBase reservationListAdapterBase);
     void inject(ReservationsViewModel reservationListAdapter);
+    void inject(ReviewViewModel reviewViewModel);
+    void inject(ReviewListAdapter reviewListAdapter);
 }

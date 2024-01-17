@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.PropertyDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".fragments.PropertyDetailFragment">
+        >
 
         <ImageView
             android:id="@+id/thumbnail"
@@ -136,11 +137,23 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"/>
 
+        <Button
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/osmmap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/write_review_button"
+            android:text="@string/write_a_review"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reviews"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/osmmap"
+            app:layout_constraintTop_toBottomOf="@id/write_review_button"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="15dp"
             android:layout_margin="10dp"/>

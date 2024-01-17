@@ -2,6 +2,8 @@ package com.example.lunark;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lunark.databinding.LoginScreenBinding;
 import com.example.lunark.models.Login;
+import com.example.lunark.notifications.NotificationReceiver;
+import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.LoginRepository;
 
 import org.reactivestreams.Subscription;
 
+import java.util.Objects;
 import java.util.concurrent.Flow;
 
 import javax.inject.Inject;
@@ -80,6 +85,21 @@ public class LoginScreenActivity extends AppCompatActivity {
         finish();
     }
 
+    private void logIn() {
+        startNotificationService();
+        openHomeActivity();
+    }
+
+    private void startNotificationService() {
+        Intent intent = new Intent(this, NotificationService.class);
+        intent.setAction(NotificationService.ACTION_START_NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Objects.requireNonNull(this).startForegroundService(intent);
+        } else {
+            Objects.requireNonNull(this).startService(intent);
+        }
+    }
+
     private void trySkipLogin() {
         loginRepository.getLogin()
                 .subscribe(new SingleObserver<Login>() {
@@ -91,7 +111,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Login login) {
                         if (!login.hasExpired()) {
-                            openHomeActivity();
+                            logIn();
                         } else {
                             loginRepository.clearToken();
                         }
@@ -114,7 +134,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(Login login) {
-                        openHomeActivity();
+                        logIn();
                     }
 
                     @Override

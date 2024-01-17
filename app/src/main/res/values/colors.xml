@@ -65,4 +65,5 @@
     <color name="md_theme_dark_surfaceTint">#4ED8E9</color>
     <color name="md_theme_dark_outlineVariant">#3F484A</color>
     <color name="md_theme_dark_scrim">#000000</color>
+    <color name="notification_card_color">#d6d6d6</color>
 </resources>

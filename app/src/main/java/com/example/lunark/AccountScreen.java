@@ -94,7 +94,7 @@ public class AccountScreen extends AppCompatActivity {
                     if (!isCurrentActivity(AccountScreen.class)) {
                         startActivity(new Intent(AccountScreen.this, AccountScreen.class));
                     }
-                } else if (itemId == R.id.menu_reservations || itemId == R.id.menu_notifications) {
+                } else if (itemId == R.id.menu_reservations) {
                     Toast.makeText(AccountScreen.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.menu_logout) {
                     if (!isCurrentActivity(LoginScreenActivity.class)) {

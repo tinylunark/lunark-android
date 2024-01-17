@@ -76,5 +76,6 @@
     <string name="invalid_date_format">Invalid date format - should be yyyy/MM/dd</string>
     <string name="year">Year</string>
     <string name="invalid_year">Invalid year - should be yyyy</string>
+    <string name="notifications">Notifications</string>
 </resources>
 

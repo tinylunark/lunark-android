@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +35,7 @@ import com.example.lunark.fragments.createProperty.CreatePropertyFragment;
 import com.example.lunark.fragments.createProperty.IAllowBackPressed;
 import com.example.lunark.models.Login;
 import com.example.lunark.models.Property;
+import com.example.lunark.notifications.NotificationReceiver;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.fragments.PropertiesFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
@@ -91,6 +93,8 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+        setUpNotificationReceiver();
 
         this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
             @Override
@@ -228,5 +232,14 @@ public class HomeActivity extends AppCompatActivity {
         if (!(fragment instanceof IAllowBackPressed) || ((IAllowBackPressed) fragment).allowBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    private void setUpNotificationReceiver() {
+
+        NotificationReceiver notificationReceiver = new NotificationReceiver();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(NotificationReceiver.PUSH_NOTIFICATION);
+        registerReceiver(notificationReceiver, filter);
     }
 }

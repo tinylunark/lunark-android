@@ -1,26 +1,44 @@
 package com.example.lunark.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.models.Review;
+import com.example.lunark.repositories.LoginRepository;
+import com.example.lunark.repositories.ReviewRepository;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private Fragment fragment;
     private List<Review> reviews;
+    @Inject
+    LoginRepository loginRepository;
+    @Inject
+    ReviewRepository reviewRepository;
+    private Long currentUserId;
+    private static final String TAG = "REVIEW_LIST_ADAPTER";
 
     public ReviewListAdapter(Fragment fragment, List<Review> reviews) {
         this.fragment = fragment;
         this.reviews = reviews;
+        ((LunarkApplication) fragment.getActivity().getApplication()).applicationComponent.inject(this);
+        this.currentUserId = this.loginRepository.getLogin().blockingGet().getProfileId();
     }
 
     @NonNull
@@ -40,6 +58,32 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         holder.getRating().setText(String.format("%d", review.getRating()));
         holder.getDate().setText(review.getDate().toString());
         holder.getComment().setText(review.getDescription());
+
+        if (review.getAuthorId() == null || !review.getAuthorId().equals(this.currentUserId)) {
+           holder.deleteButton.setVisibility(View.GONE);
+        } else {
+            holder.deleteButton.setOnClickListener(v -> {
+                Log.d(TAG, "Tried to delete review with id: " + review.getId());
+                reviewRepository.deleteReview(review.getId()).subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        int currentPosition = holder.getAdapterPosition();
+                        reviews.remove(currentPosition);
+                        notifyItemRemoved(currentPosition);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "Error while deleting review: " + e.getMessage());
+                    }
+                });
+            });
+        }
     }
 
     @Override
@@ -52,6 +96,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         private final TextView rating;
         private final TextView date;
         private final TextView comment;
+        private final Button deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +105,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             rating = (TextView) itemView.findViewById(R.id.rating);
             date = (TextView) itemView.findViewById(R.id.date);
             comment = (TextView) itemView.findViewById(R.id.comment);
+            deleteButton = (Button) itemView.findViewById(R.id.delete_button);
         }
 
         public TextView getAuthor() {
@@ -76,6 +122,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
         public TextView getComment() {
             return comment;
+        }
+
+        public Button getDeleteButton() {
+            return deleteButton;
         }
     }
 

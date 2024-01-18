@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
@@ -18,6 +19,7 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 
 public class PropertiesViewModel extends AndroidViewModel {
     private final PropertyRepository mPropertyRepository;
+    private MutableLiveData<PropertySearchState> state = new MutableLiveData<>();
     private final LiveData<List<Property>> mProperties;
 
     public PropertiesViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
@@ -25,6 +27,7 @@ public class PropertiesViewModel extends AndroidViewModel {
 
         this.mPropertyRepository = propertyRepository;
         this.mProperties = propertyRepository.getProperties(new HashMap<>());
+        state.setValue(new PropertySearchState());
     }
 
     public LiveData<List<Property>> getProperties() {
@@ -40,4 +43,12 @@ public class PropertiesViewModel extends AndroidViewModel {
                 return new PropertiesViewModel(application, application.getPropertyRepository());
             }
     );
+
+    public MutableLiveData<PropertySearchState> getState() {
+        return state;
+    }
+
+    public void setState(PropertySearchState value) {
+        this.state.setValue(value);
+    }
 }

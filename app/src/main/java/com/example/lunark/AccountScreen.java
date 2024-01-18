@@ -20,7 +20,6 @@ import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.ProfileDto;
 import com.example.lunark.models.Login;
 import com.example.lunark.repositories.LoginRepository;
-import com.example.lunark.util.ClientUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -28,12 +27,10 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AccountScreen extends AppCompatActivity {
     @Inject
@@ -94,9 +91,7 @@ public class AccountScreen extends AppCompatActivity {
                     if (!isCurrentActivity(AccountScreen.class)) {
                         startActivity(new Intent(AccountScreen.this, AccountScreen.class));
                     }
-                } else if (itemId == R.id.menu_reservations) {
-                    Toast.makeText(AccountScreen.this, "Screen not implemented", Toast.LENGTH_SHORT).show();
-                } else if (itemId == R.id.menu_logout) {
+                }  else if (itemId == R.id.menu_logout) {
                     if (!isCurrentActivity(LoginScreenActivity.class)) {
                         Intent intent = new Intent(AccountScreen.this, LoginScreenActivity.class);
                         startActivity(intent);

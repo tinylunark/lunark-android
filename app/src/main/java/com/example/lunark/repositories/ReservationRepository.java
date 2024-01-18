@@ -58,6 +58,29 @@ public class ReservationRepository {
         return data;
     }
 
+    public LiveData<List<Reservation>> getAcceptedReservations(@NonNull Long guestId) {
+        final MutableLiveData<List<Reservation>> data = new MutableLiveData<>();
+
+        reservationService.getAcceptedReservations(guestId).enqueue(new Callback<List<Reservation>>() {
+            @Override
+            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                if (response.isSuccessful()) {
+                    List<Reservation> reservations = response.body();
+                    data.setValue(response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get reservations response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Reservation>> call, Throwable t) {
+                Log.e(LOG_TAG, "Get reservations failure: " + t.getMessage());
+            }
+        });
+
+        return data;
+    }
+
     public LiveData<List<Reservation>> getCurrentReservations() {
         final MutableLiveData<List<Reservation>> data = new MutableLiveData<>();
 
@@ -100,7 +123,7 @@ public class ReservationRepository {
     }
 
     public void declineReservation(Long reservationId) {
-        ClientUtils.reservationService.declineReservation(reservationId).enqueue(new Callback<ResponseBody>() {
+        reservationService.declineReservation(reservationId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -136,5 +159,22 @@ public class ReservationRepository {
         });
 
         return data;
+    }
+
+    public void cancelReservation(Long reservationId) {
+        reservationService.cancelReservation(reservationId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e(LOG_TAG, "Decline reservation success: " + response.code());
+                } else {
+                    Log.e(LOG_TAG, "Decline reservation error: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(LOG_TAG, "Decline reservation failure: " + t.getMessage());
+            }
+        });
     }
 }

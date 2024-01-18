@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -81,18 +80,6 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             public void onPropertyDataFetchFailed() {
             }
         });
-
-        holder.getBtnCancel().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelReservation(reservationId);
-                Toast.makeText(fragment.getContext(), new String("Reservation canceled!"), Toast.LENGTH_SHORT).show();
-                reservations.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-            }
-        });
-
-
     }
     private void fetchUserData(Long userId, final ReservationsCancelListAdapter.UserDataCallback callback) {
         Call<AccountDto> call = ClientUtils.accountService.getAccount(userId);

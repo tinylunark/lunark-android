@@ -59,6 +59,7 @@ public class HostPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loadHostProfilePicture(id);
         binding.writeReviewButton.setOnClickListener(v -> openWriteReviewFragment());
+        binding.reportButton.setOnClickListener(v -> openReportFragment());
     }
 
     private void setUpReviewsRecyclerView(List<Review> reviews) {
@@ -91,5 +92,11 @@ public class HostPageFragment extends Fragment {
         bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.id);
         bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.HOST.toString());
         getParentFragmentManager().setFragmentResult("review", bundle);
+    }
+
+    private void openReportFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(AccountReportFragment.ACCOUNT_ID_KEY, this.id);
+        getParentFragmentManager().setFragmentResult(AccountReportFragment.REQUEST_KEY, bundle);
     }
 }

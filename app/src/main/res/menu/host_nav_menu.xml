@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/nav_main"
+        android:id="@+id/menu_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_home"
@@ -29,7 +29,7 @@
         android:icon="@drawable/ic_folder"
         android:title="@string/my_properties" />
     <item
-        android:id="@+id/menu_reservations"
+        android:id="@+id/nav_reservations_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_reservation"
@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_check"
         android:title="@string/unapproved_reservations" />
+  
     <item
         android:id="@+id/nav_notifications"
         android:layout_width="wrap_content"
@@ -58,6 +59,7 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_settings_24"
         android:title="@string/settings" />
+
     <item
         android:id="@+id/menu_logout"
         android:layout_width="wrap_content"

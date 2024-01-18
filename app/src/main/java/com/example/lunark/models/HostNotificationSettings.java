@@ -6,6 +6,17 @@ public class HostNotificationSettings {
     private boolean notifyOnHostReview;
     private boolean notifyOnPropertyReview;
 
+    public HostNotificationSettings() {
+    }
+
+    public HostNotificationSettings(boolean notifyOnReservationCreation, boolean notifyOnReservationCancellation, boolean notifyOnHostReview, boolean notifyOnPropertyReview) {
+        this.notifyOnReservationCreation = notifyOnReservationCreation;
+        this.notifyOnReservationCancellation = notifyOnReservationCancellation;
+        this.notifyOnHostReview = notifyOnHostReview;
+        this.notifyOnPropertyReview = notifyOnPropertyReview;
+    }
+
+
     public boolean isNotifyOnReservationCreation() {
         return notifyOnReservationCreation;
     }

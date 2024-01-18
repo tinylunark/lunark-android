@@ -15,6 +15,7 @@ public class AccountDto {
     private Boolean blocked;
     private GuestNotificationSettings guestNotificationSettings;
     private HostNotificationSettings hostNotificationSettings;
+    private Double averageRating;
 
     public AccountDto() {
     }
@@ -105,5 +106,17 @@ public class AccountDto {
 
     public void setBlocked(Boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public String getFullName() {
+        return this.name + " " + this.surname;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 }

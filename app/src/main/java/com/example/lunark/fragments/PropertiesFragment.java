@@ -23,17 +23,21 @@ public class PropertiesFragment extends Fragment {
     private PropertiesViewModel propertiesViewModel;
     private PropertyListAdapter adapter;
     private RecyclerView recyclerView;
+    private FiltersDialogFragment mFiltersDialogFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        propertiesViewModel = new ViewModelProvider(this).get(PropertiesViewModel.class);
+
+        propertiesViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PropertiesViewModel.initializer)).get(PropertiesViewModel.class);
+        mFiltersDialogFragment = new FiltersDialogFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPropertiesBinding.inflate(inflater, container, false);
+        binding.setViewModel(propertiesViewModel);
         View view = binding.getRoot();
         return view;
     }
@@ -43,7 +47,7 @@ public class PropertiesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.filterButton.setOnClickListener(v -> {
-                    new FiltersDialogFragment().show(
+                    mFiltersDialogFragment.show(
                             getChildFragmentManager(), FiltersDialogFragment.TAG
                     );
                 }
@@ -51,9 +55,11 @@ public class PropertiesFragment extends Fragment {
 
         setUpPropertyList();
 
-        propertiesViewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
-            adapter.setProperties(properties);
-            recyclerView.setAdapter(adapter);
+        binding.searchButton.setOnClickListener(v -> {
+            propertiesViewModel.search().observe(getViewLifecycleOwner(), properties -> {
+                adapter.setProperties(properties);
+                recyclerView.setAdapter(adapter);
+            });
         });
     }
 

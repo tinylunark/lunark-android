@@ -40,12 +40,51 @@
             android:text="@string/favorite"
             app:layout_constraintTop_toBottomOf="@id/name"
             app:layout_constraintStart_toStartOf="parent"/>
+        <LinearLayout
+            android:id="@+id/hosted_by_linear"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/favoriteCheckbox"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:src="@drawable/ic_account"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="2dp"
+                android:id="@+id/host_profile_picture_imageview"
+                android:padding="2dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/hosted_by"
+                android:textSize="20dp"
+                android:layout_marginLeft="6dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text=" "
+                android:textSize="20dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/host_name_textview"
+                android:text="John Doe"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/favoriteCheckbox"
+            app:layout_constraintTop_toBottomOf="@id/hosted_by_linear"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"
             android:textColor="?colorPrimary"/>

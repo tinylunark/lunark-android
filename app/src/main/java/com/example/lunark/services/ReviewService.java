@@ -1,7 +1,10 @@
 package com.example.lunark.services;
 
+import com.example.lunark.models.HostReviewEligibility;
 import com.example.lunark.models.PropertyReviewEligibility;
 import com.example.lunark.models.Review;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -34,4 +37,24 @@ public interface ReviewService {
     })
     public Completable deleteReview(@Path("id") Long id);
 
+    @GET("reviews/host/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Single<List<Review>> getHostReviews(@Path("id") Long id);
+
+    @GET("reviews/host-review-eligibility/{hostId}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Single<HostReviewEligibility> isEligibleToReviewHost(@Path("hostId") Long id);
+
+    @POST("reviews/host/{hostId}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Completable createHostReview(@Body Review review, @Path("hostId") Long id);
 }

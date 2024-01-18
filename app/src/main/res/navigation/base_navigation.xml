@@ -19,6 +19,12 @@
         <action
             android:id="@+id/action_nav_main_to_generalReportFragment"
             app:destination="@id/nav_reports" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_guest_settings"
+            app:destination="@id/nav_guest_settings" />
+        <action
+            android:id="@+id/action_nav_main_to_nav_host_settings"
+            app:destination="@id/nav_host_settings" />
     </fragment>
     <fragment
         android:id="@+id/nav_new_property"
@@ -67,6 +73,15 @@
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true"
         tools:layout="@layout/fragment_notifications" />
+
+  <fragment
+        android:id="@+id/nav_guest_settings"
+        android:name="com.example.lunark.fragments.GuestSettingsFragment"
+        android:label="Guest settings" />
+    <fragment
+        android:id="@+id/nav_host_settings"
+        android:name="com.example.lunark.fragments.HostSettingsFragment"
+        android:label="Host settings" />
     <fragment
         android:id="@+id/nav_write_review"
         android:name="com.example.lunark.fragments.WriteReviewFragment"

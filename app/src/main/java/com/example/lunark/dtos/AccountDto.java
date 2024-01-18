@@ -1,5 +1,8 @@
 package com.example.lunark.dtos;
 
+import com.example.lunark.models.GuestNotificationSettings;
+import com.example.lunark.models.HostNotificationSettings;
+
 public class AccountDto {
     private Long id;
     private String email;
@@ -10,9 +13,12 @@ public class AccountDto {
     private String role;
     private Boolean verified;
     private Boolean blocked;
+    private GuestNotificationSettings guestNotificationSettings;
+    private HostNotificationSettings hostNotificationSettings;
 
     public AccountDto() {
     }
+
     public Long getId() {
         return id;
     }
@@ -79,6 +85,22 @@ public class AccountDto {
 
     public Boolean getBlocked() {
         return blocked;
+    }
+
+    public GuestNotificationSettings getGuestNotificationSettings() {
+        return guestNotificationSettings;
+    }
+
+    public void setGuestNotificationSettings(GuestNotificationSettings guestNotificationSettings) {
+        this.guestNotificationSettings = guestNotificationSettings;
+    }
+
+    public HostNotificationSettings getHostNotificationSettings() {
+        return hostNotificationSettings;
+    }
+
+    public void setHostNotificationSettings(HostNotificationSettings hostNotificationSettings) {
+        this.hostNotificationSettings = hostNotificationSettings;
     }
 
     public void setBlocked(Boolean blocked) {

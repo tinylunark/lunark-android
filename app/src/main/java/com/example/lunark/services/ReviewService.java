@@ -3,6 +3,8 @@ package com.example.lunark.services;
 import com.example.lunark.models.PropertyReviewEligibility;
 import com.example.lunark.models.Review;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -33,5 +35,12 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     public Completable deleteReview(@Path("id") Long id);
+
+    @GET("reviews/host/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Single<List<Review>> getHostReviews(@Path("id") Long id);
 
 }

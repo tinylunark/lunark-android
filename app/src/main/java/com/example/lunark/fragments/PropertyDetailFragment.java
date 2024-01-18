@@ -42,6 +42,7 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.operators.observable.ObservableDistinctUntilChanged;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -118,6 +119,7 @@ public class PropertyDetailFragment extends Fragment {
 
             loadMap(property.getLatitude(), property.getLongitude());
             setUpReviewsRecyclerView(property.getReviews());
+            setUpHostLink(property);
         });
 
         accountRepository.getFavoriteProperties().observe(getViewLifecycleOwner(), favorites -> {
@@ -205,5 +207,13 @@ public class PropertyDetailFragment extends Fragment {
                 .load(ClientUtils.SERVICE_API_PATH + "accounts/" + host.getId() + "/profile-image")
                 .error(R.drawable.ic_account)
                 .into(binding.hostProfilePictureImageview);
+    }
+
+    private void setUpHostLink(Property property) {
+        binding.hostedByLinear.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong(HostPageFragment.HOST_ID_KEY, property.getHost().getId());
+            getParentFragmentManager().setFragmentResult(HostPageFragment.REQUEST_KEY, bundle);
+        });
     }
 }

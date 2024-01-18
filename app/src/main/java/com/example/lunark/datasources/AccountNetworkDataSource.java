@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.lunark.clients.AccountService;
+import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.AccountSignUpDto;
 import com.example.lunark.models.Property;
 
@@ -90,5 +91,26 @@ public class AccountNetworkDataSource {
                 Log.e(TAG, "Delete favorite property failure: " + t.getMessage());
             }
         });
+    }
+
+    public LiveData<AccountDto> getAccount(Long id) {
+        final MutableLiveData<AccountDto> data = new MutableLiveData<>();
+        accountService.getAccount(id).enqueue(new Callback<AccountDto>() {
+            @Override
+            public void onResponse(Call<AccountDto> call, Response<AccountDto> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Get account response: " + response.body());
+                    data.setValue(response.body());
+                } else {
+                    Log.w(TAG, "Get account not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccountDto> call, Throwable t) {
+                Log.e(TAG, "Get account failure: " + t.getMessage());
+            }
+        });
+        return data;
     }
 }

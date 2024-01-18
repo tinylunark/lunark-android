@@ -3,6 +3,7 @@ package com.example.lunark.repositories;
 import com.example.lunark.datasources.ReviewNetworkDataSource;
 import com.example.lunark.models.Review;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import javax.inject.Inject;
@@ -28,5 +29,9 @@ public class ReviewRepository {
 
     public Completable deleteReview(Long id) {
         return this.reviewNetworkDataSource.deleteReview(id);
+    }
+
+    public Single<List<Review>> getHostReviews(Long id) {
+        return this.reviewNetworkDataSource.getHostReviews(id);
     }
 }

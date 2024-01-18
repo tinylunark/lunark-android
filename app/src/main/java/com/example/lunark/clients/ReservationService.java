@@ -1,5 +1,6 @@
 package com.example.lunark.clients;
 
+import com.example.lunark.dtos.CreateReservationDto;
 import com.example.lunark.models.Reservation;
 
 import java.util.List;
@@ -63,4 +64,8 @@ public interface ReservationService {
             "Content-Type:application/json"
     })
     Call<ResponseBody> cancelReservation(@Path("id") Long reservationId);
+
+    @POST("reservations")
+    Call<Reservation> createReservation(@Body CreateReservationDto dto);
+
 }

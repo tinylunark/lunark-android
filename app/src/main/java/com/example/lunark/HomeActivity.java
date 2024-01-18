@@ -25,6 +25,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.HostPageFragment;
 import com.example.lunark.fragments.createProperty.IAllowBackPressed;
 import com.example.lunark.models.Login;
 import com.example.lunark.notifications.NotificationReceiver;
@@ -84,19 +85,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setUpNotificationReceiver();
 
-        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_property, bundle);
-            }
-        });
-
-        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("review", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_write_review, bundle);
-            }
-        });
+        setFragmentResultListeners();
 
         loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
             @Override
@@ -236,5 +225,35 @@ public class HomeActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(NotificationReceiver.PUSH_NOTIFICATION);
         registerReceiver(notificationReceiver, filter);
+    }
+
+    private void setFragmentResultListeners() {
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("selectedProperty", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_property, bundle);
+            }
+        });
+
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("review", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_write_review, bundle);
+            }
+        });
+
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener(HostPageFragment.REQUEST_KEY, this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_host_page, bundle);
+            }
+        });
+
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("booking", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_booking_request, bundle);
+            }
+        });
     }
 }

@@ -18,12 +18,15 @@ import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
 import com.example.lunark.fragments.AllReservationsFragment;
 import com.example.lunark.fragments.GuestCancelReservationFragment;
+import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.viewmodels.*;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyApprovalFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.viewmodels.HostViewModel;
+import com.example.lunark.viewmodels.PropertiesViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 
 import javax.inject.Singleton;
@@ -63,4 +66,8 @@ public interface ApplicationComponent {
     void inject(HostSettingsFragment hostSettingsFragment);
     void inject(PropertyApprovalFragment propertyApprovalFragment);
     void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
+    void inject(ReservationRepository reservationRepository);
+    void inject(PropertyApprovalFragment propertyApprovalFragment);
+    void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
+    void inject(HostViewModel hostViewModel);
 }

@@ -17,4 +17,8 @@
         <item name="backgroundTint">?attr/colorError</item>
         <item name="android:textColor">?attr/colorOnError</item>
     </style>
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

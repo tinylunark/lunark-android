@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.lunark.models.Review;
 import com.example.lunark.services.ReviewService;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -47,5 +49,28 @@ public class ReviewNetworkDataSource {
                 .doOnComplete(() -> Log.d(TAG, "Successfully delete review with id: " + id));
     }
 
+    public Single<List<Review>> getHostReviews(Long id) {
+        return this.reviewService.getHostReviews(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(reviews -> Log.d(TAG, "Successfully fetched reviews for host with id: " + id));
+    }
 
+    public Single<Boolean> isEligibleToReviewHost(Long id) {
+        return this.reviewService.isEligibleToReviewHost(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(hostReviewEligibility -> Log.d(TAG, "Successfully fetched host review eligibility for host with id " + hostReviewEligibility.isEligible()))
+                .flatMap(hostReviewEligibility -> Single.just(hostReviewEligibility.isEligible()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    public Completable createHostReview(Review review, Long hostId) {
+        return this.reviewService.createHostReview(review, hostId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> Log.d(TAG, "Successfully uploaded host review"));
+    }
 }

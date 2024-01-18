@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class AvailabilityEntry {
     private LocalDate date;
     private double price;
+    private boolean reserved;
 
     public AvailabilityEntry() {
     }
@@ -28,5 +29,13 @@ public class AvailabilityEntry {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isReserved() {
+        return reserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
     }
 }

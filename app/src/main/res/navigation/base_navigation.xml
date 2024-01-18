@@ -100,4 +100,9 @@
         android:name="com.example.lunark.fragments.HostPageFragment"
         android:label="Host page"
         tools:layout="@layout/fragment_host_page" />
+    <fragment
+        android:id="@+id/nav_booking_request"
+        android:name="com.example.lunark.fragments.BookingRequestFragment"
+        android:label="Booking request"
+        tools:layout="@layout/fragment_booking_request" />
 </navigation>

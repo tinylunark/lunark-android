@@ -248,5 +248,12 @@ public class HomeActivity extends AppCompatActivity {
                 Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_host_page, bundle);
             }
         });
+
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("booking", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_booking_request, bundle);
+            }
+        });
     }
 }

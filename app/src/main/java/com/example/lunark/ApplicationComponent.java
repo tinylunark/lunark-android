@@ -16,6 +16,7 @@ import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
 import com.example.lunark.fragments.AllReservationsFragment;
+import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.viewmodels.*;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyApprovalFragment;
@@ -59,6 +60,7 @@ public interface ApplicationComponent {
     void inject(ReviewListAdapter reviewListAdapter);
     void inject(GuestSettingsFragment guestSettingsFragment);
     void inject(HostSettingsFragment hostSettingsFragment);
+    void inject(ReservationRepository reservationRepository);
     void inject(PropertyApprovalFragment propertyApprovalFragment);
     void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
     void inject(HostViewModel hostViewModel);

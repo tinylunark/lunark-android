@@ -40,6 +40,10 @@ public class ReservationsViewModel extends AndroidViewModel {
         return reservationRepository.getPendingReservations(hostId);
     }
 
+    public LiveData<List<Reservation>> getAcceptedReservations(Long guestId) {
+        return reservationRepository.getAcceptedReservations(guestId);
+    }
+
     public LiveData<List<Reservation>> getCurrentReservations() {
         return reservationRepository.getCurrentReservations();
     }

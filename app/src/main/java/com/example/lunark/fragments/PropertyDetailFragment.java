@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
@@ -205,6 +206,7 @@ public class PropertyDetailFragment extends Fragment {
     private void loadHostProfilePicture(Host host) {
         Glide.with(this)
                 .load(ClientUtils.SERVICE_API_PATH + "accounts/" + host.getId() + "/profile-image")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.drawable.ic_account)
                 .into(binding.hostProfilePictureImageview);
     }

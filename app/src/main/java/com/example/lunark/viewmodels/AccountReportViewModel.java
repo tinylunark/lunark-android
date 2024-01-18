@@ -4,9 +4,13 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.Bindable;
-import androidx.databinding.ObservableChar;
 import androidx.lifecycle.AndroidViewModel;
+
+import com.example.lunark.LunarkApplication;
+import com.example.lunark.models.AccountReport;
+import com.example.lunark.repositories.AccountReportRepository;
+
+import javax.inject.Inject;
 
 import io.reactivex.Completable;
 
@@ -14,8 +18,11 @@ public class AccountReportViewModel extends AndroidViewModel {
     private final static String TAG ="ACCOUNT_REPORT_VIEW_MODEL";
     private String reason;
     private Long reportedAccountId;
+    @Inject
+    AccountReportRepository accountReportRepository;
     public AccountReportViewModel(@NonNull Application application) {
         super(application);
+        ((LunarkApplication) application).applicationComponent.inject(this);
     }
 
     public String getReason() {
@@ -36,6 +43,7 @@ public class AccountReportViewModel extends AndroidViewModel {
 
     public Completable uploadReport() {
         Log.d(TAG, "Reporting user with id " + reportedAccountId + " for reason: " + reason);
-        return Completable.complete();
+        AccountReport report = new AccountReport(this.reportedAccountId, this.getReason());
+        return this.accountReportRepository.report(report);
     }
 }

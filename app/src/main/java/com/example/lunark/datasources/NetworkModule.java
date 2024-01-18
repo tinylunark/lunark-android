@@ -5,10 +5,12 @@ import com.example.lunark.interceptors.JwtInterceptor;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.util.JsonDateDeserializer;
 import com.example.lunark.util.JsonDateTimeDeserializer;
+import com.example.lunark.util.JsonLocalDateTimeSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +50,7 @@ public class NetworkModule {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new JsonDateDeserializer())
                 .registerTypeAdapter(ZonedDateTime.class, new JsonDateTimeDeserializer())
+                .registerTypeAdapter(LocalDateTime.class, new JsonLocalDateTimeSerializer())
                 .create();
         return gson;
     }

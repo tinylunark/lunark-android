@@ -68,4 +68,5 @@ public interface ApplicationComponent {
     void inject(PropertyApprovalFragment propertyApprovalFragment);
     void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
     void inject(HostViewModel hostViewModel);
+    void inject(AccountReportViewModel accountReportViewModel);
 }

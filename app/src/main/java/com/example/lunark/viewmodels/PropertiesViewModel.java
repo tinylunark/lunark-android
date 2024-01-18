@@ -14,24 +14,76 @@ import com.example.lunark.repositories.PropertyRepository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
 public class PropertiesViewModel extends AndroidViewModel {
     private final PropertyRepository mPropertyRepository;
     private MutableLiveData<PropertySearchState> state = new MutableLiveData<>();
-    private final LiveData<List<Property>> mProperties;
 
     public PropertiesViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
         super(application);
 
         this.mPropertyRepository = propertyRepository;
-        this.mProperties = propertyRepository.getProperties(new HashMap<>());
         state.setValue(new PropertySearchState());
     }
 
-    public LiveData<List<Property>> getProperties() {
-        return mProperties;
+    public MutableLiveData<List<Property>> search() {
+        Map<String, String> params = new HashMap<>();
+        if (state.getValue().getGuestNumber() != null) {
+            params.put("guestNumber", state.getValue().getGuestNumber().toString());
+        } else {
+            params.put("guestNumber", "");
+        }
+        if (state.getValue().getLocation() != null) {
+            params.put("location", state.getValue().getLocation());
+        } else {
+            params.put("location", "");
+        }
+        if (state.getValue().getStartDate() != null) {
+            params.put("startDate", state.getValue().getStartDate().toString());
+        } else {
+            params.put("startDate", "");
+        }
+        if (state.getValue().getEndDate() != null) {
+            params.put("endDate", state.getValue().getEndDate().toString());
+        } else {
+            params.put("endDate", "");
+        }
+        if (state.getValue().getType() != null) {
+            switch (state.getValue().getType()) {
+                case 0:
+                    params.put("type", "");
+                    break;
+                case 1:
+                    params.put("type", "WHOLE_HOUSE");
+                    break;
+                case 2:
+                    params.put("type", "ROOM");
+                    break;
+                case 3:
+                    params.put("type", "SHARED_ROOM");
+                    break;
+                default:
+                    params.put("type", "");
+                    break;
+            }
+        } else {
+            params.put("type", "");
+        }
+        if (state.getValue().getMinPrice() != null) {
+            params.put("minPrice", state.getValue().getMinPrice().toString());
+        } else {
+            params.put("minPrice", "");
+        }
+        if (state.getValue().getMaxPrice() != null) {
+            params.put("maxPrice", state.getValue().getMaxPrice().toString());
+        } else {
+            params.put("maxPrice", "");
+        }
+
+        return mPropertyRepository.getProperties(params);
     }
 
     public static final ViewModelInitializer<PropertiesViewModel> initializer = new ViewModelInitializer<>(

@@ -43,7 +43,7 @@ public class PropertyRepository {
         this.propertyService = retrofit.create(PropertyService.class);
     }
 
-    public LiveData<List<Property>> getProperties(Map<String, String> options) {
+    public MutableLiveData<List<Property>> getProperties(Map<String, String> options) {
         final MutableLiveData<List<Property>> data = new MutableLiveData<>();
 
         propertyService.getProperties(options).enqueue(new Callback<List<Property>>() {

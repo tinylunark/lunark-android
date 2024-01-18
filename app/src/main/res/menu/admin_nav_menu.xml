@@ -27,6 +27,13 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_comments_grades"
         android:title="@string/comments_grades"/>
+
+    <item
+        android:id="@+id/nav_unapproved_reviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_check"
+        android:title="Unapproved Reviews" />
     <item
         android:id="@+id/menu_filter_properties"
         android:layout_width="wrap_content"

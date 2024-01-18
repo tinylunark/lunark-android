@@ -21,6 +21,7 @@ import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
 import com.example.lunark.viewmodels.HostViewModel;
+import com.example.lunark.viewmodels.PropertiesViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 
 import javax.inject.Singleton;

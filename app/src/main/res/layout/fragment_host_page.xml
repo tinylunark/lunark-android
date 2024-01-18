@@ -139,8 +139,8 @@
 
                 <Button
                     android:id="@+id/write_review_button"
+                    style="@style/Widget.Material3.Button"
                     android:enabled="@{viewmodel.eligibleToReview}"
-                    style="Button"
                     android:layout_width="0dp"
                     android:layout_weight="1.35"
                     android:layout_height="wrap_content"
@@ -150,6 +150,7 @@
 
                 <Button
                     android:id="@+id/report_button"
+                    android:enabled="@{viewmodel.eligibleToReport}"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"

@@ -19,15 +19,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentHostPageBinding;
-import com.example.lunark.models.Host;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.HostViewModel;
-import com.example.lunark.viewmodels.ReviewViewModel;
 
 import java.util.List;
-import java.util.Objects;
 
 public class HostPageFragment extends Fragment {
     public static final String HOST_ID_KEY = "HOST_ID";

@@ -1,12 +1,9 @@
 package com.example.lunark.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.lunark.adapters.PropertyListAdapter;
 import com.example.lunark.databinding.FragmentPropertiesBinding;
-import com.example.lunark.models.Property;
-import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertiesViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PropertiesFragment extends Fragment {
     private FragmentPropertiesBinding binding;

@@ -44,6 +44,27 @@ public class LoginRepository {
         return loginLocalDataSource.getToken();
     }
 
+    public String getLoggedUserId() {
+        String token = loginLocalDataSource.getToken().toString();
+        if (token == null || token.isEmpty()) {
+            return null;
+        }
+
+        try {
+            String[] splitToken = token.split("\\.");
+            String base64EncodedBody = splitToken[1];
+            String body = new String(Base64.decode(base64EncodedBody, Base64.DEFAULT));
+            JSONObject jsonObject = new JSONObject(body);
+            if (jsonObject.has("id")) {
+                return jsonObject.getString("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public String extractRoleFromJwt(String token) {
         try {
             String[] splitToken = token.split("\\.");

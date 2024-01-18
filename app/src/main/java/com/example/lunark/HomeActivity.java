@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -16,13 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,16 +25,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
-import com.example.lunark.fragments.FiltersDialogFragment;
-import com.example.lunark.fragments.createProperty.CreatePropertyFragment;
 import com.example.lunark.fragments.createProperty.IAllowBackPressed;
 import com.example.lunark.models.Login;
-import com.example.lunark.models.Property;
 import com.example.lunark.notifications.NotificationReceiver;
-import com.example.lunark.repositories.LoginRepository;
-import com.example.lunark.fragments.PropertiesFragment;
-import com.example.lunark.fragments.PropertyDetailFragment;
-import com.example.lunark.models.Login;
 import com.example.lunark.repositories.LoginRepository;
 import com.google.android.material.navigation.NavigationView;
 
@@ -127,8 +115,8 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-    }
 
+    }
     @Override
     protected void onDestroy() {
         if (subscription != null && !subscription.isDisposed()) {

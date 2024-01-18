@@ -3,12 +3,19 @@ package com.example.lunark;
 
 import android.content.Context;
 
+import com.example.lunark.adapters.ReservationsListAdapter;
+import com.example.lunark.adapters.ReservationsListAdapterBase;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
+import com.example.lunark.fragments.GuestSettingsFragment;
+import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
+import com.example.lunark.fragments.PendingReservationsFragment;
+import com.example.lunark.fragments.AllReservationsFragment;
+import com.example.lunark.viewmodels.*;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
@@ -32,6 +39,8 @@ public interface ApplicationComponent {
     void inject(HomeActivity homeActivity);
     void inject(AccountScreen accountScreen);
     void inject(SignUpScreenActivity signUpScreenActivity);
+    void inject(PendingReservationsFragment pendingReservationsFragment);
+    void inject(AllReservationsFragment pendingReservationsFragment);
     void inject(PropertyRepository propertyRepository);
     void inject(FavoritePropertiesFragment favoritePropertiesFragment);
     void inject(PropertyDetailFragment propertyDetailFragment);
@@ -39,6 +48,11 @@ public interface ApplicationComponent {
     void inject(PropertyReportFragment propertyReportFragment);
     void inject(NotificationService notificationService);
     void inject(NotificationsFragment notificationsFragment);
+    void inject(ReservationsListAdapter reservationListAdapter);
+    void inject(ReservationsListAdapterBase reservationListAdapterBase);
+    void inject(ReservationsViewModel reservationListAdapter);
     void inject(ReviewViewModel reviewViewModel);
     void inject(ReviewListAdapter reviewListAdapter);
+    void inject(GuestSettingsFragment guestSettingsFragment);
+    void inject(HostSettingsFragment hostSettingsFragment);
 }

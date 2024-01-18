@@ -2,6 +2,7 @@ package com.example.lunark.clients;
 
 import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.AccountSignUpDto;
+import com.example.lunark.dtos.NotificationSettingsDto;
 import com.example.lunark.dtos.ProfileDto;
 
 import io.reactivex.Completable;
@@ -72,4 +73,11 @@ public interface AccountService {
             "User-Agent: Mobile-Android",
     })
     Call<Void> deleteFavoriteProperty(@Path("id") Long id);
+
+    @PUT("accounts/notifications")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<Void> toggleNotifications(@Body NotificationSettingsDto notificationSettings);
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="notifications"
+        app:title="Notifications"
+        app:icon="@drawable/baseline_notifications_24">
+
+        <SwitchPreferenceCompat
+            app:key="property_review_notifications"
+            app:summary="Toggle notifications when a guest reviews my property."
+            app:title="Property review notifications" />
+
+        <SwitchPreferenceCompat
+            app:key="host_review_notifications"
+            app:summary="Toggle notifications when a guest reviews me as a host."
+            app:title="Host review notifications" />
+
+        <SwitchPreferenceCompat
+            app:key="reservation_request_notifications"
+            app:summary="Toggle notifications when a guest requests to book my property."
+            app:title="Reservation request notifications" />
+
+        <SwitchPreferenceCompat
+            app:key="reservation_cancellation_notifications"
+            app:summary="Toggle notifications when a guest cancels a reservation."
+            app:title="Reservation cancellation notifications" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

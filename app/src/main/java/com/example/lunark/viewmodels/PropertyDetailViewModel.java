@@ -32,7 +32,6 @@ public class PropertyDetailViewModel extends AndroidViewModel {
 
     public PropertyDetailViewModel(@NonNull Application application) {
         super(application);
-
         propertyRepository = new PropertyRepository();
     }
 

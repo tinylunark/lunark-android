@@ -73,6 +73,7 @@ public class BookingRequestFragment extends Fragment {
         final String pickerTag = "DatePickerDialog";
 
         List<Long> availableDates = mViewModel.getProperty().getValue().getAvailabilityEntries().stream()
+                .filter(availabilityEntry -> !availabilityEntry.isReserved())
                 .map(entry -> entry.getDate().toEpochDay() * 86400000) // DateValidator works with milliseconds so we need to convert Epoch days to milliseconds
                 .collect(Collectors.toList());
 

@@ -37,6 +37,8 @@ public class HostViewModel extends AndroidViewModel {
     private MutableLiveData<AccountDto> host;
     private MutableLiveData<List<Review>> reviews;
     private ObservableBoolean eligibleToReview;
+    private ObservableInt reviewCount;
+
     private LiveData<AccountDto> remoteHostLiveData;
 
     public HostViewModel(@NonNull Application application) {
@@ -45,6 +47,7 @@ public class HostViewModel extends AndroidViewModel {
         host = new MutableLiveData<>();
         reviews = new MutableLiveData<>(new ArrayList<>());
         eligibleToReview = new ObservableBoolean(false);
+        reviewCount = new ObservableInt(0);
     }
 
     public void init(Long id) {
@@ -60,11 +63,13 @@ public class HostViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(List<Review> reviews) {
                 HostViewModel.this.reviews.setValue(reviews);
+                HostViewModel.this.reviewCount.set(reviews.size());
             }
 
             @Override
             public void onError(Throwable e) {
                 HostViewModel.this.reviews.setValue(new ArrayList<>());
+                HostViewModel.this.reviewCount.set(0);
             }
         });
         reviewRepository.isEligibleToReviewHost(id).subscribe(new SingleObserver<Boolean>() {
@@ -95,6 +100,9 @@ public class HostViewModel extends AndroidViewModel {
 
     public ObservableBoolean getEligibleToReview() {
         return eligibleToReview;
+    }
+    public ObservableInt getReviewCount() {
+        return reviewCount;
     }
 
     @Override

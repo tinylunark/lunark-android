@@ -87,4 +87,9 @@
         android:name="com.example.lunark.fragments.WriteReviewFragment"
         android:label="Write a review"
         tools:layout="@layout/fragment_write_review" />
+    <fragment
+        android:id="@+id/nav_host_page"
+        android:name="com.example.lunark.fragments.HostPageFragment"
+        android:label="Host page"
+        tools:layout="@layout/fragment_host_page" />
 </navigation>

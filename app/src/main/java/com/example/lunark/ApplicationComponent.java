@@ -20,6 +20,7 @@ import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
 import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.viewmodels.HostViewModel;
 import com.example.lunark.viewmodels.PropertiesViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 
@@ -55,4 +56,5 @@ public interface ApplicationComponent {
     void inject(ReviewListAdapter reviewListAdapter);
     void inject(GuestSettingsFragment guestSettingsFragment);
     void inject(HostSettingsFragment hostSettingsFragment);
+    void inject(HostViewModel hostViewModel);
 }

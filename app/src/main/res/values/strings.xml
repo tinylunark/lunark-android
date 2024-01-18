@@ -102,5 +102,7 @@
     <string name="submit">Submit</string>
     <string name="review_submitted_successfully">Review submitted successfully</string>
     <string name="one_of_the_fields_was_not_filled_properly">One of the fields was not filled properly.</string>
+    <string name="hosted_by">Hosted by</string>
+    <string name="average_rating">Average rating</string>
 </resources>
 

@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.AccountSignUpDto;
 import com.example.lunark.models.Property;
 
@@ -39,5 +40,9 @@ public class AccountRepository {
 
     public void deleteFavoriteProperty(Long id) {
         accountNetworkDataSource.deleteFavoriteProperty(id);
+    }
+
+    public LiveData<AccountDto> getAccount(Long id) {
+        return this.accountNetworkDataSource.getAccount(id);
     }
 }

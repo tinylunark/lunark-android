@@ -6,20 +6,29 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
+import com.example.lunark.dtos.CreateReservationDto;
 import com.example.lunark.models.Property;
+import com.example.lunark.models.Reservation;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.repositories.ReservationRepository;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
 import android.util.Log;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+
+import javax.inject.Inject;
 
 public class BookingRequestViewModel extends ViewModel {
     public static final String TAG = "BookingRequestViewModel";
 
     private final PropertyRepository mPropertyRepository;
+
+    private final ReservationRepository mReservationRepository;
 
     private LiveData<Property> mProperty = new MutableLiveData<>();
 
@@ -31,8 +40,9 @@ public class BookingRequestViewModel extends ViewModel {
 
     private final MutableLiveData<Long> mEndDate = new MutableLiveData<>(null);
 
-    public BookingRequestViewModel(PropertyRepository propertyRepository) {
+    public BookingRequestViewModel(PropertyRepository propertyRepository, ReservationRepository reservationRepository) {
         mPropertyRepository = propertyRepository;
+        mReservationRepository = reservationRepository;
 
         mPropertyId.observeForever(id -> {
             if (id != null) {
@@ -40,6 +50,21 @@ public class BookingRequestViewModel extends ViewModel {
                 mProperty = mPropertyRepository.getProperty(id);
             }
         });
+    }
+
+    public LiveData<Reservation> createReservation() {
+        if (mGuestNumber.getValue() == null || mStartDate.getValue() == null || mEndDate.getValue() == null) {
+            throw new IllegalStateException("Guest number, start date, and end date must be set");
+        }
+
+        Instant startInstant = Instant.ofEpochMilli(mStartDate.getValue());
+        Instant endInstant = Instant.ofEpochMilli(mEndDate.getValue());
+
+        LocalDate startDate = startInstant.atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate endDate = endInstant.atZone(ZoneId.of("UTC")).toLocalDate();
+
+        CreateReservationDto dto = new CreateReservationDto(mPropertyId.getValue(), startDate, endDate, mGuestNumber.getValue());
+        return mReservationRepository.createReservation(dto);
     }
 
     public LiveData<Property> getProperty() {
@@ -79,7 +104,7 @@ public class BookingRequestViewModel extends ViewModel {
             creationExtras -> {
                 LunarkApplication application = (LunarkApplication) creationExtras.get(APPLICATION_KEY);
                 assert application != null;
-                return new BookingRequestViewModel(application.getPropertyRepository());
+                return new BookingRequestViewModel(application.getPropertyRepository(), application.getReservationRepository());
             }
     );
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.lunark.clients.ReservationService;
+import com.example.lunark.dtos.CreateReservationDto;
 import com.example.lunark.models.Reservation;
 import com.example.lunark.util.ClientUtils;
 
@@ -113,5 +114,27 @@ public class ReservationRepository {
                 Log.e(LOG_TAG, "Decline reservation failure: " + t.getMessage());
             }
         });
+    }
+
+    public LiveData<Reservation> createReservation(CreateReservationDto dto) {
+        final MutableLiveData<Reservation> data = new MutableLiveData<>(null);
+
+        reservationService.createReservation(dto).enqueue(new Callback<Reservation>() {
+            @Override
+            public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    Log.e(LOG_TAG, "Create reservation error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reservation> call, Throwable t) {
+                Log.e(LOG_TAG, "Create reservation failure: " + t.getMessage());
+            }
+        });
+
+        return data;
     }
 }

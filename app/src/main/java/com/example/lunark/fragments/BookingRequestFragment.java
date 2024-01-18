@@ -19,6 +19,7 @@ import com.example.lunark.viewmodels.BookingRequestViewModel;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +65,8 @@ public class BookingRequestFragment extends Fragment {
         });
 
         mBinding.btnChooseDate.setOnClickListener(this::openDatePicker);
+
+        mBinding.btnBook.setOnClickListener(this::createReservation);
     }
 
     private void openDatePicker(View view) {
@@ -96,5 +99,19 @@ public class BookingRequestFragment extends Fragment {
         });
 
         picker.show(getChildFragmentManager(), pickerTag);
+    }
+
+    private void createReservation(View view) {
+        try {
+            mViewModel.createReservation().observe(getViewLifecycleOwner(), reservation -> {
+                if (reservation != null) {
+                    Snackbar.make(mBinding.getRoot(), "Reservation created", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(mBinding.getRoot(), "Reservation creation failed", Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IllegalStateException e) {
+            Snackbar.make(mBinding.getRoot(), "Please fill out all fields", Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

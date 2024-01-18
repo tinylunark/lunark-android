@@ -98,6 +98,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener("booking", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_booking_request, bundle);
+            }
+        });
+
         loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
             @Override
             public void onSubscribe(Disposable d) {

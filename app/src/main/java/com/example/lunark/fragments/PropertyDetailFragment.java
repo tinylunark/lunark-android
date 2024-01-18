@@ -130,6 +130,7 @@ public class PropertyDetailFragment extends Fragment {
 
         binding.writeReviewButton.setOnClickListener(v -> openWriteReviewFragment());
 
+        binding.bookButton.setOnClickListener(v -> openBookingRequestFragment());
     }
 
     private void loadMap(double latitude, double longitude) {
@@ -193,5 +194,11 @@ public class PropertyDetailFragment extends Fragment {
         bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.propertyId);
         bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.PROPERTY.toString());
         getParentFragmentManager().setFragmentResult("review", bundle);
+    }
+
+    private void openBookingRequestFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(BookingRequestFragment.PROPERTY_ID, this.propertyId);
+        getParentFragmentManager().setFragmentResult("booking", bundle);
     }
 }

@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentHostPageBinding;
+import com.example.lunark.models.Host;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
+import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.HostViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 
@@ -30,12 +34,14 @@ public class HostPageFragment extends Fragment {
     public static final String REQUEST_KEY = "HOST";
     private HostViewModel viewModel;
     private FragmentHostPageBinding binding;
+    private Long id;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(HostViewModel.class);
         if (getArguments() != null) {
-            viewModel.init(requireArguments().getLong(HOST_ID_KEY));
+            id = requireArguments().getLong(HOST_ID_KEY);
+            viewModel.init(id);
         }
     }
 
@@ -51,6 +57,7 @@ public class HostPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadHostProfilePicture(id);
     }
 
     private void setUpReviewsRecyclerView(List<Review> reviews) {
@@ -68,5 +75,13 @@ public class HostPageFragment extends Fragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) recyclerView.getLayoutManager()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void loadHostProfilePicture(Long id) {
+        Glide.with(this)
+                .load(ClientUtils.SERVICE_API_PATH + "accounts/" + id + "/profile-image")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.ic_account_on_primary_container)
+                .into(binding.profilePictureImageview);
     }
 }

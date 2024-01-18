@@ -16,6 +16,7 @@ public class HostNotificationSettings {
         this.notifyOnPropertyReview = notifyOnPropertyReview;
     }
 
+
     public boolean isNotifyOnReservationCreation() {
         return notifyOnReservationCreation;
     }

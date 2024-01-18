@@ -8,41 +8,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_home"
-        android:title="Main" />
+        android:title="@string/main" />
     <item
         android:id="@+id/menu_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_account"
-        android:title="Account" />
+        android:title="@string/account" />
     <item
         android:id="@+id/menu_unapproved_properties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_unapproved_properties"
-        android:title="Unapproved Properties" />
+        android:title="@string/unapproved_properties" />
     <item
         android:id="@+id/menu_comments_grades"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_comments_grades"
-        android:title="Comments/Grades"/>
+        android:title="@string/comments_grades"/>
     <item
         android:id="@+id/menu_filter_properties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_filter"
-        android:title="Filter Properties" />
+        android:title="@string/filter_properties" />
     <item
         android:id="@+id/menu_user_management"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_globe"
-        android:title="User Management" />
+        android:title="@string/user_management" />
     <item
         android:id="@+id/menu_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_logout"
-        android:title="Logout" />
+        android:title="@string/logout" />
 </menu>

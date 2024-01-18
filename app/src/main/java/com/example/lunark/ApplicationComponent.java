@@ -10,6 +10,8 @@ import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
+import com.example.lunark.fragments.GuestSettingsFragment;
+import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
 import com.example.lunark.fragments.AllReservationsFragment;
@@ -50,4 +52,6 @@ public interface ApplicationComponent {
     void inject(ReservationsViewModel reservationListAdapter);
     void inject(ReviewViewModel reviewViewModel);
     void inject(ReviewListAdapter reviewListAdapter);
+    void inject(GuestSettingsFragment guestSettingsFragment);
+    void inject(HostSettingsFragment hostSettingsFragment);
 }

@@ -8,34 +8,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_home"
-        android:title="Main" />
+        android:title="@string/main" />
     <item
         android:id="@+id/menu_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_account"
-        android:title="Account" />
+        android:title="@string/account" />
     <item
         android:id="@+id/menu_reservations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_reservation"
-        android:title="Reservations" />
+        android:title="@string/reservations" />
     <item
         android:id="@+id/nav_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_notifications_24"
-        android:title="Notifications" />
+        android:title="@string/notifications" />
     <item
         android:id="@+id/nav_favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_favorite_24"
         android:title="@string/favorites" />
+    <item
+        android:id="@+id/nav_guest_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/settings" />
     <item
         android:id="@+id/menu_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_logout"
-        android:title="Logout" />
+        android:title="@string/logout" />
 </menu>

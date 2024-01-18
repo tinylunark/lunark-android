@@ -123,5 +123,5 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
     implementation("org.greenrobot:eventbus:3.3.1")
-
+    implementation("androidx.preference:preference-ktx:1.2.1")
 }

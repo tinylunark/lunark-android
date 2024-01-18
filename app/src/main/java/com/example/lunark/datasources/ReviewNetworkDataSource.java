@@ -56,5 +56,14 @@ public class ReviewNetworkDataSource {
                 .doOnSuccess(reviews -> Log.d(TAG, "Successfully fetched reviews for host with id: " + id));
     }
 
+    public Single<Boolean> isEligibleToReviewHost(Long id) {
+        return this.reviewService.isEligibleToReviewHost(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(hostReviewEligibility -> Log.d(TAG, "Successfully fetched host review eligibility for host with id " + hostReviewEligibility.isEligible()))
+                .flatMap(hostReviewEligibility -> Single.just(hostReviewEligibility.isEligible()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
 
+    }
 }

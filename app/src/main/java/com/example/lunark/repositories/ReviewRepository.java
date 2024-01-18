@@ -34,4 +34,8 @@ public class ReviewRepository {
     public Single<List<Review>> getHostReviews(Long id) {
         return this.reviewNetworkDataSource.getHostReviews(id);
     }
+
+    public Single<Boolean> isEligibleToReviewHost(Long id)  {
+        return this.reviewNetworkDataSource.isEligibleToReviewHost(id);
+    }
 }

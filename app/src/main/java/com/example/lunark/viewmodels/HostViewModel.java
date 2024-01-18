@@ -3,6 +3,8 @@ package com.example.lunark.viewmodels;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +14,7 @@ import com.example.lunark.LunarkApplication;
 import com.example.lunark.datasources.AccountRepository;
 import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.models.Host;
+import com.example.lunark.models.HostReviewEligibility;
 import com.example.lunark.models.Review;
 import com.example.lunark.repositories.ReviewRepository;
 
@@ -33,7 +36,7 @@ public class HostViewModel extends AndroidViewModel {
 
     private MutableLiveData<AccountDto> host;
     private MutableLiveData<List<Review>> reviews;
-
+    private ObservableBoolean eligibleToReview;
     private LiveData<AccountDto> remoteHostLiveData;
 
     public HostViewModel(@NonNull Application application) {
@@ -41,6 +44,7 @@ public class HostViewModel extends AndroidViewModel {
         ((LunarkApplication) application).applicationComponent.inject(this);
         host = new MutableLiveData<>();
         reviews = new MutableLiveData<>(new ArrayList<>());
+        eligibleToReview = new ObservableBoolean(false);
     }
 
     public void init(Long id) {
@@ -63,6 +67,22 @@ public class HostViewModel extends AndroidViewModel {
                 HostViewModel.this.reviews.setValue(new ArrayList<>());
             }
         });
+        reviewRepository.isEligibleToReviewHost(id).subscribe(new SingleObserver<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                reviewEligibilitySubscription = d;
+            }
+
+            @Override
+            public void onSuccess(Boolean eligible) {
+                HostViewModel.this.eligibleToReview.set(eligible);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                HostViewModel.this.eligibleToReview.set(false);
+            }
+        });
     }
 
     public LiveData<AccountDto> getHost() {
@@ -71,6 +91,10 @@ public class HostViewModel extends AndroidViewModel {
 
     public LiveData<List<Review>> getReviews() {
         return reviews;
+    }
+
+    public ObservableBoolean getEligibleToReview() {
+        return eligibleToReview;
     }
 
     @Override
@@ -85,7 +109,9 @@ public class HostViewModel extends AndroidViewModel {
         if (reviewsSubscription != null && !reviewsSubscription.isDisposed()){
             reviewsSubscription.dispose();
         }
-
+        if (reviewEligibilitySubscription != null && !reviewEligibilitySubscription.isDisposed()){
+            reviewEligibilitySubscription.dispose();
+        }
     }
 
     private final Observer<AccountDto> hostObserver = new Observer<AccountDto>() {
@@ -96,4 +122,5 @@ public class HostViewModel extends AndroidViewModel {
     };
 
     private Disposable reviewsSubscription;
+    private Disposable reviewEligibilitySubscription;
 }

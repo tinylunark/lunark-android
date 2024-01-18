@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.lunark.adapters.ReservationsListAdapter;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
+import com.example.lunark.adapters.ReservationsCancelListAdapter;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.adapters.UnapprovedPropertiesListAdapter;
 import com.example.lunark.datasources.DiskModule;
@@ -17,6 +18,7 @@ import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
 import com.example.lunark.fragments.AllReservationsFragment;
 import com.example.lunark.repositories.ReservationRepository;
+import com.example.lunark.fragments.GuestCancelReservationFragment;
 import com.example.lunark.viewmodels.*;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyApprovalFragment;
@@ -50,9 +52,11 @@ public interface ApplicationComponent {
     void inject(PropertyDetailFragment propertyDetailFragment);
     void inject(GeneralReportFragment generalReportFragment);
     void inject(PropertyReportFragment propertyReportFragment);
+    void inject(GuestCancelReservationFragment guestCancelReservationFragment);
     void inject(NotificationService notificationService);
     void inject(NotificationsFragment notificationsFragment);
     void inject(ReservationsListAdapter reservationListAdapter);
+    void inject(ReservationsCancelListAdapter reservationsCancelListAdapter);
     void inject(ReservationsListAdapterBase reservationListAdapterBase);
     void inject(ReservationsViewModel reservationListAdapter);
     void inject(UnapprovedPropertiesViewModel unapprovedPropertiesViewModel);

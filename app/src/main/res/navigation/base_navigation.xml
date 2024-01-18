@@ -68,8 +68,16 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/nav_reservations_host"
-        android:label="Notifications"
+        android:label="ReservationsHost"
         android:name="com.example.lunark.fragments.HostReservationScreenFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_unapproved_properties"
+        android:label="UnapprovedProperties"
+        android:name="com.example.lunark.fragments.PropertyApprovalFragment"
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true"
         tools:layout="@layout/fragment_notifications" />

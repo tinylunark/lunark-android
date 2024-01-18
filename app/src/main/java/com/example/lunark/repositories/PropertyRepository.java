@@ -63,6 +63,7 @@ public class PropertyRepository {
             }
         });
 
+        Log.d(LOG_TAG, "Returning data");
         return data;
     }
 

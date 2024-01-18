@@ -34,7 +34,7 @@ public class PropertiesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        propertiesViewModel = new ViewModelProvider(this).get(PropertiesViewModel.class);
+        propertiesViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PropertiesViewModel.initializer)).get(PropertiesViewModel.class);
     }
 
     @Nullable

@@ -4,11 +4,8 @@ import com.example.lunark.models.Reservation;
 
 import java.util.List;
 
-import io.reactivex.Single;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -38,7 +35,11 @@ public interface ReservationService {
     })
     Call<List<Reservation>> getCurrentReservations();
 
-    @GET("reservations/accepted")
+    @GET("reservations/accepted-reservations")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     Call<List<Reservation>> getAcceptedReservations(@Query("guestId") Long guestId);
 
     @POST("reservations/accept/{id}")
@@ -57,5 +58,9 @@ public interface ReservationService {
 
 
     @POST("reservations/cancel/{id}")
-    Single<Reservation> cancelReservation(@Body RequestBody emptyBody);
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<ResponseBody> cancelReservation(@Path("id") Long reservationId);
 }

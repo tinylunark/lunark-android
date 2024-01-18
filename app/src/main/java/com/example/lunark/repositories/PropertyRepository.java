@@ -20,11 +20,11 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.internal.operators.completable.CompletableAmb;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +34,7 @@ public class PropertyRepository {
     private static final String LOG_TAG = "PropertyRepository";
     PropertyService propertyService;
 
+    @Inject
     public PropertyRepository() {
         this.propertyService = ClientUtils.propertyService;
     }
@@ -66,6 +67,30 @@ public class PropertyRepository {
         Log.d(LOG_TAG, "Returning data");
         return data;
     }
+
+    public LiveData<List<Property>> getUnapprovedProperties() {
+        final MutableLiveData<List<Property>> data = new MutableLiveData<>();
+
+        propertyService.getUnapprovedProperties().enqueue(new Callback<List<Property>>() {
+            @Override
+            public void onResponse(Call<List<Property>> call, Response<List<Property>> response) {
+                if (response.isSuccessful()) {
+                    Log.i(LOG_TAG, "Get properties response: " + response.body());
+                    data.setValue(response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get properties response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Property>> call, Throwable t) {
+                Log.e(LOG_TAG, "Get properties failure: " + t.getMessage());
+            }
+        });
+
+        return data;
+    }
+
 
     public LiveData<Property> getProperty(Long id) {
         final MutableLiveData<Property> data = new MutableLiveData<>();
@@ -120,6 +145,23 @@ public class PropertyRepository {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream);
         return stream.toByteArray();
+    }
+
+    public void approveProperty(Long propertyId) {
+        propertyService.approveProperty(propertyId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e(LOG_TAG, "Approve property success: " + response.code());
+                } else {
+                    Log.e(LOG_TAG, "Approve property error: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(LOG_TAG, "Approve property failure: " + t.getMessage());
+            }
+        });
     }
 
     public LiveData<List<Property>> getMyProperties(@NonNull String hostId) {

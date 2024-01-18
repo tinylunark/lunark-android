@@ -28,6 +28,13 @@ public interface PropertyService {
     })
     Call<List<Property>> getProperties(@QueryMap Map<String, String> options);
 
+    @GET("properties/unapproved")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<List<Property>> getUnapprovedProperties();
+
     @GET("properties/{id}")
     @Headers({
             "User-Agent: Mobile-Android",
@@ -54,6 +61,13 @@ public interface PropertyService {
             "User-Agent: Mobile-Android",
     })
     Completable uploadImage(@Path("id") Long propertyId, @Part MultipartBody.Part partFile);
+
+    @POST("properties/approve/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<ResponseBody> approveProperty(@Path("id") Long propertyId);
 
     @GET("properties/my-properties")
     @Headers({

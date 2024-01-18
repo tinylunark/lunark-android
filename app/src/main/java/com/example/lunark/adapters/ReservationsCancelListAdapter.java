@@ -94,25 +94,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
 
 
     }
-    private void fetchUserData(Long userId, final ReservationsCancelListAdapter.UserDataCallback callback) {
-        Call<AccountDto> call = ClientUtils.accountService.getAccount(userId);
-        call.enqueue(new Callback<AccountDto>() {
-            @Override
-            public void onResponse(Call<AccountDto> call, Response<AccountDto> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AccountDto accountDto = response.body();
-                    callback.onUserDataFetched(accountDto);
-                } else {
-                    callback.onUserDataFetchFailed();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<AccountDto> call, Throwable t) {
-                callback.onUserDataFetchFailed();
-            }
-        });
-    }
     private void fetchPropertyData(Long propertyId, final ReservationsCancelListAdapter.PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);
         call.enqueue(new Callback<Property>() {

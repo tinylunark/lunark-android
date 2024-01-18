@@ -66,4 +66,11 @@ public class ReviewNetworkDataSource {
                 .observeOn(AndroidSchedulers.mainThread());
 
     }
+
+    public Completable createHostReview(Review review, Long hostId) {
+        return this.reviewService.createHostReview(review, hostId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> Log.d(TAG, "Successfully uploaded host review"));
+    }
 }

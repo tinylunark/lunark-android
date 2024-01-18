@@ -138,6 +138,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/write_review_button"
                     android:enabled="@{viewmodel.eligibleToReview}"
                     style="Button"
                     android:layout_width="0dp"

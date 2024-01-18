@@ -58,6 +58,7 @@ public class HostPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadHostProfilePicture(id);
+        binding.writeReviewButton.setOnClickListener(v -> openWriteReviewFragment());
     }
 
     private void setUpReviewsRecyclerView(List<Review> reviews) {
@@ -83,5 +84,12 @@ public class HostPageFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.drawable.ic_account_on_primary_container)
                 .into(binding.profilePictureImageview);
+    }
+
+    private void openWriteReviewFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.id);
+        bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.HOST.toString());
+        getParentFragmentManager().setFragmentResult("review", bundle);
     }
 }

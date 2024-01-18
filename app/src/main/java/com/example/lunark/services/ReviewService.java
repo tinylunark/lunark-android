@@ -50,4 +50,11 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     public Single<HostReviewEligibility> isEligibleToReviewHost(@Path("hostId") Long id);
+
+    @POST("reviews/host/{hostId}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Completable createHostReview(@Body Review review, @Path("hostId") Long id);
 }

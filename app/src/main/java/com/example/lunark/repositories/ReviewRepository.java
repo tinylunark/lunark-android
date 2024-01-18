@@ -38,4 +38,8 @@ public class ReviewRepository {
     public Single<Boolean> isEligibleToReviewHost(Long id)  {
         return this.reviewNetworkDataSource.isEligibleToReviewHost(id);
     }
+
+    public Completable createHostReview(Review review, Long hostId) {
+        return this.reviewNetworkDataSource.createHostReview(review, hostId);
+    }
 }

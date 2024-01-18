@@ -81,7 +81,7 @@ public class ReviewViewModel extends AndroidViewModel {
     public Completable uploadHostReview(Review review) {
         // TODO: Upload host reviews
         Log.d("REVIEW", "Uploading host review. Rating: " + review.getRating() + " Comment: " + review.getDescription());
-        return Completable.complete();
+        return reviewRepository.createHostReview(review, reviewedEntityId);
     }
 
 

@@ -49,8 +49,10 @@
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="signed_up_successfully_check_your_email_for_a_verification_link">Signed up successfully, check your email for a verification link.</string>
     <string-array name="property_types_array">
-        <item>Apartment</item>
-        <item>Cottage</item>
+        <item>All</item>
+        <item>Whole house</item>
+        <item>Room</item>
+        <item>Shared room</item>
     </string-array>
     <string name="no_ratings">No ratings</string>
     <string name="minimum_guests">Minimum guests: </string>
@@ -100,5 +102,7 @@
     <string name="submit">Submit</string>
     <string name="review_submitted_successfully">Review submitted successfully</string>
     <string name="one_of_the_fields_was_not_filled_properly">One of the fields was not filled properly.</string>
+    <string name="hosted_by">Hosted by</string>
+    <string name="average_rating">Average rating</string>
 </resources>
 

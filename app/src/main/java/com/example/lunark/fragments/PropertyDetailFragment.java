@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentPropertyDetailBinding;
 import com.example.lunark.datasources.AccountRepository;
+import com.example.lunark.models.Host;
+import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
 import com.example.lunark.repositories.ReviewRepository;
@@ -40,6 +43,7 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.operators.observable.ObservableDistinctUntilChanged;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -81,6 +85,7 @@ public class PropertyDetailFragment extends Fragment {
 
         viewModel.getProperty().observe(getViewLifecycleOwner(), property -> {
             binding.name.setText(property.getName());
+            binding.hostNameTextview.setText(property.getHost().getFullName());
             binding.location.setText(property.getAddress().getCity() + ", " + property.getAddress().getCountry());
             binding.description.setText(property.getDescription());
             binding.minGuestsValue.setText(String.format("%d", property.getMinGuests()));
@@ -99,6 +104,8 @@ public class PropertyDetailFragment extends Fragment {
                         .into(binding.thumbnail);
             }
 
+            loadHostProfilePicture(property.getHost());
+
             if (property.getAmenities().isEmpty()) {
                 TextView tv = new TextView(getContext());
                 tv.setText(R.string.none);
@@ -113,6 +120,7 @@ public class PropertyDetailFragment extends Fragment {
 
             loadMap(property.getLatitude(), property.getLongitude());
             setUpReviewsRecyclerView(property.getReviews());
+            setUpHostLink(property);
         });
 
         accountRepository.getFavoriteProperties().observe(getViewLifecycleOwner(), favorites -> {
@@ -193,5 +201,21 @@ public class PropertyDetailFragment extends Fragment {
         bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.propertyId);
         bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.PROPERTY.toString());
         getParentFragmentManager().setFragmentResult("review", bundle);
+    }
+
+    private void loadHostProfilePicture(Host host) {
+        Glide.with(this)
+                .load(ClientUtils.SERVICE_API_PATH + "accounts/" + host.getId() + "/profile-image")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.ic_account)
+                .into(binding.hostProfilePictureImageview);
+    }
+
+    private void setUpHostLink(Property property) {
+        binding.hostedByLinear.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong(HostPageFragment.HOST_ID_KEY, property.getHost().getId());
+            getParentFragmentManager().setFragmentResult(HostPageFragment.REQUEST_KEY, bundle);
+        });
     }
 }

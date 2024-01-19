@@ -64,7 +64,7 @@ public class UserManagementListAdapter extends RecyclerView.Adapter<UserManageme
         fetchUserData(review.getReporterId(), new UserManagementListAdapter.UserDataCallback() {
             @Override
             public void onUserDataFetched(AccountDto reporter) {
-                fetchUserData(review.getReporterId(), new UserManagementListAdapter.UserDataCallback() {
+                fetchUserData(review.getReportedId(), new UserManagementListAdapter.UserDataCallback() {
                     @Override
                     public void onUserDataFetched(AccountDto reported) {
                         String formattedDate = LocalDateTime.parse(review.getDate()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

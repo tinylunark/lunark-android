@@ -9,6 +9,7 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -73,4 +74,11 @@ public interface ReservationService {
             "Content-Type:application/json"
     })
     Call<ResponseBody> cancelReservation(@Path("id") Long reservationId);
+
+    @DELETE("reservations/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<Void> deleteReservation(@Path("id") Long id);
 }

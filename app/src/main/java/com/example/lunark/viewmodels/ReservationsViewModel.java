@@ -15,7 +15,14 @@ import com.example.lunark.models.Reservation;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.repositories.ReservationRepository;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -53,8 +60,39 @@ public class ReservationsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Reservation>> getCurrentReservations() {
-        return reservationRepository.getCurrentReservations();
+        Map<String, String> filters = new HashMap<>();
+        if (mPropertyName.getValue() != null) {
+            filters.put("propertyName", mPropertyName.getValue());
+        }
+        if (mStartDate.getValue() != null) {
+            Instant instant = Instant.ofEpochMilli(mStartDate.getValue());
+            LocalDate date = instant.atZone(ZoneId.of("UTC")).toLocalDate();
+            filters.put("startDate", date.toString());
+        }
+        if (mEndDate.getValue() != null) {
+            Instant instant = Instant.ofEpochMilli(mEndDate.getValue());
+            LocalDate date = instant.atZone(ZoneId.of("UTC")).toLocalDate();
+            filters.put("endDate", date.toString());
+        }
+        if (mReservationStatus.getValue() != null && mReservationStatus.getValue() != 0) {
+            switch (mReservationStatus.getValue()) {
+                case 1:
+                    filters.put("reservationStatus", "PENDING");
+                    break;
+                case 2:
+                    filters.put("reservationStatus", "ACCEPTED");
+                    break;
+                case 3:
+                    filters.put("reservationStatus", "REJECTED");
+                    break;
+                case 4:
+                    filters.put("reservationStatus", "CANCELLED");
+            }
+        }
+
+        return reservationRepository.getCurrentReservations(filters);
     }
+
     public void acceptReservation(long reservationId) {
         reservationRepository.acceptReservation(reservationId);
     }

@@ -19,12 +19,14 @@ import com.example.lunark.LunarkApplication;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
 import com.example.lunark.databinding.FragmentPendingReservationBinding;
 import com.example.lunark.models.Login;
+import com.example.lunark.models.Reservation;
 import com.example.lunark.models.ReservationStatus;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.viewmodels.ReservationsViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -86,6 +88,7 @@ public class AllReservationsFragment extends Fragment {
         });
 
         binding.datePickerButton.setOnClickListener(this::onDateRangeButtonClick);
+        binding.searchButton.setOnClickListener(this::onSearchButtonClick);
     }
 
     private void observeCurrentReservations() {
@@ -144,7 +147,14 @@ public class AllReservationsFragment extends Fragment {
         });
     }
 
-    public void onDateRangeButtonClick(View view) {
+    private void onDateRangeButtonClick(View view) {
         mDateRangePicker.show(getChildFragmentManager(), "DATE_PICKER");
+    }
+
+    private void onSearchButtonClick(View view) {
+        reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
+            adapter.setReservations(reservations);
+            recyclerView.setAdapter(adapter);
+        });
     }
 }

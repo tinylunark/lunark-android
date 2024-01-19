@@ -5,10 +5,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.AccountReport;
+import com.example.lunark.models.AccountReportDisplay;
 import com.example.lunark.repositories.AccountReportRepository;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,6 +41,10 @@ public class AccountReportViewModel extends AndroidViewModel {
         return reportedAccountId;
     }
 
+    public LiveData<List<AccountReportDisplay>> getReportedAccounts() {
+        return accountReportRepository.getReportedAccounts();
+    }
+
     public void setReportedAccountId(Long reportedAccountId) {
         this.reportedAccountId = reportedAccountId;
     }
@@ -46,4 +54,5 @@ public class AccountReportViewModel extends AndroidViewModel {
         AccountReport report = new AccountReport(this.reportedAccountId, this.getReason());
         return this.accountReportRepository.report(report);
     }
+
 }

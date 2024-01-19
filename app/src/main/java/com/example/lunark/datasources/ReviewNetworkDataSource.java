@@ -2,6 +2,9 @@ package com.example.lunark.datasources;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.lunark.models.Review;
 import com.example.lunark.services.ReviewService;
 
@@ -13,6 +16,10 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ReviewNetworkDataSource {
@@ -72,5 +79,40 @@ public class ReviewNetworkDataSource {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> Log.d(TAG, "Successfully uploaded host review"));
+    }
+
+    public LiveData<List<Review>> getUnapprovedReviews() {
+        final MutableLiveData<List<Review>> data = new MutableLiveData<>();
+
+        reviewService.getUnapprovedReviews().enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
+                if (response.isSuccessful()) {
+                    List<Review> reservations = response.body();
+                    data.setValue(response.body());
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Review>> call, Throwable t) {
+            }
+        });
+
+        return data;
+    }
+
+    public void approveReview(Long id) {
+        reviewService.approveReview(id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                } else {
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            }
+        });
     }
 }

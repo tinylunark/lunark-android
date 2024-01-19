@@ -81,11 +81,26 @@
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true"
         tools:layout="@layout/fragment_notifications" />
-
     <fragment
         android:id="@+id/nav_reservation_cancel"
         android:label="CancelReservations"
         android:name="com.example.lunark.fragments.GuestCancelReservationFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_unapproved_reviews"
+        android:label="CancelReservations"
+        android:name="com.example.lunark.fragments.AdminCommentsApprovalFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_comments_grades"
+        android:label="CommentApproval"
+        android:name="com.example.lunark.fragments.AdminCommentsRemovalFragment"
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true"
         tools:layout="@layout/fragment_notifications" />

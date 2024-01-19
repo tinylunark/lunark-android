@@ -187,23 +187,6 @@ public class ReservationRepository {
         return data;
     }
 
-    public void cancelReservation(Long reservationId) {
-        reservationService.cancelReservation(reservationId).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Log.e(LOG_TAG, "Decline reservation success: " + response.code());
-                } else {
-                    Log.e(LOG_TAG, "Decline reservation error: " + response.code());
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(LOG_TAG, "Decline reservation failure: " + t.getMessage());
-            }
-        });
-    }
-
     public Completable deleteReservation(Long id) {
         return reservationService.deleteReservation(id)
                 .subscribeOn(Schedulers.io())

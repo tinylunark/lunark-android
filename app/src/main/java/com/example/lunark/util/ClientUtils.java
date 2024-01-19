@@ -50,6 +50,5 @@ public class ClientUtils {
     public static PropertyService propertyService = retrofit.create(PropertyService.class);
     public static ReservationService reservationService = retrofit.create(ReservationService.class);
     public static AccountService accountService = retrofit.create(AccountService.class);
-    public static ReviewReportService reviewReportService = retrofit.create(ReviewReportService.class);
     public static ReviewService reviewService = retrofit.create(ReviewService.class);
 }

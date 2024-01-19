@@ -24,12 +24,7 @@ public class ReviewReportRepository {
     ReviewReportService reviewReportService;
 
     @Inject
-    public ReviewReportRepository() {
-        this.reviewReportService = ClientUtils.reviewReportService;
-    }
-
-    @Inject
-    public void setRetrofit(Retrofit retrofit) {
+    public ReviewReportRepository(Retrofit retrofit) {
         this.reviewReportService = retrofit.create(ReviewReportService.class);
     }
 

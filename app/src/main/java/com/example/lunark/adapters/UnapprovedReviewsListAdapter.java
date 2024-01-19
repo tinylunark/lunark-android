@@ -60,7 +60,7 @@ public class UnapprovedReviewsListAdapter extends RecyclerView.Adapter<Unapprove
             @Override
             public void onClick(View v) {
                 approveReview(review.getId());
-                Toast.makeText(fragment.getContext(), new String("Reservation accepted!"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragment.getContext(), new String("Review approved!"), Toast.LENGTH_SHORT).show();
                 reviews.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
             }

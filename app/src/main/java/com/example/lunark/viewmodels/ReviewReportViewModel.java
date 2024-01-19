@@ -33,15 +33,4 @@ public class ReviewReportViewModel extends AndroidViewModel {
     public LiveData<List<ReviewReport>> getReviewReports() {
         return reviewReportRepository.getReviewReports();
     }
-
-    public static final ViewModelInitializer<ReviewReportViewModel> initializer = new ViewModelInitializer<>(
-            ReviewReportViewModel.class,
-            creationExtras -> {
-                LunarkApplication app = (LunarkApplication)  creationExtras.get(APPLICATION_KEY);
-                assert app != null;
-
-                return new ReviewReportViewModel(app, app.getReviewReportRepository());
-            }
-    );
-
 }

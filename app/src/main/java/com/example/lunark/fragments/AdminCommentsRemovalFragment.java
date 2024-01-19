@@ -28,15 +28,11 @@ public class AdminCommentsRemovalFragment extends Fragment {
     private ReviewReportViewModel viewModel;
     private CommentManagementListAdapter adapter;
     private RecyclerView recyclerView;
-    @Inject
-    public LoginRepository loginRepository;
-
     public AdminCommentsRemovalFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((LunarkApplication)getActivity().getApplication()).applicationComponent.inject(this); ;
         super.onCreate(savedInstanceState);
     }
 
@@ -45,7 +41,7 @@ public class AdminCommentsRemovalFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAdminCommentsRemovalBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(ReviewReportViewModel.initializer)).get(ReviewReportViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ReviewReportViewModel.class);
         return view;
     }
 

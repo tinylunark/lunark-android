@@ -11,7 +11,6 @@ public class LunarkApplication extends Application {
     public ApplicationComponent applicationComponent;
     ReservationRepository reservationRepository;
     PropertyRepository propertyRepository;
-    ReviewReportRepository reviewReportRepository;
 
     @Override
     public void onCreate() {
@@ -21,7 +20,6 @@ public class LunarkApplication extends Application {
         applicationComponent.inject(propertyRepository);
         reservationRepository = new ReservationRepository();
         applicationComponent.inject(reservationRepository);
-        reviewReportRepository = new ReviewReportRepository();
     }
 
     public ReservationRepository getReservationRepository() {
@@ -30,10 +28,6 @@ public class LunarkApplication extends Application {
 
     public PropertyRepository getPropertyRepository() {
         return this.propertyRepository;
-    }
-
-    public ReviewReportRepository getReviewReportRepository() {
-        return this.reviewReportRepository;
     }
 
 }

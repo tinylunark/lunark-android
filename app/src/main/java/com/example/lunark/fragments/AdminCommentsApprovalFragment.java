@@ -29,15 +29,12 @@ public class AdminCommentsApprovalFragment extends Fragment {
     private ReviewViewModel viewModel;
     private UnapprovedReviewsListAdapter adapter;
     private RecyclerView recyclerView;
-    @Inject
-    public LoginRepository loginRepository;
 
     public AdminCommentsApprovalFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((LunarkApplication)getActivity().getApplication()).applicationComponent.inject(this); ;
         super.onCreate(savedInstanceState);
     }
 

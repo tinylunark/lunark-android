@@ -208,6 +208,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         holder.reportButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putLong(AccountReportFragment.ACCOUNT_ID_KEY, reservation.getGuestId());
+            bundle.putBoolean(AccountReportFragment.IS_GUEST_KEY, true);
             fragment.getActivity().getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResult(AccountReportFragment.REQUEST_KEY, bundle);
         });
     }

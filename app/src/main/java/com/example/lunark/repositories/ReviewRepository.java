@@ -1,10 +1,11 @@
 package com.example.lunark.repositories;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.lunark.datasources.ReviewNetworkDataSource;
 import com.example.lunark.models.Review;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import javax.inject.Inject;
 
@@ -41,5 +42,13 @@ public class ReviewRepository {
 
     public Completable createHostReview(Review review, Long hostId) {
         return this.reviewNetworkDataSource.createHostReview(review, hostId);
+    }
+
+    public LiveData<List<Review>> getUnapprovedReviews() {
+        return this.reviewNetworkDataSource.getUnapprovedReviews();
+    }
+
+    public void approveReview(Long id) {
+        this.reviewNetworkDataSource.approveReview(id);
     }
 }

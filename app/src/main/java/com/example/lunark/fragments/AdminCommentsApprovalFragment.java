@@ -54,7 +54,7 @@ public class AdminCommentsApprovalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         observeReviews();
-        setUpReservationList();
+        setUpReviewList();
     }
 
     private void observeReviews() {
@@ -64,7 +64,7 @@ public class AdminCommentsApprovalFragment extends Fragment {
         });
     }
 
-    private void setUpReservationList() {
+    private void setUpReviewList() {
         recyclerView = binding.commentApprovalRecyclerView;
         adapter = new UnapprovedReviewsListAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(adapter);

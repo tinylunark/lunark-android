@@ -1,5 +1,6 @@
 package com.example.lunark.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.lunark.models.PropertyImage;
 import com.example.lunark.models.Reservation;
 import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.util.ClientUtils;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,7 +96,19 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             }
         });
 
-
+        holder.getBtnDelete().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reservationRepository.deleteReservation(reservationId)
+                        .subscribe(() -> {
+                            Toast.makeText(fragment.getContext(), new String("Reservation deleted!"), Toast.LENGTH_SHORT).show();
+                            reservations.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                        }, throwable -> {
+                            Toast.makeText(fragment.getContext(), new String("Reservation delete failed!"), Toast.LENGTH_SHORT).show();
+                        });
+            }
+        });
     }
     private void fetchPropertyData(Long propertyId, final ReservationsCancelListAdapter.PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);
@@ -141,6 +156,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
         private final TextView dateRange;
         private final TextView price;
         private final Button btnCancel;
+        private final Button btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -150,6 +166,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             dateRange = itemView.findViewById(R.id.date_range);
             price = itemView.findViewById(R.id.price);
             btnCancel = itemView.findViewById(R.id.btnCancel);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 
         public ImageView getPropertyImage() {
@@ -175,6 +192,9 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
 
         public Button getBtnCancel() {
             return btnCancel;
+        }
+        public Button getBtnDelete() {
+            return btnDelete;
         }
     }
 

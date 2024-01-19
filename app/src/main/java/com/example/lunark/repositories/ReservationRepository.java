@@ -1,5 +1,6 @@
 package com.example.lunark.repositories;
 
+import android.net.http.NetworkException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -180,5 +185,17 @@ public class ReservationRepository {
         });
 
         return data;
+    }
+
+    public Completable deleteReservation(Long id) {
+        return reservationService.deleteReservation(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> {
+                   Log.i(LOG_TAG, "Delete reservation success for " + id);
+                })
+                .doOnError(throwable -> {
+                    Log.e(LOG_TAG, "Delete reservation failure: " + throwable.getMessage());
+                });
     }
 }

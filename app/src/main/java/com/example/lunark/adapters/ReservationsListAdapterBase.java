@@ -1,8 +1,10 @@
 package com.example.lunark.adapters;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,13 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.dtos.AccountDto;
+import com.example.lunark.fragments.AccountReportFragment;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.PropertyImage;
 import com.example.lunark.models.Reservation;
+import com.example.lunark.models.ReservationStatus;
 import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.util.ClientUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -86,6 +91,8 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
             public void onPropertyDataFetchFailed() {
             }
         });
+
+        setUpReportButton(holder, reservation);
     }
     private void fetchUserData(Long userId, final UserDataCallback callback) {
         Call<AccountDto> call = ClientUtils.accountService.getAccount(userId);
@@ -155,6 +162,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         private final TextView propertyName;
         private final TextView dateRange;
         private final TextView price;
+        private final Button reportButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -163,6 +171,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
             propertyName = itemView.findViewById(R.id.property_name);
             dateRange = itemView.findViewById(R.id.date_range);
             price = itemView.findViewById(R.id.price);
+            reportButton = itemView.findViewById(R.id.report_button);
         }
 
         public ImageView getPropertyImage() {
@@ -185,6 +194,23 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         public TextView getPrice() {
             return price;
         }
+
+    }
+
+    public void setUpReportButton(ViewHolder holder, Reservation reservation) {
+        if (!reservation.getStatus().equals(ReservationStatus.ACCEPTED) || reservation.getEndDate().after(new Date())) {
+            holder.reportButton.setVisibility(View.GONE);
+            return;
+        }
+
+        holder.reportButton.setVisibility(View.VISIBLE);
+
+        holder.reportButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong(AccountReportFragment.ACCOUNT_ID_KEY, reservation.getGuestId());
+            bundle.putBoolean(AccountReportFragment.IS_GUEST_KEY, true);
+            fragment.getActivity().getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResult(AccountReportFragment.REQUEST_KEY, bundle);
+        });
     }
 
     public void setReservations(List<Reservation> reservations) {

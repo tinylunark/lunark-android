@@ -145,6 +145,26 @@ public class ReservationRepository {
         });
     }
 
+
+
+    public void cancelReservation(Long reservationId) {
+        reservationService.cancelReservation(reservationId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e(LOG_TAG, "Decline reservation success: " + response.code());
+                } else {
+                    Log.e(LOG_TAG, "Decline reservation error: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(LOG_TAG, "Decline reservation failure: " + t.getMessage());
+            }
+        });
+    }
+
+
     public LiveData<Reservation> createReservation(CreateReservationDto dto) {
         final MutableLiveData<Reservation> data = new MutableLiveData<>(null);
 

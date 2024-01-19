@@ -85,6 +85,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             }
         });
 
+
         holder.getBtnCancel().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +110,6 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             }
         });
     }
-
     private void fetchPropertyData(Long propertyId, final ReservationsCancelListAdapter.PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);
         call.enqueue(new Callback<Property>() {

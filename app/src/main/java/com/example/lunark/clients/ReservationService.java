@@ -63,12 +63,6 @@ public interface ReservationService {
     })
     Call<ResponseBody> declineReservation(@Path("id") Long reservationId);
 
-    @POST("reservations")
-    @Headers({
-            "User-Agent: Mobile-Android",
-            "Content-Type:application/json"
-    })
-    Call<Reservation> createReservation(@Body CreateReservationDto dto);
 
     @POST("reservations/cancel/{id}")
     @Headers({
@@ -83,4 +77,7 @@ public interface ReservationService {
             "Content-Type:application/json"
     })
     Completable deleteReservation(@Path("id") Long id);
+
+    @POST("reservations")
+    Call<Reservation> createReservation(@Body CreateReservationDto dto);
 }

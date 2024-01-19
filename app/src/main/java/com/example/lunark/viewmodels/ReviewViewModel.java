@@ -4,14 +4,17 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
 import com.example.lunark.repositories.ReviewRepository;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +29,10 @@ public class ReviewViewModel extends AndroidViewModel {
     private String comment;
     private Integer rating;
 
+    private ObservableInt reviewCount;
+
+    private List<Review> reviews = new ArrayList<>();
+
     public ReviewViewModel(@NonNull Application application) {
         super(application);
         ((LunarkApplication) application).applicationComponent.inject(this);
@@ -33,6 +40,10 @@ public class ReviewViewModel extends AndroidViewModel {
 
     public Long getReviewedEntityId() {
         return reviewedEntityId;
+    }
+
+    public LiveData<List<Review>> getUnapprovedReviews() {
+        return reviewRepository.getUnapprovedReviews();
     }
 
     public void setReviewedEntityId(Long reviewedEntityId) {
@@ -83,6 +94,8 @@ public class ReviewViewModel extends AndroidViewModel {
         Log.d("REVIEW", "Uploading host review. Rating: " + review.getRating() + " Comment: " + review.getDescription());
         return reviewRepository.createHostReview(review, reviewedEntityId);
     }
+
+
 
 
 }

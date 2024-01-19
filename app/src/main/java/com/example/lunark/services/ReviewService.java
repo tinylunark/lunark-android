@@ -8,6 +8,8 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -57,4 +59,25 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     public Completable createHostReview(@Body Review review, @Path("hostId") Long id);
+
+    @GET("reviews/unapproved")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    public Call<List<Review>> getUnapprovedReviews();
+
+    @POST("reviews/{id}/approve")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<ResponseBody> approveReview(@Path("id") Long id);
+
+    @GET("reviews/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<Review> getReview(@Path("id") Long id);
 }

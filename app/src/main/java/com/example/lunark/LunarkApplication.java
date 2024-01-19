@@ -1,9 +1,10 @@
 package com.example.lunark;
 
 import android.app.Application;
-import com.example.lunark.repositories.*;
 
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.repositories.ReservationRepository;
+import com.example.lunark.repositories.ReviewReportRepository;
 
 
 public class LunarkApplication extends Application {
@@ -28,4 +29,5 @@ public class LunarkApplication extends Application {
     public PropertyRepository getPropertyRepository() {
         return this.propertyRepository;
     }
+
 }

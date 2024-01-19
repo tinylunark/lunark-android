@@ -8,8 +8,10 @@ import com.example.lunark.adapters.ReservationsListAdapter;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.adapters.UnapprovedPropertiesListAdapter;
+import com.example.lunark.adapters.UnapprovedReviewsListAdapter;
 import com.example.lunark.datasources.DiskModule;
 import com.example.lunark.datasources.NetworkModule;
+import com.example.lunark.fragments.AdminCommentsApprovalFragment;
 import com.example.lunark.fragments.AllReservationsFragment;
 import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
@@ -28,6 +30,7 @@ import com.example.lunark.viewmodels.HostViewModel;
 import com.example.lunark.viewmodels.ReservationsViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 import com.example.lunark.viewmodels.UnapprovedPropertiesViewModel;
+import com.example.lunark.viewmodels.UnapprovedReviewsViewModel;
 
 import javax.inject.Singleton;
 
@@ -60,6 +63,8 @@ public interface ApplicationComponent {
     void inject(ReservationsListAdapterBase reservationListAdapterBase);
     void inject(ReservationsViewModel reservationListAdapter);
     void inject(UnapprovedPropertiesViewModel unapprovedPropertiesViewModel);
+    void inject(UnapprovedReviewsViewModel unapprovedReviewsViewModel);
+    void inject(UnapprovedReviewsListAdapter unapprovedReviewsListAdapter);
     void inject(ReviewViewModel reviewViewModel);
     void inject(ReviewListAdapter reviewListAdapter);
     void inject(GuestSettingsFragment guestSettingsFragment);
@@ -68,4 +73,6 @@ public interface ApplicationComponent {
     void inject(PropertyApprovalFragment propertyApprovalFragment);
     void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
     void inject(HostViewModel hostViewModel);
+    void inject(AdminCommentsApprovalFragment adminCommentsApprovalFragment);
 }
+

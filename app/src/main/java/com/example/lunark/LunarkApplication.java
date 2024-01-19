@@ -28,4 +28,5 @@ public class LunarkApplication extends Application {
     public PropertyRepository getPropertyRepository() {
         return this.propertyRepository;
     }
+
 }

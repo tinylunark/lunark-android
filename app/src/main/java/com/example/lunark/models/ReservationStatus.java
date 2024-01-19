@@ -1,6 +1,7 @@
 package com.example.lunark.models;
 
 public enum ReservationStatus {
+    ALL("ALL"),
     PENDING("PENDING"),
     ACCEPTED("ACCEPTED"),
     REJECTED("REJECTED"),

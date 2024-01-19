@@ -55,6 +55,8 @@ public class PendingReservationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setUpReservationList();
 
+        ((ViewGroup) binding.searchLinearLayout.getParent()).removeView(binding.searchLinearLayout); // Should only display on AllReservationsFragment
+
         loginRepository.getLogin().subscribe(new SingleObserver<Login>() {
             @Override
             public void onSubscribe(Disposable d) {

@@ -19,15 +19,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentHostPageBinding;
-import com.example.lunark.models.Host;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.HostViewModel;
-import com.example.lunark.viewmodels.ReviewViewModel;
 
 import java.util.List;
-import java.util.Objects;
 
 public class HostPageFragment extends Fragment {
     public static final String HOST_ID_KEY = "HOST_ID";
@@ -59,6 +56,7 @@ public class HostPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loadHostProfilePicture(id);
         binding.writeReviewButton.setOnClickListener(v -> openWriteReviewFragment());
+        binding.reportButton.setOnClickListener(v -> openReportFragment());
     }
 
     private void setUpReviewsRecyclerView(List<Review> reviews) {
@@ -91,5 +89,11 @@ public class HostPageFragment extends Fragment {
         bundle.putLong(WriteReviewFragment.REVIEWED_ENTITY_ID, this.id);
         bundle.putString(WriteReviewFragment.REVIEW_TYPE, ReviewType.HOST.toString());
         getParentFragmentManager().setFragmentResult("review", bundle);
+    }
+
+    private void openReportFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(AccountReportFragment.ACCOUNT_ID_KEY, this.id);
+        getParentFragmentManager().setFragmentResult(AccountReportFragment.REQUEST_KEY, bundle);
     }
 }

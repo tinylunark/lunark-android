@@ -16,6 +16,7 @@ import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.models.Host;
 import com.example.lunark.models.HostReviewEligibility;
 import com.example.lunark.models.Review;
+import com.example.lunark.repositories.AccountReportRepository;
 import com.example.lunark.repositories.ReviewRepository;
 
 import java.util.ArrayList;
@@ -33,11 +34,14 @@ public class HostViewModel extends AndroidViewModel {
 
     @Inject
     AccountRepository accountRepository;
+    @Inject
+    AccountReportRepository reportRepository;
 
     private MutableLiveData<AccountDto> host;
     private MutableLiveData<List<Review>> reviews;
     private ObservableBoolean eligibleToReview;
     private ObservableInt reviewCount;
+    private ObservableBoolean eligibleToReport;
 
     private LiveData<AccountDto> remoteHostLiveData;
 
@@ -48,6 +52,7 @@ public class HostViewModel extends AndroidViewModel {
         reviews = new MutableLiveData<>(new ArrayList<>());
         eligibleToReview = new ObservableBoolean(false);
         reviewCount = new ObservableInt(0);
+        eligibleToReport = new ObservableBoolean(false);
     }
 
     public void init(Long id) {
@@ -88,6 +93,22 @@ public class HostViewModel extends AndroidViewModel {
                 HostViewModel.this.eligibleToReview.set(false);
             }
         });
+        reportRepository.isEligibleToReportHost(id).subscribe(new SingleObserver<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                reportEligibilitySubscription = d;
+            }
+
+            @Override
+            public void onSuccess(Boolean eligibility) {
+                eligibleToReport.set(eligibility);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                eligibleToReport.set(false);
+            }
+        });
     }
 
     public LiveData<AccountDto> getHost() {
@@ -103,6 +124,9 @@ public class HostViewModel extends AndroidViewModel {
     }
     public ObservableInt getReviewCount() {
         return reviewCount;
+    }
+    public ObservableBoolean getEligibleToReport() {
+        return eligibleToReport;
     }
 
     @Override
@@ -120,6 +144,10 @@ public class HostViewModel extends AndroidViewModel {
         if (reviewEligibilitySubscription != null && !reviewEligibilitySubscription.isDisposed()){
             reviewEligibilitySubscription.dispose();
         }
+        if (reportEligibilitySubscription != null && !reportEligibilitySubscription.isDisposed()){
+            reportEligibilitySubscription.dispose();
+        }
+
     }
 
     private final Observer<AccountDto> hostObserver = new Observer<AccountDto>() {
@@ -131,4 +159,6 @@ public class HostViewModel extends AndroidViewModel {
 
     private Disposable reviewsSubscription;
     private Disposable reviewEligibilitySubscription;
+    private Disposable reportEligibilitySubscription;
+
 }

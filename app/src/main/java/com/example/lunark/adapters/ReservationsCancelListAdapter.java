@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -80,25 +81,19 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             public void onPropertyDataFetchFailed() {
             }
         });
-    }
-    private void fetchUserData(Long userId, final ReservationsCancelListAdapter.UserDataCallback callback) {
-        Call<AccountDto> call = ClientUtils.accountService.getAccount(userId);
-        call.enqueue(new Callback<AccountDto>() {
-            @Override
-            public void onResponse(Call<AccountDto> call, Response<AccountDto> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AccountDto accountDto = response.body();
-                    callback.onUserDataFetched(accountDto);
-                } else {
-                    callback.onUserDataFetchFailed();
-                }
-            }
 
+
+        holder.getBtnCancel().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call<AccountDto> call, Throwable t) {
-                callback.onUserDataFetchFailed();
+            public void onClick(View v) {
+                cancelReservation(reservationId);
+                Toast.makeText(fragment.getContext(), new String("Reservation canceled!"), Toast.LENGTH_SHORT).show();
+                reservations.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
             }
         });
+
+
     }
     private void fetchPropertyData(Long propertyId, final ReservationsCancelListAdapter.PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);

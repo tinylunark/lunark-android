@@ -25,6 +25,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.lunark.databinding.ActivityHomeBinding;
+import com.example.lunark.fragments.AccountReportFragment;
 import com.example.lunark.fragments.HostPageFragment;
 import com.example.lunark.fragments.createProperty.IAllowBackPressed;
 import com.example.lunark.models.Login;
@@ -253,6 +254,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_booking_request, bundle);
+            }
+        });
+        this.getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().setFragmentResultListener(AccountReportFragment.REQUEST_KEY, this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_account_report, bundle);
             }
         });
     }

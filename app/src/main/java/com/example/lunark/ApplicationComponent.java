@@ -6,6 +6,7 @@ import android.content.Context;
 import com.example.lunark.adapters.ReservationsCancelListAdapter;
 import com.example.lunark.adapters.ReservationsListAdapter;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
+import com.example.lunark.adapters.ReservationsCancelListAdapter;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.adapters.UnapprovedPropertiesListAdapter;
 import com.example.lunark.adapters.UnapprovedReviewsListAdapter;
@@ -22,6 +23,11 @@ import com.example.lunark.fragments.GuestSettingsFragment;
 import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
+import com.example.lunark.fragments.AllReservationsFragment;
+import com.example.lunark.repositories.ReservationRepository;
+import com.example.lunark.fragments.GuestCancelReservationFragment;
+import com.example.lunark.viewmodels.*;
+import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyApprovalFragment;
 import com.example.lunark.fragments.PropertyDetailFragment;
 import com.example.lunark.fragments.PropertyReportFragment;
@@ -80,5 +86,6 @@ public interface ApplicationComponent {
     void inject(HostViewModel hostViewModel);
     void inject(ReviewReportViewModel reviewReportViewModel);
     void inject(AdminCommentsApprovalFragment adminCommentsApprovalFragment);
+    void inject(AccountReportViewModel accountReportViewModel);
 }
 

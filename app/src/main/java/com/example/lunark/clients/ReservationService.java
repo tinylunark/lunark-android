@@ -68,5 +68,4 @@ public interface ReservationService {
 
     @POST("reservations")
     Call<Reservation> createReservation(@Body CreateReservationDto dto);
-
 }

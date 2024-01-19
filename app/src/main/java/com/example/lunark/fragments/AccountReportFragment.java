@@ -16,10 +16,13 @@ import com.example.lunark.databinding.FragmentAccountReportBinding;
 import com.example.lunark.viewmodels.AccountReportViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.Disposable;
 
 public class AccountReportFragment extends Fragment {
+    public static String IS_GUEST_KEY = "IS_GUEST";
     public static String REQUEST_KEY = "account_report";
     public static String ACCOUNT_ID_KEY = "ACCOUNT_ID";
     private FragmentAccountReportBinding binding;
@@ -36,6 +39,9 @@ public class AccountReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_report, container, false);
+        if (requireArguments().getBoolean(IS_GUEST_KEY)) {
+            binding.title.setText(R.string.report_guest);
+        }
         binding.submitButton.setOnClickListener(v -> submitReport());
         binding.setViewmodel(viewModel);
         return binding.getRoot();

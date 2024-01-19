@@ -114,10 +114,13 @@ public class Reservation {
     }
 
     public long getGuestId() {
-        return guestId;
+        return guest != null ? guest.getId() : guestId;
     }
 
     public void setGuestId(long guestId) {
+        if (guest != null) {
+            this.guest.setId(guestId);
+        }
         this.guestId = guestId;
     }
 }

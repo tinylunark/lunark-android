@@ -113,4 +113,9 @@
         android:name="com.example.lunark.fragments.BookingRequestFragment"
         android:label="Booking request"
         tools:layout="@layout/fragment_booking_request" />
+    <fragment
+        android:id="@+id/nav_account_report"
+        android:name="com.example.lunark.fragments.AccountReportFragment"
+        android:label="Report account"
+        tools:layout="@layout/fragment_account_report" />
 </navigation>

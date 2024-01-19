@@ -104,5 +104,9 @@
     <string name="one_of_the_fields_was_not_filled_properly">One of the fields was not filled properly.</string>
     <string name="hosted_by">Hosted by</string>
     <string name="average_rating">Average rating</string>
+    <string name="reason_for_reporting">Reason for reporting</string>
+    <string name="please_tell_us_how_this_user_broke_the_rules_of_the_platform">Please tell us how this user broke the rules of the platform</string>
+    <string name="report_host">Report host</string>
+    <string name="report_submitted_successfully">Report submitted successfully</string>
 </resources>
 

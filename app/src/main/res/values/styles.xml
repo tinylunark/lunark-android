@@ -13,9 +13,9 @@
         <item name="android:background">@drawable/transparent_button_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <style name="ButtonDanger">
-        <item name="backgroundTint">?attr/colorError</item>
-        <item name="android:textColor">?attr/colorOnError</item>
+    <style name="ButtonDanger" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/button_error_state_colors</item>
+        <item name="android:textColor">@color/button_error_state_text_colors</item>
     </style>
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>

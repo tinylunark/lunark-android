@@ -67,7 +67,9 @@ public class AllReservationsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        observeCurrentReservations();
+                        if (getView() != null) {
+                            observeCurrentReservations();
+                        }
                     }
                 });
             }

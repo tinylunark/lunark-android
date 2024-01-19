@@ -12,6 +12,7 @@ import com.example.lunark.models.Reservation;
 import com.example.lunark.util.ClientUtils;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -81,10 +82,10 @@ public class ReservationRepository {
         return data;
     }
 
-    public LiveData<List<Reservation>> getCurrentReservations() {
+    public LiveData<List<Reservation>> getCurrentReservations(Map<String, String> filters) {
         final MutableLiveData<List<Reservation>> data = new MutableLiveData<>();
 
-        reservationService.getCurrentReservations().enqueue(new Callback<List<Reservation>>() {
+        reservationService.getCurrentReservations(filters).enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
                 if (response.isSuccessful()) {

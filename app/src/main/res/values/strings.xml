@@ -109,5 +109,6 @@
     <string name="report_host">Report host</string>
     <string name="report_submitted_successfully">Report submitted successfully</string>
     <string name="report_guest">Report guest</string>
+    <string name="image_of_a_calendar">Image of a calendar.</string>
 </resources>
 

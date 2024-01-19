@@ -4,6 +4,8 @@ import com.example.lunark.BuildConfig;
 import com.example.lunark.clients.AccountService;
 import com.example.lunark.clients.ReservationService;
 import com.example.lunark.services.PropertyService;
+import com.example.lunark.services.ReviewReportService;
+import com.example.lunark.services.ReviewService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -48,4 +50,6 @@ public class ClientUtils {
     public static PropertyService propertyService = retrofit.create(PropertyService.class);
     public static ReservationService reservationService = retrofit.create(ReservationService.class);
     public static AccountService accountService = retrofit.create(AccountService.class);
+    public static ReviewReportService reviewReportService = retrofit.create(ReviewReportService.class);
+    public static ReviewService reviewService = retrofit.create(ReviewService.class);
 }

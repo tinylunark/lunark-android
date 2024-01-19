@@ -26,6 +26,14 @@ public class ReservationsViewModel extends AndroidViewModel {
     LoginRepository loginRepository;
     private final LiveData<List<Reservation>> reservations = new MutableLiveData<>();
 
+    private final MutableLiveData<String> mPropertyName = new MutableLiveData<>();
+
+    private final MutableLiveData<Long> mStartDate = new MutableLiveData<>();
+
+    private final MutableLiveData<Long> mEndDate = new MutableLiveData<>();
+
+    private final MutableLiveData<Integer> mReservationStatus = new MutableLiveData<>(0);
+
     @Inject
     public ReservationsViewModel(@NonNull Application application, ReservationRepository reservationRepository) {
         super(application);
@@ -64,4 +72,36 @@ public class ReservationsViewModel extends AndroidViewModel {
             return new ReservationsViewModel(app, app.getReservationRepository());
         }
     );
+
+    public MutableLiveData<String> getPropertyName() {
+        return mPropertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        mPropertyName.setValue(propertyName);
+    }
+
+    public MutableLiveData<Long> getStartDate() {
+        return mStartDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        mStartDate.setValue(startDate);
+    }
+
+    public MutableLiveData<Long> getEndDate() {
+        return mEndDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        mEndDate.setValue(endDate);
+    }
+
+    public MutableLiveData<Integer> getReservationStatus() {
+        return mReservationStatus;
+    }
+
+    public void setReservationStatus(Integer reservationStatus) {
+        mReservationStatus.setValue(reservationStatus);
+    }
 }

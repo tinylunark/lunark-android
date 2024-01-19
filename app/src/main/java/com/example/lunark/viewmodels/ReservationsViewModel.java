@@ -77,16 +77,16 @@ public class ReservationsViewModel extends AndroidViewModel {
         if (mReservationStatus.getValue() != null && mReservationStatus.getValue() != 0) {
             switch (mReservationStatus.getValue()) {
                 case 1:
-                    filters.put("reservationStatus", "PENDING");
+                    filters.put("status", "PENDING");
                     break;
                 case 2:
-                    filters.put("reservationStatus", "ACCEPTED");
+                    filters.put("status", "ACCEPTED");
                     break;
                 case 3:
-                    filters.put("reservationStatus", "REJECTED");
+                    filters.put("status", "REJECTED");
                     break;
                 case 4:
-                    filters.put("reservationStatus", "CANCELLED");
+                    filters.put("status", "CANCELLED");
             }
         }
 

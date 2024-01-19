@@ -73,4 +73,11 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     Call<ResponseBody> approveReview(@Path("id") Long id);
+
+    @GET("reviews/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<Review> getReview(@Path("id") Long id);
 }

@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.lunark.repositories.PropertyRepository;
 import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.repositories.ReviewReportRepository;
+import com.example.lunark.repositories.AccountReportRepository;
 
 
 public class LunarkApplication extends Application {

@@ -70,8 +70,9 @@ public class UserManagementListAdapter extends RecyclerView.Adapter<UserManageme
                         String formattedDate = LocalDateTime.parse(review.getDate()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         holder.getDate().setText(formattedDate);
                         String reason = reported.getName() + " " + reported.getSurname()
-                                        + "has been reported by" +
-                                        reporter.getName() + " " + reporter.getSurname();
+                                        + "has been reported by " +
+                                        reporter.getName() + " " + reporter.getSurname() + "\n"
+                                        + review.getReason();
 
                         holder.getReason().setText(reason);
                         holder.getReportedAccount().setText(reported.getName() + " " + reported.getSurname());

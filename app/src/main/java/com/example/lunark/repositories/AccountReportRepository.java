@@ -1,7 +1,12 @@
 package com.example.lunark.repositories;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.lunark.datasources.AccountReportNetworkDataSource;
 import com.example.lunark.models.AccountReport;
+import com.example.lunark.models.AccountReportDisplay;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,6 +27,14 @@ public class AccountReportRepository {
 
     public Completable report(AccountReport report) {
         return this.accountReportNetworkDataSource.report(report);
+    }
+
+    public LiveData<List<AccountReportDisplay>> getReportedAccounts() {
+        return this.accountReportNetworkDataSource.getReportedAccounts();
+    }
+
+    public void blockAccount(Long id) {
+        this.accountReportNetworkDataSource.blockAccount(id);
     }
 
 }

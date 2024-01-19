@@ -105,6 +105,14 @@
         app:popUpToInclusive="true"
         tools:layout="@layout/fragment_notifications" />
 
+    <fragment
+        android:id="@+id/nav_block_account"
+        android:label="CommentApproval"
+        android:name="com.example.lunark.fragments.BlockUserFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_notifications" />
+
   <fragment
         android:id="@+id/nav_guest_settings"
         android:name="com.example.lunark.fragments.GuestSettingsFragment"

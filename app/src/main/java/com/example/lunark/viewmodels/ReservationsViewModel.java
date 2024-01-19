@@ -26,6 +26,8 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+
 public class ReservationsViewModel extends AndroidViewModel {
     @Inject
     ReservationRepository reservationRepository;
@@ -95,6 +97,10 @@ public class ReservationsViewModel extends AndroidViewModel {
 
     public void acceptReservation(long reservationId) {
         reservationRepository.acceptReservation(reservationId);
+    }
+
+    public Completable deleteReservation(Long id) {
+        return reservationRepository.deleteReservation(id);
     }
 
     public void declineReservation(long reservationId) {

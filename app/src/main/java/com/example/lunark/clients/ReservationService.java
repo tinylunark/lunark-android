@@ -6,6 +6,8 @@ import com.example.lunark.models.Reservation;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -80,5 +82,5 @@ public interface ReservationService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    Call<Void> deleteReservation(@Path("id") Long id);
+    Completable deleteReservation(@Path("id") Long id);
 }

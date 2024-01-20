@@ -65,7 +65,10 @@ public class MyPropertiesListAdapter extends RecyclerView.Adapter<MyPropertiesLi
         holder.getBtnUpdate().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            }
+                Bundle bundle = new Bundle();
+                bundle.putLong("propertyId", property.getId());
+                Log.d("RecyclerViewOnClick", property.getId().toString());
+                fragment.getParentFragmentManager().setFragmentResult("updateProperty", bundle);}
         });
 
 
@@ -75,7 +78,6 @@ public class MyPropertiesListAdapter extends RecyclerView.Adapter<MyPropertiesLi
                 Bundle bundle = new Bundle();
                 bundle.putLong("propertyId", property.getId());
                 Log.d("RecyclerViewOnClick", property.getId().toString());
-
                 fragment.getParentFragmentManager().setFragmentResult("selectedProperty", bundle);
             }
         });

@@ -1,5 +1,6 @@
 package com.example.lunark.adapters;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.PropertyImage;
 import com.example.lunark.models.Reservation;
+import com.example.lunark.models.ReservationStatus;
 import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.util.ClientUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -56,16 +58,20 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
         return new ReservationsCancelListAdapter.ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ReservationsCancelListAdapter.ViewHolder holder, int position) {
         Reservation reservation = reservations.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        Long userId = reservation.getGuestId();
         Long reservationId = reservation.getId();
         Long propertyId = reservation.getPropertyId();
 
-        holder.dateRange.setText(dateFormat.format(reservation.getStartDate()) + " - " + dateFormat.format(reservation.getEndDate()));
-        holder.price.setText("Price: $" + String.valueOf(reservation.getPrice()));
+        holder.getDateRange().setText(dateFormat.format(reservation.getStartDate()) + " - " + dateFormat.format(reservation.getEndDate()));
+        holder.getPrice().setText("Price: $" + reservation.getPrice());
+        holder.getGuestName().setText("Guest: " + reservation.getGuest().getName());
+        holder.getPropertyName().setText("Property: " + reservation.getProperty().getName());
+        holder.getStatus().setText("Status: " + reservation.getStatus());
+        holder.getBtnDelete().setEnabled(reservation.getStatus() != ReservationStatus.ACCEPTED);
 
         fetchPropertyData(propertyId, new ReservationsCancelListAdapter.PropertyDataCallback() {
             @Override
@@ -76,8 +82,6 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
                             .load(ClientUtils.SERVICE_API_PATH + "properties/" + property.getId() + "/images/" + image.getId())
                             .into(holder.getPropertyImage());
                 }
-                holder.getGuestName().setText(reservation.getPropertyName());
-                holder.getPropertyName().setText(property.getAddress().getCity().toString() + ", " + property.getAddress().getCity().toString());
             }
 
             @Override
@@ -97,6 +101,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
         });
 
         holder.getBtnDelete().setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
                 reservationRepository.deleteReservation(reservationId)
@@ -110,6 +115,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             }
         });
     }
+
     private void fetchPropertyData(Long propertyId, final ReservationsCancelListAdapter.PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);
         call.enqueue(new Callback<Property>() {
@@ -133,13 +139,9 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
         reservationRepository.cancelReservation(reservationId);
     }
 
-    interface UserDataCallback {
-        void onUserDataFetched(AccountDto accountDto);
-        void onUserDataFetchFailed();
-    }
-
     interface PropertyDataCallback {
         void onPropertyDataFetched(Property propertyDto);
+
         void onPropertyDataFetchFailed();
     }
 
@@ -155,6 +157,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
         private final TextView propertyName;
         private final TextView dateRange;
         private final TextView price;
+        private final TextView status;
         private final Button btnCancel;
         private final Button btnDelete;
 
@@ -165,6 +168,7 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             propertyName = itemView.findViewById(R.id.property_name);
             dateRange = itemView.findViewById(R.id.date_range);
             price = itemView.findViewById(R.id.price);
+            status = itemView.findViewById(R.id.status);
             btnCancel = itemView.findViewById(R.id.btnCancel);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
@@ -185,19 +189,24 @@ public class ReservationsCancelListAdapter extends RecyclerView.Adapter<Reservat
             return dateRange;
         }
 
-
         public TextView getPrice() {
             return price;
+        }
+
+        public TextView getStatus() {
+            return status;
         }
 
         public Button getBtnCancel() {
             return btnCancel;
         }
+
         public Button getBtnDelete() {
             return btnDelete;
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
         notifyDataSetChanged();

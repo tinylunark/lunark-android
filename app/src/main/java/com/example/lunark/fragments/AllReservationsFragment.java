@@ -1,7 +1,6 @@
 package com.example.lunark.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,12 @@ import com.example.lunark.LunarkApplication;
 import com.example.lunark.adapters.ReservationsListAdapterBase;
 import com.example.lunark.databinding.FragmentPendingReservationBinding;
 import com.example.lunark.models.Login;
-import com.example.lunark.models.Reservation;
 import com.example.lunark.models.ReservationStatus;
 import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.viewmodels.ReservationsViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,7 +41,7 @@ public class AllReservationsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((LunarkApplication)getActivity().getApplication()).applicationComponent.inject(this); ;
+        ((LunarkApplication) getActivity().getApplication()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -72,8 +69,6 @@ public class AllReservationsFragment extends Fragment {
 
             @Override
             public void onSuccess(Login login) {
-                Long profileId = login.getProfileId();
-
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -96,7 +91,6 @@ public class AllReservationsFragment extends Fragment {
     private void observeCurrentReservations() {
         reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
             adapter.setReservations(reservations);
-            recyclerView.setAdapter(adapter);
         });
     }
 
@@ -154,9 +148,6 @@ public class AllReservationsFragment extends Fragment {
     }
 
     private void onSearchButtonClick(View view) {
-        reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
-            adapter.setReservations(reservations);
-            recyclerView.setAdapter(adapter);
-        });
+        reservationsViewModel.search();
     }
 }

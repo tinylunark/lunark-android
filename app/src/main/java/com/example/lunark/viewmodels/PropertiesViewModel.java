@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
@@ -20,16 +21,19 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 
 public class PropertiesViewModel extends AndroidViewModel {
     private final PropertyRepository mPropertyRepository;
-    private MutableLiveData<PropertySearchState> state = new MutableLiveData<>();
+    private final MutableLiveData<PropertySearchState> state = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> mParams = new MutableLiveData<>(new HashMap<>());
+    private final LiveData<List<Property>> properties;
 
     public PropertiesViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
         super(application);
 
         this.mPropertyRepository = propertyRepository;
         state.setValue(new PropertySearchState());
+        properties = Transformations.switchMap(mParams, mPropertyRepository::getProperties);
     }
 
-    public MutableLiveData<List<Property>> search() {
+    public void search() {
         Map<String, String> params = new HashMap<>();
         if (state.getValue().getGuestNumber() != null) {
             params.put("guestNumber", state.getValue().getGuestNumber().toString());
@@ -83,7 +87,11 @@ public class PropertiesViewModel extends AndroidViewModel {
             params.put("maxPrice", "");
         }
 
-        return mPropertyRepository.getProperties(params);
+        mParams.setValue(params);
+    }
+
+    public LiveData<List<Property>> getProperties() {
+        return properties;
     }
 
     public static final ViewModelInitializer<PropertiesViewModel> initializer = new ViewModelInitializer<>(

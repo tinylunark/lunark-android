@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
@@ -35,6 +36,10 @@ public class ReservationsViewModel extends AndroidViewModel {
     LoginRepository loginRepository;
     private final LiveData<List<Reservation>> reservations = new MutableLiveData<>();
 
+    private final LiveData<List<Reservation>> mCurrentReservations;
+
+    private final MutableLiveData<Map<String, String>> mFilters = new MutableLiveData<>(new HashMap<>());
+
     private final MutableLiveData<String> mPropertyName = new MutableLiveData<>();
 
     private final MutableLiveData<Long> mStartDate = new MutableLiveData<>();
@@ -47,6 +52,7 @@ public class ReservationsViewModel extends AndroidViewModel {
     public ReservationsViewModel(@NonNull Application application, ReservationRepository reservationRepository) {
         super(application);
         ((LunarkApplication) application).applicationComponent.inject(this);
+        mCurrentReservations = Transformations.switchMap(mFilters, reservationRepository::getCurrentReservations);
     }
 
     public LiveData<List<Reservation>> getReservations() {
@@ -61,7 +67,7 @@ public class ReservationsViewModel extends AndroidViewModel {
         return reservationRepository.getAcceptedReservations(guestId);
     }
 
-    public LiveData<List<Reservation>> getCurrentReservations() {
+    public void search() {
         Map<String, String> filters = new HashMap<>();
         if (mPropertyName.getValue() != null) {
             filters.put("propertyName", mPropertyName.getValue());
@@ -92,7 +98,11 @@ public class ReservationsViewModel extends AndroidViewModel {
             }
         }
 
-        return reservationRepository.getCurrentReservations(filters);
+        mFilters.setValue(filters);
+    }
+
+    public LiveData<List<Reservation>> getCurrentReservations() {
+        return mCurrentReservations;
     }
 
     public void acceptReservation(long reservationId) {

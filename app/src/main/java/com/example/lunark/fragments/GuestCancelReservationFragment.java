@@ -70,12 +70,10 @@ public class GuestCancelReservationFragment extends Fragment {
 
             @Override
             public void onSuccess(Login login) {
-                Long profileId = login.getProfileId();
-
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        observePendingReservations(profileId);
+                        observePendingReservations();
                     }
                 });
             }
@@ -89,10 +87,9 @@ public class GuestCancelReservationFragment extends Fragment {
         binding.searchButton.setOnClickListener(this::onSearchButtonClick);
     }
 
-    private void observePendingReservations(Long profileId) {
-        reservationsViewModel.getAcceptedReservations(profileId).observe(getViewLifecycleOwner(), reservations -> {
+    private void observePendingReservations() {
+        reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
             adapter.setReservations(reservations);
-            recyclerView.setAdapter(adapter);
         });
     }
 
@@ -139,9 +136,6 @@ public class GuestCancelReservationFragment extends Fragment {
     }
 
     private void onSearchButtonClick(View view) {
-        reservationsViewModel.getCurrentReservations().observe(getViewLifecycleOwner(), reservations -> {
-            adapter.setReservations(reservations);
-            recyclerView.setAdapter(adapter);
-        });
+        reservationsViewModel.search();
     }
 }

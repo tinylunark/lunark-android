@@ -54,6 +54,10 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         return property;
     }
 
+    public LiveData<Property> getProperty(Long id) {
+        return propertyRepository.getProperty(id);
+    }
+
     public void setProperty(Property property) {
         this.property.setValue(property);
     }
@@ -72,6 +76,20 @@ public class PropertyDetailViewModel extends AndroidViewModel {
 
     public Completable uploadProperty() {
         return this.propertyRepository.createProperty(this.property.getValue()).flatMapCompletable(property1 -> {
+            Completable imageUploadCompletable = null;
+            for (Bitmap image: this.images) {
+                if (imageUploadCompletable == null) {
+                    imageUploadCompletable = this.propertyRepository.uploadImage(property1.getId(), image);
+                } else {
+                    imageUploadCompletable = imageUploadCompletable.andThen(this.propertyRepository.uploadImage(property1.getId(), image));
+                }
+            }
+            return imageUploadCompletable;
+        });
+    }
+
+    public Completable updateProperty(Property property) {
+        return this.propertyRepository.updateProperty(property).flatMapCompletable(property1 -> {
             Completable imageUploadCompletable = null;
             for (Bitmap image: this.images) {
                 if (imageUploadCompletable == null) {

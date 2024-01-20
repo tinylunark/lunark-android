@@ -20,6 +20,7 @@ import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
 import com.example.lunark.fragments.GuestCancelReservationFragment;
 import com.example.lunark.fragments.GuestSettingsFragment;
+import com.example.lunark.fragments.HostPageFragment;
 import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
@@ -86,5 +87,6 @@ public interface ApplicationComponent {
     void inject(AdminCommentsApprovalFragment adminCommentsApprovalFragment);
     void inject(AccountReportViewModel accountReportViewModel);
     void inject(BlockUserFragment blockUserFragment);
+    void inject(HostPageFragment hostPageFragment);
 }
 

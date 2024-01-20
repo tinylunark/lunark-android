@@ -14,15 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.models.Review;
+import com.example.lunark.models.ReviewReport;
 import com.example.lunark.repositories.LoginRepository;
+import com.example.lunark.repositories.ReviewReportRepository;
 import com.example.lunark.repositories.ReviewRepository;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.Disposable;
+import retrofit2.HttpException;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private Fragment fragment;
@@ -31,14 +36,18 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
     LoginRepository loginRepository;
     @Inject
     ReviewRepository reviewRepository;
+    @Inject
+    ReviewReportRepository reviewReportRepository;
     private Long currentUserId;
     private static final String TAG = "REVIEW_LIST_ADAPTER";
+    private final boolean reportingAllowed;
 
-    public ReviewListAdapter(Fragment fragment, List<Review> reviews) {
+    public ReviewListAdapter(Fragment fragment, List<Review> reviews, boolean reportingAllowed) {
         this.fragment = fragment;
         this.reviews = reviews;
         ((LunarkApplication) fragment.getActivity().getApplication()).applicationComponent.inject(this);
         this.currentUserId = this.loginRepository.getLogin().blockingGet().getProfileId();
+        this.reportingAllowed = reportingAllowed;
     }
 
     @NonNull
@@ -84,11 +93,47 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
                 });
             });
         }
+
+        setUpReportButton(holder, review);
+    }
+
+    private void setUpReportButton(@NonNull ReviewListAdapter.ViewHolder holder, Review review) {
+        if (!this.reportingAllowed) {
+            holder.getReportButton().setVisibility(View.GONE);
+            return;
+        }
+        holder.getReportButton().setVisibility(View.VISIBLE);
+        holder.getReportButton().setOnClickListener(v -> reportReview(review));
     }
 
     @Override
     public int getItemCount() {
         return reviews.size();
+    }
+
+    private void reportReview(Review review) {
+        ReviewReport report = new ReviewReport(null, LocalDateTime.now().toString(), currentUserId, review.getId());
+        reviewReportRepository.createReport(report).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Snackbar.make(fragment.getView(), R.string.review_reported_successfully, Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                HttpException httpException = (HttpException) e;
+                if (httpException.code() == 409) {
+                    Snackbar.make(fragment.getView(), R.string.you_have_already_reported_this_review, Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                Snackbar.make(fragment.getView(), R.string.something_went_wrong, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,6 +142,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         private final TextView date;
         private final TextView comment;
         private final Button deleteButton;
+        private final Button reportButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +152,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             date = (TextView) itemView.findViewById(R.id.date);
             comment = (TextView) itemView.findViewById(R.id.comment);
             deleteButton = (Button) itemView.findViewById(R.id.delete_button);
+            reportButton = itemView.findViewById(R.id.report_button);
         }
 
         public TextView getAuthor() {
@@ -126,6 +173,9 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
         public Button getDeleteButton() {
             return deleteButton;
+        }
+        public Button getReportButton() {
+            return reportButton;
         }
     }
 

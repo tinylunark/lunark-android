@@ -27,6 +27,7 @@ import com.example.lunark.models.Host;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.repositories.ReviewRepository;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
@@ -53,6 +54,8 @@ public class PropertyDetailFragment extends Fragment {
     private PropertyDetailViewModel viewModel;
     @Inject
     AccountRepository accountRepository;
+    @Inject
+    LoginRepository loginRepository;
     @Inject
     ReviewRepository reviewRepository;
     private Disposable subscription;
@@ -119,7 +122,7 @@ public class PropertyDetailFragment extends Fragment {
             }
 
             loadMap(property.getLatitude(), property.getLongitude());
-            setUpReviewsRecyclerView(property.getReviews());
+            setUpReviewsRecyclerView(property);
             setUpHostLink(property);
         });
 
@@ -153,9 +156,10 @@ public class PropertyDetailFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
     }
 
-    private void setUpReviewsRecyclerView(List<Review> reviews) {
+    private void setUpReviewsRecyclerView(Property property) {
         RecyclerView recyclerView = binding.reviews;
-        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews);
+        boolean reportingAllowed = property.getHost().getId().equals(loginRepository.getLogin().blockingGet().getProfileId());
+        ReviewListAdapter adapter = new ReviewListAdapter(this, property.getReviews(), reportingAllowed);
         recyclerView.setAdapter(adapter);
 
         int scrollPosition = 0;

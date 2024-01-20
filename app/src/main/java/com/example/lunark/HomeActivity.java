@@ -190,6 +190,8 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 } else if (itemId == R.id.menu_logout) {
                     logOut();
+                } else if (itemId == R.id.nav_main) {
+                    Navigation.findNavController(binding.fragmentContainerView).popBackStack(R.id.nav_main, false);
                 } else {
                     NavigationUI.onNavDestinationSelected(item, navController);
                 }

@@ -38,6 +38,17 @@
             app:destination="@id/nav_main" />
     </fragment>
     <fragment
+        android:id="@+id/nav_update_property"
+        android:label="Create property"
+        android:name="com.example.lunark.fragments.updateProperty.UpdatePropertyFragment"
+        app:popUpTo="@+id/nav_main"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_create_property">
+        <action
+            android:id="@+id/action_nav_update_property_to_nav_my_properties"
+            app:destination="@id/nav_my_properties" />
+    </fragment>
+    <fragment
         android:id="@+id/nav_property"
         android:label="Property detail"
         android:name="com.example.lunark.fragments.PropertyDetailFragment"

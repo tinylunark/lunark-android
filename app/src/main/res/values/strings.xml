@@ -110,5 +110,9 @@
     <string name="report_submitted_successfully">Report submitted successfully</string>
     <string name="report_guest">Report guest</string>
     <string name="image_of_a_calendar">Image of a calendar.</string>
+    <string name="report">Report</string>
+    <string name="review_reported_successfully">Review reported successfully</string>
+    <string name="you_have_already_reported_this_review">You have already reported this review</string>
+    <string name="shake_detected_sorting_properties">Shake detected! Sorting properties…</string>
 </resources>
 

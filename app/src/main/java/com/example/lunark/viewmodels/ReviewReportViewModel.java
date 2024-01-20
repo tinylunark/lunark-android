@@ -25,7 +25,7 @@ public class ReviewReportViewModel extends AndroidViewModel {
 
     private final LiveData<List<ReviewReport>> properties = new MutableLiveData<>();
 
-    public ReviewReportViewModel(@NonNull Application application, ReviewReportRepository propertyRepository) {
+    public ReviewReportViewModel(@NonNull Application application) {
         super(application);
         ((LunarkApplication) application).applicationComponent.inject(this);
     }

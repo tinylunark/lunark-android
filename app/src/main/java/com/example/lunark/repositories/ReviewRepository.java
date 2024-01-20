@@ -51,4 +51,8 @@ public class ReviewRepository {
     public void approveReview(Long id) {
         this.reviewNetworkDataSource.approveReview(id);
     }
+
+    public Single<List<Review>> getPropertyReviews(Long id) {
+        return this.reviewNetworkDataSource.getPropertyReviews(id);
+    }
 }

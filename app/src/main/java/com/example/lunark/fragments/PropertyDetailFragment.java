@@ -27,6 +27,7 @@ import com.example.lunark.models.Host;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.repositories.ReviewRepository;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
@@ -43,7 +44,6 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.operators.observable.ObservableDistinctUntilChanged;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -53,6 +53,8 @@ public class PropertyDetailFragment extends Fragment {
     private PropertyDetailViewModel viewModel;
     @Inject
     AccountRepository accountRepository;
+    @Inject
+    LoginRepository loginRepository;
     @Inject
     ReviewRepository reviewRepository;
     private Disposable subscription;
@@ -119,9 +121,10 @@ public class PropertyDetailFragment extends Fragment {
             }
 
             loadMap(property.getLatitude(), property.getLongitude());
-            setUpReviewsRecyclerView(property.getReviews());
+            viewModel.getReviews().observe(getViewLifecycleOwner(), reviews -> setUpReviewsRecyclerView(reviews, property.getHost().getId()));
             setUpHostLink(property);
         });
+
 
         accountRepository.getFavoriteProperties().observe(getViewLifecycleOwner(), favorites -> {
             boolean isFavorite = favorites.stream().anyMatch(favorite -> favorite.getId().equals(propertyId));
@@ -153,9 +156,10 @@ public class PropertyDetailFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
     }
 
-    private void setUpReviewsRecyclerView(List<Review> reviews) {
+    private void setUpReviewsRecyclerView(List<Review> reviews, Long hostId) {
         RecyclerView recyclerView = binding.reviews;
-        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews);
+        boolean reportingAllowed = hostId.equals(loginRepository.getLogin().blockingGet().getProfileId());
+        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews, reportingAllowed);
         recyclerView.setAdapter(adapter);
 
         int scrollPosition = 0;

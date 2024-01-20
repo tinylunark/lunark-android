@@ -80,4 +80,11 @@ public interface ReviewService {
             "Content-Type:application/json"
     })
     Call<Review> getReview(@Path("id") Long id);
+
+    @GET("reviews/property/{id}")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Single<List<Review>> getPropertyReviews(@Path("id") Long id);
 }

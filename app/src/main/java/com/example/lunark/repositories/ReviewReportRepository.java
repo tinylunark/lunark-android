@@ -13,6 +13,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,5 +70,11 @@ public class ReviewReportRepository {
                 Log.e(LOG_TAG, "Accept ReviewReport failure: " + t.getMessage());
             }
         });
+    }
+
+    public Completable createReport(ReviewReport report) {
+        return this.reviewReportService.createReport(report)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

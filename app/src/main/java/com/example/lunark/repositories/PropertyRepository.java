@@ -127,6 +127,18 @@ public class PropertyRepository {
                 });
     }
 
+    public Single<Property> updateProperty(Property property) {
+        return propertyService.updateProperty(property)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(property1 -> {
+                    Log.i(LOG_TAG, "Property updated. Property ID:" + property1.getId());
+                })
+                .doOnError(throwable -> {
+                    Log.e(LOG_TAG, "Property update fail: " + throwable.getMessage());
+                });
+    }
+
     public Completable uploadImage(Long propertyId, Bitmap image) {
         return propertyService.uploadImage(propertyId, getImagePart(image))
                 .subscribeOn(Schedulers.io())

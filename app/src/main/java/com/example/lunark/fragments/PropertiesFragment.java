@@ -57,12 +57,9 @@ public class PropertiesFragment extends Fragment {
 
         propertiesViewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
             adapter.setProperties(properties);
-            recyclerView.setAdapter(adapter);
         });
 
-        binding.searchButton.setOnClickListener(v -> {
-            propertiesViewModel.search();
-        });
+        binding.searchButton.setOnClickListener(v -> propertiesViewModel.search());
     }
 
     private void setUpPropertyList() {

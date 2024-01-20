@@ -1,5 +1,6 @@
 package com.example.lunark.adapters;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,8 +115,10 @@ public class PropertyListAdapter extends RecyclerView.Adapter<PropertyListAdapte
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setProperties(List<Property> properties) {
         this.properties = properties;
+        notifyDataSetChanged();
     }
 }
 

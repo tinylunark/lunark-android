@@ -83,7 +83,7 @@ public class AccountScreen extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
-                if (itemId == R.id.menu_home) {
+                if (itemId == R.id.nav_main) {
                     if (!isCurrentActivity(HomeActivity.class)) {
                         startActivity(new Intent(AccountScreen.this, HomeActivity.class));
                     }

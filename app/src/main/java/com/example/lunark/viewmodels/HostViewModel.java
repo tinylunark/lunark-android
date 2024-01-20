@@ -93,22 +93,6 @@ public class HostViewModel extends AndroidViewModel {
                 HostViewModel.this.eligibleToReview.set(false);
             }
         });
-        reportRepository.isEligibleToReportHost(id).subscribe(new SingleObserver<Boolean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                reportEligibilitySubscription = d;
-            }
-
-            @Override
-            public void onSuccess(Boolean eligibility) {
-                eligibleToReport.set(eligibility);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                eligibleToReport.set(false);
-            }
-        });
     }
 
     public LiveData<AccountDto> getHost() {

@@ -16,15 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
 import com.example.lunark.adapters.ReviewListAdapter;
 import com.example.lunark.databinding.FragmentHostPageBinding;
 import com.example.lunark.models.Review;
 import com.example.lunark.models.ReviewType;
+import com.example.lunark.repositories.LoginRepository;
 import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.HostViewModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class HostPageFragment extends Fragment {
     public static final String HOST_ID_KEY = "HOST_ID";
@@ -32,8 +36,11 @@ public class HostPageFragment extends Fragment {
     private HostViewModel viewModel;
     private FragmentHostPageBinding binding;
     private Long id;
+    @Inject
+    LoginRepository loginRepository;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((LunarkApplication) getActivity().getApplication()).applicationComponent.inject(this);
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(HostViewModel.class);
         if (getArguments() != null) {
@@ -61,7 +68,8 @@ public class HostPageFragment extends Fragment {
 
     private void setUpReviewsRecyclerView(List<Review> reviews) {
         RecyclerView recyclerView = binding.reviewsRecyclerview;
-        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews);
+        boolean reportingAllowed = this.id.equals(this.loginRepository.getLogin().blockingGet().getProfileId());
+        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews, reportingAllowed);
         recyclerView.setAdapter(adapter);
 
         int scrollPosition = 0;

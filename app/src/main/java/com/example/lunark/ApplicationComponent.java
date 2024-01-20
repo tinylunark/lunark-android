@@ -20,6 +20,7 @@ import com.example.lunark.fragments.FavoritePropertiesFragment;
 import com.example.lunark.fragments.GeneralReportFragment;
 import com.example.lunark.fragments.GuestCancelReservationFragment;
 import com.example.lunark.fragments.GuestSettingsFragment;
+import com.example.lunark.fragments.HostPageFragment;
 import com.example.lunark.fragments.HostSettingsFragment;
 import com.example.lunark.fragments.NotificationsFragment;
 import com.example.lunark.fragments.PendingReservationsFragment;
@@ -32,6 +33,7 @@ import com.example.lunark.repositories.PropertyRepository;
 import com.example.lunark.repositories.ReservationRepository;
 import com.example.lunark.viewmodels.AccountReportViewModel;
 import com.example.lunark.viewmodels.HostViewModel;
+import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.example.lunark.viewmodels.ReservationsViewModel;
 import com.example.lunark.viewmodels.ReviewReportViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
@@ -86,5 +88,7 @@ public interface ApplicationComponent {
     void inject(AdminCommentsApprovalFragment adminCommentsApprovalFragment);
     void inject(AccountReportViewModel accountReportViewModel);
     void inject(BlockUserFragment blockUserFragment);
+    void inject(HostPageFragment hostPageFragment);
+    void inject(PropertyDetailViewModel propertyDetailViewModel);
 }
 

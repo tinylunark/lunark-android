@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import com.example.lunark.fragments.HostPageFragment;
 import com.example.lunark.fragments.createProperty.IAllowBackPressed;
 import com.example.lunark.models.Login;
 import com.example.lunark.notifications.NotificationReceiver;
+import com.example.lunark.notifications.NotificationService;
 import com.example.lunark.repositories.LoginRepository;
 import com.google.android.material.navigation.NavigationView;
 
@@ -145,6 +147,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (!isActivityRunning(SignUpScreenActivity.class)) {
                     Intent intent = new Intent(HomeActivity.this, LoginScreenActivity.class);
                     startActivity(intent);
+                    stopNotificationService();
                     finish(); // Finish the current activity after logging out
                 }
             }
@@ -180,18 +183,15 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
-                if (itemId == R.id.menu_home) {
-                    if (!isActivityRunning(HomeActivity.class)) {
-                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                    }
-                } else if (itemId == R.id.menu_account) {
+                if (itemId == R.id.menu_account) {
                     if (!isActivityRunning(AccountScreen.class)) {
                         Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
                         startActivity(accountIntent);
                     }
                 } else if (itemId == R.id.menu_logout) {
                     logOut();
+                } else if (itemId == R.id.nav_main) {
+                    Navigation.findNavController(binding.fragmentContainerView).popBackStack(R.id.nav_main, false);
                 } else {
                     NavigationUI.onNavDestinationSelected(item, navController);
                 }
@@ -262,5 +262,15 @@ public class HomeActivity extends AppCompatActivity {
                 Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.nav_account_report, bundle);
             }
         });
+    }
+
+    private void stopNotificationService() {
+        Intent intent = new Intent(HomeActivity.this, NotificationService.class);
+        intent.setAction(NotificationService.ACTION_STOP_NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Objects.requireNonNull(this).startForegroundService(intent);
+        } else {
+            Objects.requireNonNull(this).startService(intent);
+        }
     }
 }

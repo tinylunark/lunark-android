@@ -13,26 +13,29 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.Property;
+import com.example.lunark.models.Review;
 import com.example.lunark.repositories.PropertyRepository;
+import com.example.lunark.repositories.ReviewRepository;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
-import io.reactivex.Single;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class PropertyDetailViewModel extends AndroidViewModel {
     private final PropertyRepository propertyRepository;
     private MutableLiveData<Property> property = new MutableLiveData<>();
+    private MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
     private List<Bitmap> images = new ArrayList<>();
+    @Inject
+    ReviewRepository reviewRepository;
 
     public PropertyDetailViewModel(@NonNull Application application) {
         super(application);
         propertyRepository = new PropertyRepository();
+        ((LunarkApplication) application).applicationComponent.inject(this);
     }
 
     public PropertyDetailViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
@@ -43,7 +46,9 @@ public class PropertyDetailViewModel extends AndroidViewModel {
 
     public void initProperty(Long id) {
         propertyRepository.getProperty(id).observeForever(property1 -> property.setValue(property1));
-
+        reviewRepository.getPropertyReviews(id)
+                .doOnSuccess(reviews1 -> reviews.setValue(reviews1))
+                .subscribe();
     }
     public void initProperty() {
         images.clear();
@@ -52,6 +57,10 @@ public class PropertyDetailViewModel extends AndroidViewModel {
 
     public LiveData<Property> getProperty() {
         return property;
+    }
+
+    public LiveData<List<Review>> getReviews() {
+        return reviews;
     }
 
     public void setProperty(Property property) {

@@ -35,6 +35,9 @@ public class UnapprovedPropertiesViewModel extends AndroidViewModel {
     public LiveData<List<Property>> getUnapprovedProperties() {
         return propertyRepository.getUnapprovedProperties();
     }
+    public LiveData<List<Property>> getMyProperties(Long hostId) {
+        return propertyRepository.getMyProperties(hostId.toString());
+    }
 
     public static final ViewModelInitializer<UnapprovedPropertiesViewModel> initializer =
             new ViewModelInitializer<>(

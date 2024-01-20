@@ -88,7 +88,6 @@ public class PropertiesViewModel extends AndroidViewModel {
         } else {
             params.put("maxPrice", "");
         }
-        mSortOrder = mSortOrder.toggle();
         params.put("sort", mSortOrder.toString());
 
         mParams.setValue(params);
@@ -114,5 +113,9 @@ public class PropertiesViewModel extends AndroidViewModel {
 
     public void setState(PropertySearchState value) {
         this.state.setValue(value);
+    }
+
+    public void toggleSortOrder() {
+        mSortOrder = mSortOrder.toggle();
     }
 }

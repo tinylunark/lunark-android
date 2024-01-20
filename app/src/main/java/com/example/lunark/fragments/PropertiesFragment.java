@@ -89,6 +89,7 @@ public class PropertiesFragment extends Fragment implements ShakeDetector.Listen
     @Override
     public void hearShake() {
         Toast.makeText(requireContext(), R.string.shake_detected_sorting_properties, Toast.LENGTH_SHORT).show();
+        propertiesViewModel.toggleSortOrder();
         propertiesViewModel.search();
     }
 }

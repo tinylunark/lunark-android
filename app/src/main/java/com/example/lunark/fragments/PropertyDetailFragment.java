@@ -44,7 +44,6 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.operators.observable.ObservableDistinctUntilChanged;
 
 public class PropertyDetailFragment extends Fragment {
     private FragmentPropertyDetailBinding binding;
@@ -122,7 +121,9 @@ public class PropertyDetailFragment extends Fragment {
             }
 
             loadMap(property.getLatitude(), property.getLongitude());
-            setUpReviewsRecyclerView(property);
+            reviewRepository.getPropertyReviews(propertyId)
+                    .doOnSuccess(reviews -> setUpReviewsRecyclerView(reviews, property.getHost().getId()))
+                    .subscribe();
             setUpHostLink(property);
         });
 
@@ -156,10 +157,10 @@ public class PropertyDetailFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
     }
 
-    private void setUpReviewsRecyclerView(Property property) {
+    private void setUpReviewsRecyclerView(List<Review> reviews, Long hostId) {
         RecyclerView recyclerView = binding.reviews;
-        boolean reportingAllowed = property.getHost().getId().equals(loginRepository.getLogin().blockingGet().getProfileId());
-        ReviewListAdapter adapter = new ReviewListAdapter(this, property.getReviews(), reportingAllowed);
+        boolean reportingAllowed = hostId.equals(loginRepository.getLogin().blockingGet().getProfileId());
+        ReviewListAdapter adapter = new ReviewListAdapter(this, reviews, reportingAllowed);
         recyclerView.setAdapter(adapter);
 
         int scrollPosition = 0;

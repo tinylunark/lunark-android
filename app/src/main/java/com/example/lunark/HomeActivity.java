@@ -183,12 +183,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
-                if (itemId == R.id.menu_home) {
-                    if (!isActivityRunning(HomeActivity.class)) {
-                        Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                    }
-                } else if (itemId == R.id.menu_account) {
+                if (itemId == R.id.menu_account) {
                     if (!isActivityRunning(AccountScreen.class)) {
                         Intent accountIntent = new Intent(HomeActivity.this, AccountScreen.class);
                         startActivity(accountIntent);

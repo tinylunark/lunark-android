@@ -1,5 +1,6 @@
 package com.example.lunark.adapters;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.R;
-import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.fragments.AccountReportFragment;
+import com.example.lunark.models.Profile;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.PropertyImage;
 import com.example.lunark.models.Reservation;
@@ -56,26 +57,20 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reservation reservation = reservations.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        Long userId = reservation.getGuestId();
-        Long reservationId = reservation.getId();
         Long propertyId = reservation.getPropertyId();
+        Profile profile = reservation.getGuest();
 
-        holder.propertyName.setText(reservation.getPropertyName());
-        holder.dateRange.setText(dateFormat.format(reservation.getStartDate()) + " - " + dateFormat.format(reservation.getEndDate()));
-        holder.price.setText("Price: $" + String.valueOf(reservation.getPrice()));
-        fetchUserData(userId, new UserDataCallback() {
-            @Override
-            public void onUserDataFetched(AccountDto accountDto) {
-                holder.getGuestName().setText(accountDto.getName() + " " + accountDto.getSurname());
-            }
-            @Override
-            public void onUserDataFetchFailed() {
-            }
-        });
+        holder.getPropertyName().setText(reservation.getPropertyName());
+        holder.getDateRange().setText(dateFormat.format(reservation.getStartDate()) + " - " + dateFormat.format(reservation.getEndDate()));
+        holder.getPrice().setText("Price: $" + String.valueOf(reservation.getPrice()));
+        holder.getGuestName().setText(profile.getName() + " " + profile.getSurname());
+        holder.getStatus().setText("Status: " + reservation.getStatus());
+
         fetchPropertyData(propertyId, new PropertyDataCallback() {
             @Override
             public void onPropertyDataFetched(Property property) {
@@ -94,25 +89,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
 
         setUpReportButton(holder, reservation);
     }
-    private void fetchUserData(Long userId, final UserDataCallback callback) {
-        Call<AccountDto> call = ClientUtils.accountService.getAccount(userId);
-        call.enqueue(new Callback<AccountDto>() {
-            @Override
-            public void onResponse(Call<AccountDto> call, Response<AccountDto> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AccountDto accountDto = response.body();
-                    callback.onUserDataFetched(accountDto);
-                } else {
-                    callback.onUserDataFetchFailed();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<AccountDto> call, Throwable t) {
-                callback.onUserDataFetchFailed();
-            }
-        });
-    }
     private void fetchPropertyData(Long propertyId, final PropertyDataCallback callback) {
         Call<Property> call = ClientUtils.propertyService.getProperty(propertyId);
         call.enqueue(new Callback<Property>() {
@@ -132,21 +109,9 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         });
     }
 
-    public void acceptReservation(long reservationId) {
-        reservationRepository.acceptReservation(reservationId);
-    }
-
-    public void declineReservation(long reservationId) {
-        reservationRepository.declineReservation(reservationId);
-    }
-
-    interface UserDataCallback {
-        void onUserDataFetched(AccountDto accountDto);
-        void onUserDataFetchFailed();
-    }
-
     interface PropertyDataCallback {
         void onPropertyDataFetched(Property propertyDto);
+
         void onPropertyDataFetchFailed();
     }
 
@@ -162,6 +127,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
         private final TextView propertyName;
         private final TextView dateRange;
         private final TextView price;
+        private final TextView status;
         private final Button reportButton;
 
         public ViewHolder(@NonNull View itemView) {
@@ -171,6 +137,7 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
             propertyName = itemView.findViewById(R.id.property_name);
             dateRange = itemView.findViewById(R.id.date_range);
             price = itemView.findViewById(R.id.price);
+            status = itemView.findViewById(R.id.status);
             reportButton = itemView.findViewById(R.id.report_button);
         }
 
@@ -190,6 +157,9 @@ public class ReservationsListAdapterBase extends RecyclerView.Adapter<Reservatio
             return dateRange;
         }
 
+        public TextView getStatus() {
+            return status;
+        }
 
         public TextView getPrice() {
             return price;

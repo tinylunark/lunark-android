@@ -84,7 +84,7 @@ public class NotificationService extends Service {
                     startForegroundService();
                     break;
                 case ACTION_STOP_NOTIFICATION_SERVICE:
-                    stopForeground(true);
+                    stopForegroundService();
                     break;
             }
         }
@@ -104,6 +104,12 @@ public class NotificationService extends Service {
         } else {
             startForeground(notificationID, permanentNotification);
         }
+    }
+
+    private void stopForegroundService() {
+        mStompClient.disconnect();
+        if (compositeDisposable != null) compositeDisposable.dispose();
+        stopForeground(true);
     }
 
     @NonNull

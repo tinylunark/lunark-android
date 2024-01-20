@@ -121,11 +121,10 @@ public class PropertyDetailFragment extends Fragment {
             }
 
             loadMap(property.getLatitude(), property.getLongitude());
-            reviewRepository.getPropertyReviews(propertyId)
-                    .doOnSuccess(reviews -> setUpReviewsRecyclerView(reviews, property.getHost().getId()))
-                    .subscribe();
+            viewModel.getReviews().observe(getViewLifecycleOwner(), reviews -> setUpReviewsRecyclerView(reviews, property.getHost().getId()));
             setUpHostLink(property);
         });
+
 
         accountRepository.getFavoriteProperties().observe(getViewLifecycleOwner(), favorites -> {
             boolean isFavorite = favorites.stream().anyMatch(favorite -> favorite.getId().equals(propertyId));

@@ -55,10 +55,15 @@
         android:label="Favorite properties"
         tools:layout="@layout/fragment_favorite_properties" />
     <fragment
+        android:id="@+id/nav_my_properties"
+        android:name="com.example.lunark.fragments.updateProperty.MyPropertiesFragment"
+        android:label="My properties"
+        tools:layout="@layout/fragment_favorite_properties" />
+    <fragment
         android:id="@+id/nav_reports"
         android:name="com.example.lunark.fragments.ReportsFragment"
         android:label="Reports"
-        tools:layout="@layout/fragment_reports" />
+        tools:layout="@layout/fragment_my_properties" />
     <fragment
         android:id="@+id/nav_notifications"
         android:label="Notifications"

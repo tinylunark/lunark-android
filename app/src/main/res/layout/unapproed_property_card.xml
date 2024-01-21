@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:background="@color/background_secondary"
+    android:elevation="4dp"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Property Name"
+        android:textSize="18sp"
+        android:textColor="#fff"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/locationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="City, Country"
+        android:textSize="14sp"
+        android:textColor="#00838f"
+        android:layout_marginTop="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="end">
+    <Button
+        android:id="@+id/viewButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="View"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_corners"
+        android:textAllCaps="false" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content">
+        </androidx.legacy.widget.Space>
+
+
+    <Button
+        android:id="@+id/approveButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Approve"
+        android:background="@drawable/rounded_corners"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"/>
+
+    </LinearLayout>
+</LinearLayout>

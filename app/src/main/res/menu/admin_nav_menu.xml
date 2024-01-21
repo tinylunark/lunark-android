@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view" >
+
+    <item
+        android:id="@+id/nav_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_home"
+        android:title="@string/main" />
+    <item
+        android:id="@+id/menu_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_account"
+        android:title="@string/account" />
+    <item
+        android:id="@+id/nav_unapproved_properties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_unapproved_properties"
+        android:title="@string/unapproved_properties" />
+    <item
+        android:id="@+id/nav_comments_grades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_comments_grades"
+        android:title="@string/comments_grades"/>
+
+    <item
+        android:id="@+id/nav_unapproved_reviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_check"
+        android:title="Unapproved Reviews" />
+    <item
+        android:id="@+id/menu_filter_properties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter_properties" />
+    <item
+        android:id="@+id/nav_block_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_globe"
+        android:title="@string/user_management" />
+    <item
+        android:id="@+id/menu_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/logout" />
+</menu>

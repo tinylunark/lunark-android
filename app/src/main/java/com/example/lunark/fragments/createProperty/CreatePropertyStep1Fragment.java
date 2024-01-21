@@ -173,7 +173,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         property.setAddress(new Address(
                 binding.addressEditText.getText().toString(),
                 binding.cityEditText.getText().toString(),
-                binding.cityEditText.getText().toString())
+                binding.countryEditText.getText().toString())
         );
         Pair<Double, Double> location = getSelectedLatLong();
         if (location != null) {

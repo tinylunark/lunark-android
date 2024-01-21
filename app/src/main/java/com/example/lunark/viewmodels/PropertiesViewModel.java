@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.lunark.LunarkApplication;
 import com.example.lunark.models.Property;
+import com.example.lunark.models.SortOrder;
 import com.example.lunark.repositories.PropertyRepository;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class PropertiesViewModel extends AndroidViewModel {
     private final PropertyRepository mPropertyRepository;
     private final MutableLiveData<PropertySearchState> state = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> mParams = new MutableLiveData<>(new HashMap<>());
+    private SortOrder mSortOrder = SortOrder.ASC;
     private final LiveData<List<Property>> properties;
 
     public PropertiesViewModel(@NonNull Application application, PropertyRepository propertyRepository) {
@@ -86,6 +88,7 @@ public class PropertiesViewModel extends AndroidViewModel {
         } else {
             params.put("maxPrice", "");
         }
+        params.put("sort", mSortOrder.toString());
 
         mParams.setValue(params);
     }
@@ -110,5 +113,9 @@ public class PropertiesViewModel extends AndroidViewModel {
 
     public void setState(PropertySearchState value) {
         this.state.setValue(value);
+    }
+
+    public void toggleSortOrder() {
+        mSortOrder = mSortOrder.toggle();
     }
 }

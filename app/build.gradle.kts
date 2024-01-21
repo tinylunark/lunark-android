@@ -125,4 +125,5 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("com.squareup:seismic:1.0.3")
 }

@@ -115,4 +115,11 @@ public class ReviewNetworkDataSource {
             }
         });
     }
+
+    public Single<List<Review>> getPropertyReviews(Long id) {
+        return this.reviewService.getPropertyReviews(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(reviews -> Log.d(TAG, "Successfully fetched reviews for property with id: " + id));
+    }
 }

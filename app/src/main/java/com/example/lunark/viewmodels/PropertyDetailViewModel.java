@@ -88,18 +88,8 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public Completable updateProperty(Property property) {
-        return this.propertyRepository.updateProperty(property).flatMapCompletable(property1 -> {
-            Completable imageUploadCompletable = null;
-            for (Bitmap image: this.images) {
-                if (imageUploadCompletable == null) {
-                    imageUploadCompletable = this.propertyRepository.uploadImage(property1.getId(), image);
-                } else {
-                    imageUploadCompletable = imageUploadCompletable.andThen(this.propertyRepository.uploadImage(property1.getId(), image));
-                }
-            }
-            return imageUploadCompletable;
-        });
+    public void updateProperty(Property property) {
+        this.propertyRepository.updateProperty(property);
     }
 
     public LiveData<List<Property>> getMyProperties(String hostId) {
@@ -111,7 +101,6 @@ public class PropertyDetailViewModel extends AndroidViewModel {
             creationExtras -> {
                 LunarkApplication app = (LunarkApplication) creationExtras.get(APPLICATION_KEY);
                 assert app != null;
-
                 return new PropertyDetailViewModel(app, app.getPropertyRepository());
             }
     );

@@ -61,7 +61,7 @@ public interface PropertyService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    Single<Property>  updateProperty(@Body Property property);
+    Call<Property>  updateProperty(@Body Property property);
 
     @Multipart
     @POST("properties/{id}/images")

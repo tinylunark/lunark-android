@@ -39,6 +39,7 @@ import com.example.lunark.viewmodels.ReviewReportViewModel;
 import com.example.lunark.viewmodels.ReviewViewModel;
 import com.example.lunark.viewmodels.UnapprovedPropertiesViewModel;
 import com.example.lunark.viewmodels.UnapprovedReviewsViewModel;
+import com.example.lunark.ChangePasswordActivity;
 
 import javax.inject.Singleton;
 
@@ -81,6 +82,7 @@ public interface ApplicationComponent {
     void inject(HostSettingsFragment hostSettingsFragment);
     void inject(ReservationRepository reservationRepository);
     void inject(PropertyApprovalFragment propertyApprovalFragment);
+    void inject(ChangePasswordActivity changePasswordActivity);
     void inject(UnapprovedPropertiesListAdapter unapprovedPropertiesListAdapter);
     void inject(UserManagementListAdapter userManagementListAdapter);
     void inject(HostViewModel hostViewModel);

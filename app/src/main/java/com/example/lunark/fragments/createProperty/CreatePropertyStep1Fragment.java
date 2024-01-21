@@ -19,6 +19,7 @@ import com.example.lunark.R;
 import com.example.lunark.databinding.FragmentCreatePropertyStep1Binding;
 import com.example.lunark.models.Address;
 import com.example.lunark.models.Property;
+import com.example.lunark.util.ClientUtils;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -35,6 +36,9 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class CreatePropertyStep1Fragment extends Fragment implements Step {
 
@@ -127,6 +131,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
             public boolean singleTapConfirmedHelper(GeoPoint p) {
                 Log.d("Map", p.getLongitude() + " " + p.getLatitude());
                 setMarker(p);
+                reverseGeocode(p);
                 updateViewModel();
                 return true;
             }
@@ -173,7 +178,7 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         property.setAddress(new Address(
                 binding.addressEditText.getText().toString(),
                 binding.cityEditText.getText().toString(),
-                binding.cityEditText.getText().toString())
+                binding.countryEditText.getText().toString())
         );
         Pair<Double, Double> location = getSelectedLatLong();
         if (location != null) {
@@ -228,7 +233,8 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
         if (property.getLatitude() == null) {
             return;
         }
-        setMarker(new GeoPoint(property.getLatitude(), property.getLongitude()));
+        GeoPoint location = new GeoPoint(property.getLatitude(), property.getLongitude());
+        setMarker(location);
     }
 
     private Pair<Double, Double> getSelectedLatLong() {
@@ -273,7 +279,19 @@ public class CreatePropertyStep1Fragment extends Fragment implements Step {
     }
 
     private void setMarker(GeoPoint p) {
+        this.overlayItems.clear();
         this.overlayItems.add(new OverlayItem("Your property", "", p));
         this.mapOverlay.setFocusedItem(overlayItems.get(0));
+    }
+
+    private void reverseGeocode(GeoPoint p) {
+        ClientUtils.nominatimService.reverseGeocode(p.getLatitude(), p.getLongitude())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(nominatimReverseResult -> {
+                    binding.addressEditText.setText(nominatimReverseResult.getStreet());
+                    binding.cityEditText.setText(nominatimReverseResult.getCity());
+                    binding.countryEditText.setText(nominatimReverseResult.getCountry());
+                }).subscribe();
     }
 }

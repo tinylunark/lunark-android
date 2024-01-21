@@ -128,15 +128,15 @@ public class CreatePropertyStep2Fragment extends Fragment implements BlockingSte
 
     private void setUpCheckBoxMap() {
         amenityCheckboxes = new HashMap<>();
-        amenityCheckboxes.put("Air condtioning", binding.acCheckbox);
         amenityCheckboxes.put("Free parking", binding.freeParkingCheckbox);
+        amenityCheckboxes.put("Air condtioning", binding.acCheckbox);
         amenityCheckboxes.put("WiFi", binding.wifiCheckbox);
         amenityCheckboxes.put("Pool", binding.poolCheckbox);
         amenityCheckboxes.put("Medical Services", binding.medicalServicesCheckbox);
         amenityCheckboxes.put("Dedicated workspace", binding.workspaceCheckbox);
         amenityIds = new HashMap<>();
-        amenityIds.put("Air condtioning", 1L);
-        amenityIds.put("Free parking", 2L);
+        amenityIds.put("Free parking", 1L);
+        amenityIds.put("Air condtioning", 2L);
         amenityIds.put("WiFi", 3L);
         amenityIds.put("Pool", 4L);
         amenityIds.put("Medical Services", 5L);

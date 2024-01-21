@@ -3,6 +3,7 @@ package com.example.lunark.util;
 import com.example.lunark.BuildConfig;
 import com.example.lunark.clients.AccountService;
 import com.example.lunark.clients.ReservationService;
+import com.example.lunark.services.NominatimService;
 import com.example.lunark.services.PropertyService;
 import com.example.lunark.services.ReviewReportService;
 import com.example.lunark.services.ReviewService;
@@ -47,8 +48,17 @@ public class ClientUtils {
             .client(test())
             .build();
 
+    private static Retrofit nominatimRetrofit = new Retrofit.Builder()
+            .baseUrl("https://nominatim.openstreetmap.org/")
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(test())
+            .build();
+
     public static PropertyService propertyService = retrofit.create(PropertyService.class);
     public static ReservationService reservationService = retrofit.create(ReservationService.class);
     public static AccountService accountService = retrofit.create(AccountService.class);
     public static ReviewService reviewService = retrofit.create(ReviewService.class);
+    public static NominatimService nominatimService = nominatimRetrofit.create(NominatimService.class);
 }

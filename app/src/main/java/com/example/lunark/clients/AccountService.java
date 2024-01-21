@@ -4,6 +4,7 @@ import com.example.lunark.dtos.AccountDto;
 import com.example.lunark.dtos.AccountSignUpDto;
 import com.example.lunark.dtos.NotificationSettingsDto;
 import com.example.lunark.dtos.ProfileDto;
+import com.example.lunark.models.ChangePassword;
 
 import io.reactivex.Completable;
 import com.example.lunark.dtos.ProfileDto;
@@ -39,6 +40,13 @@ public interface AccountService {
     })
     @PUT("accounts/{id}")
     Call<ProfileDto> updateProfile(@Path("id") Long id, @Body ProfileDto profile);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("accounts/update-password")
+    Call<ChangePassword> updatePassword(@Body ChangePassword changePasswordDTO);
 
     @Headers({
             "User-Agent: Mobile-Android",

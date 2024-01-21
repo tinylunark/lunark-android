@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -128,6 +129,10 @@ public class AccountScreen extends AppCompatActivity {
 
     private void populateFields(AccountDto accountDto) {
         setContentView(R.layout.activity_account);
+
+        TextView fullName = findViewById(R.id.profile_full_name);
+        fullName.setText(accountDto.getName() + " " + accountDto.getSurname());
+
         TextInputEditText firstNameEditText = findViewById(R.id.textInputEditTextFirstName);
         firstNameEditText.setText(accountDto.getName());
 

@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +40,7 @@ import com.example.lunark.tools.GenericFileProvider;
 import com.example.lunark.viewmodels.PropertyDetailViewModel;
 import com.example.lunark.models.Property;
 import com.example.lunark.models.AvailabilityEntry;
+import com.example.lunark.repositories.*;
 import com.example.lunark.models.Address;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -63,10 +64,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public class UpdatePropertyFragment extends Fragment {
 
     private FragmentUpdatePropertyBinding binding;
     private PropertyDetailViewModel viewModel;
+    private Property property;
     private Long propertyId;
     private int minNum = 1;
     private int maxNum = 1;
@@ -89,7 +93,7 @@ public class UpdatePropertyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(PropertyDetailViewModel.class);
+        viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PropertyDetailViewModel.initializer)).get(PropertyDetailViewModel.class);
         if (getArguments() != null) {
             propertyId = getArguments().getLong("propertyId");
         }
@@ -109,6 +113,7 @@ public class UpdatePropertyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (propertyId != null) {
+            property = viewModel.getProperty().getValue();
             viewModel.getProperty(propertyId).observe(getViewLifecycleOwner(), this::populateFields);
         }
 
@@ -168,15 +173,8 @@ public class UpdatePropertyFragment extends Fragment {
         binding.updateButton.setOnClickListener(v -> onPropertyUpdate());
     }
     private void onPropertyUpdate() {
-        Property updatedProperty = collectPropertyData();
-
-        if (isPropertyDataValid(updatedProperty)) {
-            viewModel.updateProperty(updatedProperty);
-            Toast.makeText(requireContext(), "Property updated successfully", Toast.LENGTH_SHORT).show();
-            requireActivity().onBackPressed();
-        } else {
-            Toast.makeText(requireContext(), "Invalid property data. Please check the input fields.", Toast.LENGTH_SHORT).show();
-        }
+        viewModel.updateProperty(this.collectPropertyData());
+        Toast.makeText(requireContext(), "Property updated successfully", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -354,6 +352,17 @@ public class UpdatePropertyFragment extends Fragment {
 
     private Property collectPropertyData() {
         Property property = new Property();
+        property.setId(this.propertyId);
+
+        if(binding.roomRadio.isChecked()) {
+            property.setType("ROOM");
+        }
+        if(binding.wholeHouseRadio.isChecked()) {
+            property.setType("WHOLE_HOUSE");
+        }
+        if(binding.sharedRoomRadio.isChecked()){
+            property.setType("SHARED_ROOM");
+        }
 
         property.setAddress(new Address(
                 binding.addressEditText.getText().toString(),
@@ -392,6 +401,9 @@ public class UpdatePropertyFragment extends Fragment {
             property.setAutoApproveEnabled(true);
         }
 
+        Log.w("AYO", "UPDATING PROPERTY");
+        Log.w("AYO", property.toString());
+
         return property;
     }
     private void loadMap(double latitude, double longitude) {
@@ -421,7 +433,7 @@ public class UpdatePropertyFragment extends Fragment {
                 entries.add(new AvailabilityEntry(startDate, price));
                 startDate = startDate.plusDays(1);
             }
-            availabilityList.addAll(entries);
+            this.availabilityList.addAll(entries);
         });
 
 

@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -54,6 +55,13 @@ public interface PropertyService {
             "Content-Type:application/json"
     })
     Single<Property>  createProperty(@Body Property property);
+
+    @PUT("properties")
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    Call<Property>  updateProperty(@Body Property property);
 
     @Multipart
     @POST("properties/{id}/images")

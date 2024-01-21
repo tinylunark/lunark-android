@@ -127,6 +127,25 @@ public class PropertyRepository {
                 });
     }
 
+    public void updateProperty(Property property) {
+
+        propertyService.updateProperty(property).enqueue(new Callback<Property>() {
+            @Override
+            public void onResponse(Call<Property> call, Response<Property> response) {
+                if (response.isSuccessful()) {
+                    Log.i(LOG_TAG, "Get property response: " + response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get properties response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Property> call, Throwable t) {
+                Log.e(LOG_TAG, "Get property failure: " + t.getMessage());
+            }
+        });
+    }
+
     public Completable uploadImage(Long propertyId, Bitmap image) {
         return propertyService.uploadImage(propertyId, getImagePart(image))
                 .subscribeOn(Schedulers.io())

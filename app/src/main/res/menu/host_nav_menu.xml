@@ -23,7 +23,7 @@
         android:icon="@drawable/ic_new_property"
         android:title="@string/new_property" />
     <item
-        android:id="@+id/menu_my_properties"
+        android:id="@+id/nav_my_properties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_folder"

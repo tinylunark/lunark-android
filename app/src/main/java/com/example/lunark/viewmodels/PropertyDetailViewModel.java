@@ -59,6 +59,11 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         return property;
     }
 
+
+    public LiveData<Property> getProperty(Long id) {
+        return propertyRepository.getProperty(id);
+    }
+  
     public LiveData<List<Review>> getReviews() {
         return reviews;
     }
@@ -93,6 +98,10 @@ public class PropertyDetailViewModel extends AndroidViewModel {
         });
     }
 
+    public void updateProperty(Property property) {
+        this.propertyRepository.updateProperty(property);
+    }
+
     public LiveData<List<Property>> getMyProperties(String hostId) {
         return propertyRepository.getMyProperties(hostId);
     }
@@ -102,7 +111,6 @@ public class PropertyDetailViewModel extends AndroidViewModel {
             creationExtras -> {
                 LunarkApplication app = (LunarkApplication) creationExtras.get(APPLICATION_KEY);
                 assert app != null;
-
                 return new PropertyDetailViewModel(app, app.getPropertyRepository());
             }
     );

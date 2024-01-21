@@ -225,4 +225,29 @@ public class Property {
     public void setHost(Host host) {
         this.host = host;
     }
+
+    @Override
+    public String toString() {
+        return "Property{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", address=" + address +
+                ", minGuests=" + minGuests +
+                ", maxGuests=" + maxGuests +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", images=" + images +
+                ", amenities=" + amenities +
+                ", availabilityEntries=" + availabilityEntries +
+                ", type='" + type + '\'' +
+                ", reviews=" + reviews +
+                ", averageRating=" + averageRating +
+                ", pricingMode='" + pricingMode + '\'' +
+                ", cancellationDeadline=" + cancellationDeadline +
+                ", autoApproveEnabled=" + autoApproveEnabled +
+                ", amenityIds=" + amenityIds +
+                ", host=" + host +
+                '}';
+    }
 }

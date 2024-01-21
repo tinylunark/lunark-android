@@ -127,16 +127,23 @@ public class PropertyRepository {
                 });
     }
 
-    public Single<Property> updateProperty(Property property) {
-        return propertyService.updateProperty(property)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(property1 -> {
-                    Log.i(LOG_TAG, "Property updated. Property ID:" + property1.getId());
-                })
-                .doOnError(throwable -> {
-                    Log.e(LOG_TAG, "Property update fail: " + throwable.getMessage());
-                });
+    public void updateProperty(Property property) {
+
+        propertyService.updateProperty(property).enqueue(new Callback<Property>() {
+            @Override
+            public void onResponse(Call<Property> call, Response<Property> response) {
+                if (response.isSuccessful()) {
+                    Log.i(LOG_TAG, "Get property response: " + response.body());
+                } else {
+                    Log.w(LOG_TAG, "Get properties response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Property> call, Throwable t) {
+                Log.e(LOG_TAG, "Get property failure: " + t.getMessage());
+            }
+        });
     }
 
     public Completable uploadImage(Long propertyId, Bitmap image) {
